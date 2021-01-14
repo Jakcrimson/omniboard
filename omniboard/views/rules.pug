@@ -1,0 +1,204 @@
+doctype html
+html
+  head
+    meta(charset="utf-8")
+    meta(name="viewport", content="width=device-width, initial-scale=1, shrink-to-fit=no")
+    title #{title} | Rules
+    link(rel="stylesheet" href="/rules.css")
+    script(src='https://kit.fontawesome.com/a076d05399.js', type='text/javascript')
+
+  div#root
+    input#active(type='checkbox')
+    label.menu-btn(for='active')
+      i.fas.fa-bars
+    .wrapper1
+      ul
+        li
+          a(href='/') Home
+        li
+          a(href='/edit') Start Editing
+        li
+          a(href='/about') About the Devs
+        li
+          a(href="/rules") Rules
+  div#main
+      input#i_1(type='radio' name='switch' checked='')
+      input#i_2(type='radio' name='switch')
+      input#i_3(type='radio' name='switch')
+      input#i_4(type='radio' name='switch')
+      .wrapper
+        .slide
+          .content.content1
+            p
+              | #[strong List of Items]
+            p
+              | #[strong The bumpers] : They are round mushrooms which, when touched, will immediately push the ball away. There are usually 3 of them on a game board, 
+              | sometimes more, sometimes less depending on the effect sought by the creator of the machine ;
+            p      
+              | #[strong Kickers and Slingshots] : these are devices similar to bumpers but their shape is rectilinear and they are located on the sides of the playing area.
+              | Each recent machine has at least one pair of slingshots located just above the pair of pinball machines; 
+              | older games use more experimental layouts;
+            p    
+              | #[strong Ramps] : The player tries to direct the ball with enough force toward the ramp so that it will go over the top of the ramp. 
+              | The ramps are most often arranged so that the ball comes back directly to the pinball machine which allowed it to pass over the top of the ramp. 
+              | in such a way that it is possible to chain them together and thus accumulate an increasing number of points ;
+            p      
+              | #[strong Fixed targets (or targets)] : these are static targets that simply record contact with the ball. 
+              | It is the simplest element of the game board;
+            p    
+              | #[strong The drop targets] : they are targets which disappear under the board when they are hit. 
+              | Hitting a complete set of them often allows to progress in the game. When an entire row of drop targets 
+              | has been hit, it usually returns to its initial position;
+            p      
+              | #[strong The holes] : The player must direct his ball towards the holes. 
+              | These are sometimes connected together and a mechanism will allow the ball to pass from one to the other. 
+              | On older games, there is a type of hole called "gobble hole" which gives a considerable number of points.
+              | but does not give back the ball ;
+            p      
+              | #[strong The spinners] : A ball can pass through this small door which has an axis in its center to make it turn on itself. 
+              | Each rotation assigns points to the player;
+            p      
+              | #[strong The additional pinball machines] : Some machines have other pinball machines in addition to those located at the bottom of the board. 
+              | Depending on the machine, the pinball machines on the same side will be activated at the same time or with separate controls;
+            p      
+              | #[strong Topper] : A temporary obstacle (sometimes called a "magic pestle"), which comes out of the board, between the two pinball machines, 
+              | and which has the advantage of preventing the ball from falling into the central outlet. 
+              | It is often activated by hitting one or more targets. Its deactivation occurs after a certain delay.
+
+        .slide
+          .content.content2
+            p
+              | #[strong Possible List of rules (bear in mind that the points may differ given the input and the value of the multiplier) :]
+            p
+              | #[strong 1)] The ball hits a bumper: 2000 pts
+            p
+              | #[strong 2)] The ball hits a slingshot: 1000 pts
+            p
+              | #[strong 3)] The ball hits n times a bumper: n*250 pts + 5000 pts
+            p
+              | #[strong 4)] The ball makes 3 falling targets fall: 1 bonus ball + stopper (10s)
+            p
+              | #[strong 5)] The ball passes in sun spinner: 4000 pts
+            p
+              | #[strong 6)] The ball hits a fixed target: 500 pts.
+            p
+              | #[strong 7)] The ball hits a falling target: 1000 pts 
+            p
+              | #[strong 8)] The ball hits 2 falling targets in less than 30 seconds: 1500 pts.
+            p
+              | #[strong 9)] The ball hit all the falling targets: 5000 pts + stopper (10s)
+            p
+              | #[strong 10)] The ball hit all the fixed targets: 5000 pts + stopper (10s)
+            p
+              | #[strong 11)] The ball hit all the targets: 10 000 pts + stopper (20s) 
+            p
+              | #[strong 12)] The ball passes over a rollover: 1000 pts 
+            p
+              | #[strong 13)] The ball goes through a hole: 1000 pts
+            p
+              | #[strong 14)] The ball touches each rollover: 4000pts
+            p
+              | #[strong 15)] The ball is passed in all the holes: 6000 pts + stopper (10s)
+            p
+              | #[strong 16)] The ball reaches a spinner: 1000 pts
+            p
+              | #[strong 17)] The ball performs n rotation in the spinner: n*2000 pts
+            p
+              | #[strong 18)] The ball crosses the ramp: 10 000 pts + stopper (10s) + 1 bonus ball
+            p
+              | #[strong 19)] The ball hits a green target: 100 pts. 
+            p
+              | #[strong 20)] The ball hits a yellow target: 200 pts 
+            p
+              | #[strong 21)] The ball hits a red target: 500 pts.
+            p      
+              | #[strong 22)] The ball hits all the green targets: 1000 pts.
+            p
+              | #[strong 23)] The ball hits all the yellow targets: 2000 pts.
+            p
+              | #[strong 24)] The ball touches all the red targets: 5000 pts + stopper (5s)
+            p
+              | #[strong 25)] The ball hits a pinball: 100 pts
+        .slide
+          .content.content3
+            p
+              | #[strong Possible List of rules (bear in mind that the points may differ given the input and the value of the multiplier) :]
+            p
+              | #[strong 26)] A bonus ball comes into play: 500 pts.
+            p
+              | #[strong 27)] The player doesn't lose a ball during a 1min delay: 1000 pts.
+            p
+              | #[strong 28)] The player does not lose a ball during a 2min delay: 2000 pts.
+            p
+              | #[strong 29)] The player does not lose a ball during a 5min delay: 5000 pts.
+            p
+              | #[strong 30)] The player does not lose a ball during a 10min delay: 10 000 pts.
+            p
+              | #[strong 31)] The ball hit all the bumpers: 3500 pts.
+            p
+              | #[strong 32)] The ball hit all the slingshots: 3500 pts
+            p
+              | #[strong 33)] The ball hits successively a slingshot and a bumper: 2500 pts
+            p
+              | #[strong 34)] The ball hits successively a fixed target and slingshot: 2500 pts.
+            p
+              | #[strong 35)] The ball hits successively a fixed target and a bumper: 2500 pts.
+            p
+              | #[strong 36)] The ball hits successively a falling target and a slingshot: 2500 pts.
+            p
+              | #[strong 37)] The ball hits successively a falling target and a bumper: 2500 pts.
+            p
+              | #[strong 38)] The ball hits successively a falling target and a fixed target: 2500 pts.
+            p
+              | #[strong 39)] The ball is returned from an extra pinball: 100 pts + 50 pts if it is a bonus ball.
+            p
+              | #[strong 40)] The ball falls into the hole: extra pinball machines disabled for 10s
+            p
+              | #[strong 41)] A bonus ball crosses the ramp: 15 000 pts + bonus ball + stopper (30s)
+            p
+              | #[strong 42)] The ball follows a crawl then reaches a hole directly without touching another obstacle: 4000 pts.
+            p
+              | #[strong 43)] The player beats or equals the point record on the pinball machine: 2 bonus balls.
+            p
+              | #[strong 44)] The ball hits successively a spinner and a bumper: 2500 pts.
+            p
+              | #[strong 45)] The ball hits successively a spinner and a fixed target: 2500 pts.
+            p
+              | #[strong 46)] The ball hits successively a spinner and a falling target: 2500 pts.
+            p     
+              | #[strong 47)] The ball hits successively a spinner and a slingshot: 2500 pts.
+            p
+              | #[strong 48)] The ball hits successively a bumper then a slingshot: 2500 pts.
+            p
+              | #[strong 49)] The age of the player is less than 10 years old: a bonus ball.
+            p
+              | #[strong 50)] The score of the player is 0 when the first ball falls in the hole: a bonus ball.
+        .slide
+          .content.content4
+            p
+              | #[strong About Pinball :]
+            p
+              | A pinball machine is an electro-mechanical coin-operated game whose principle is 
+              | to score points by directing one or more metal balls onto a game board, separated 
+              | from the player by a glass.
+            p
+              | #[strong Main goal in a pinball game :]
+            p
+              | The main goal of the pinball game is to achieve the highest score. 
+            p
+              | #[strong Side goals in a pinball game :]
+              | The secondary goal is to play as long as possible by avoiding that the ball goes
+              | out of the game board (possibly by getting extra balls, called extra ball, 
+              | sometimes even simultaneous on some models) and to win free games (replay).
+            p
+              | #[strong A little history :] 
+              | This type of game was very successful from the 1950's to the 1990's, 
+              | to the point of entering the popular culture. Most cafés offered it to their customers. 
+              | There were also specialized game rooms.
+      .controls
+        label(for='i_1') &#x2B24;
+        label(for='i_2') &#x2B24;
+        label(for='i_3') &#x2B24;
+        label(for='i_4') &#x2B24;
+
+      

@@ -1,0 +1,60 @@
+doctype html
+html
+  head
+    meta(charset="utf-8")
+    meta(name="viewport", content="width=device-width, initial-scale=1, shrink-to-fit=no")
+    title #{title} | About
+    link(rel="stylesheet" href="/about.css")
+    script(src='https://kit.fontawesome.com/a076d05399.js', type='text/javascript')
+
+  body
+    div#root
+      input#active(type='checkbox')
+      label.menu-btn(for='active')
+        i.fas.fa-bars
+      .wrapper
+        ul
+          li
+            a(href='/') Home
+          li
+            a(href='/edit') Start Editing
+          li
+            a(href='/about') About the Devs
+          li
+            a(href="/rules") Rules
+      .content
+        .about-section
+          h1 About
+          p
+            |The interface of the OmniBoard Editor project was realized by four students of the computer science department of the IUT of Vannes. 
+          p
+            |The goal of this project is to design a game editor for a pinball machine so that the user can create his own pinball machine.
+        h2(style='text-align:center') Our Team
+        .row
+          .column
+            .card
+              .container
+                h2 Pierre Lague
+                p.title Project Manager
+                p lague.e1903040@etud.univ-ubs.fr
+          .column
+            .card
+              .container
+                h2 Baptiste Meauze
+                p.title Test Manager
+                p meauze.e1901009@etude.univ-ubs.fr
+          .column
+            .card
+              .container
+                h2 Benjamin Viaud
+                p.title Documentation Manager
+                p viaud.e1702527@etud.univ-ubs.fr
+          .column
+            .card
+              .container
+                h2 Mathis Meric-Pons
+                p.title Communication Manager
+                p meric-pons.e1900422@etud.univ-ubs.fr
+
+          
+

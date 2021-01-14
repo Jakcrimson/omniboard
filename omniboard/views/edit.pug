@@ -1,0 +1,55 @@
+doctype html
+head
+  meta(charset="utf-8")
+  meta(name="viewport", content="width=device-width, initial-scale=1, shrink-to-fit=no")
+  title #{title} | Edit
+  link(rel="stylesheet" href="/edit.css")
+  script(type='text/javascript' src='edit.js')
+  script(src='https://kit.fontawesome.com/a076d05399.js', type='text/javascript')
+  
+body(onload='init()')
+  div#main
+      #infoDraggable.draggable(style='display: inline-block; vertical-align: middle; padding: 5px; top: 20px; left: 500px;')
+          #infoDraggableHandle.handle Info
+          div#myInfo
+      #d1
+        p  File :
+        input.menu(type='button' value='Save')
+        input#img.inputfile(type='file' name='img' accept='image/*')
+        label.menu(for='img' onmouseout='previewImage()') Load
+        p#preview no file selected
+        input.menu(type='button' value='Submit' onclick='submitImg()')
+        input.menu(type='button' value='Quit')
+        p  Rules : 
+        input.menu(type='button' value='Add')
+        input.menu(type='button' value='Edit')
+        input.menu(type='button' value='Delete' name='delete')
+        p  Elements : 
+        //#item
+        input.elem(type='button' value='Add Bumper' onclick='addItem("b")')
+        input.elem(type='button' value='Add Kicker/Slingshot' onclick='addItem("slin")')
+        input.elem(type='button' value='Add Ramp' onclick='addItem("r")')
+        input.elem(type='button' value='Add Target' onclick='addItem("t")')
+        input.elem(type='button' value='Add Drop Target' onclick='addItem("d")')
+        input.elem(type='button' value='Add Hole' onclick='addItem("h")')
+        input.elem(type='button' value='Add Spinner' onclick='addItem("spi")')
+        input.elem(type='button' value='Add Stopper' onclick='addItem("s")')                                                                     
+        input.elem(type='button' value='Delete Element' onclick='deleteItem()')
+      #d2
+        img(id="image" src='/images/pinball_top_view.jpg' height="100%")
+      #d3
+        
+  div#root
+    input#active(type='checkbox')
+    label.menu-btn(for='active' onclick='hideInfo()')
+      i.fas.fa-bars
+    .wrapper
+      ul
+        li
+          a(href='/') Home
+        li
+          a(href='/edit') Start Editing
+        li
+          a(href='/about') About the Devs
+        li
+          a(href="/rules") Rules

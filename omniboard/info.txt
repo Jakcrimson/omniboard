@@ -1,0 +1,14 @@
+This folder is the commit of the local dev (Pierre) it uses express and nodemon as a runner on local host (port:8000).
+First clone the repository locally : 
+  git clone https://github.com/Jakcrimson/omniboard.github.io
+  
+  Then go at the root of the repository
+  npm init -y //install and sets up npm
+  
+  npm i -D nodemon //sets up the local host runner
+  
+  npm i express //sets up the express framework
+  
+  npm run dev //runs the locahost on port 8000 you can access the web app
+  
+  The web app should be running on your localhosy at port 8000

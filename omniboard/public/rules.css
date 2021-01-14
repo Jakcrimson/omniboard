@@ -1,0 +1,188 @@
+@import url("https://fonts.googleapis.com/css?family=Lato:400,400i,700");
+@import url('https://fonts.googleapis.com/css?family=Poppins:400,500,600,700&display=swap');
+
+
+*{
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+  font-family: 'Poppins', sans-serif;
+  
+}
+
+html, body {
+  margin: 10;
+  padding: 0;
+  width: 100%;
+  height: 100%;
+}
+
+input {
+  opacity: 0;
+  width: 0;
+  height: 0;
+  position: absolute;
+}
+
+/* Base styles for this example */
+
+.wrapper {
+  width: 50vw; /* unfortunately width has to be set to some hard value */
+  display: flex;
+}
+
+.slide {
+  width: 0;
+}
+
+.content {
+  width: 50vw;
+  height: 100%; /* this is optional if you want every slide to have same height as the highest one */
+}
+
+/* Additional styling */
+
+html, body {
+  background: linear-gradient(-135deg, #c850c0, #4158d0);
+  display: grid;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center; 
+  font-family: Lato;
+}
+
+.wrapper {
+  margin: 0 auto;
+  background-color: white;
+  box-shadow: 3px 3px 20px #9E9E9E;
+}
+
+span {
+  background-color: white;
+  text-align: center;
+  line-height: 4rem;
+  width: 4rem;
+  border-radius: 8rem;
+  color: #616161;
+  font-size: 2rem;
+}
+
+.content {
+  padding: 30px;
+  opacity: 0;
+  pointer-events: none;
+  transition: opacity .6s;
+  max-height: 90vh;
+  overflow-y: auto;
+}
+
+.content5,
+.content6
+{
+  display: flex;
+  justify-content: center;
+  align-items: center;  
+  background-color: #E0E0E0;
+}
+
+#i_1:checked ~ .wrapper .content1,
+#i_2:checked ~ .wrapper .content2,
+#i_3:checked ~ .wrapper .content3,
+#i_4:checked ~ .wrapper .content4,
+#i_5:checked ~ .wrapper .content5,
+#i_6:checked ~ .wrapper .content6 {
+  opacity: 1;
+  pointer-events: auto;
+}
+
+label {
+  color: #E0E0E0;
+  transition-duration: .6s;
+  cursor: pointer;
+}
+
+#i_1:checked ~ .controls label[for="i_1"],
+#i_2:checked ~ .controls label[for="i_2"],
+#i_3:checked ~ .controls label[for="i_3"],
+#i_4:checked ~ .controls label[for="i_4"],
+#i_5:checked ~ .controls label[for="i_5"],
+#i_6:checked ~ .controls label[for="i_6"] {
+  color: #424242;
+}
+.wrapper1{
+  position: fixed;
+  top: 0;
+  left: 0;
+  height: 100%;
+  width: 100%;
+  background: linear-gradient(-135deg, #c850c0, #4158d0);
+  clip-path: circle(25px at calc(100% - 45px) 45px);
+  transition: all 0.3s ease-in-out;
+}
+/* Some resets, not essencial for this example to work */
+.wrapper1 ul{
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  list-style: none;
+  text-align: center;
+}
+.wrapper1 ul li{
+  margin: 15px 0;
+}
+.wrapper1 ul li a{
+  color: none;
+  text-decoration: none;
+  font-size: 30px;
+  font-weight: 500;
+  padding: 5px 30px;
+  color: #fff;
+  position: relative;
+  line-height: 50px;
+  transition: all 0.3s ease;
+}
+.wrapper1 ul li a:after{
+  position: absolute;
+  content: "";
+  background: #fff;
+  width: 100%;
+  height: 50px;
+  left: 0;
+  border-radius: 50px;
+  transform: scaleY(0);
+  z-index: -1;
+  transition: transform 0.3s ease;
+}
+.wrapper1 ul li a:hover:after{
+  transform: scaleY(1);
+}
+.wrapper1 ul li a:hover {
+  color: #4158d0;
+}
+.menu-btn{
+  position: absolute;
+  z-index: 2;
+  right: 20px;
+  top: 20px;
+  height: 50px;
+  width: 50px;
+  text-align: center;
+  line-height: 50px;
+  border-radius: 50%;
+  font-size: 20px;
+  color: #fff;
+  cursor: pointer;
+  background: linear-gradient(-135deg, #c850c0, #4158d0);
+  transition: all 0.3s ease-in-out;
+}
+#active:checked ~ .menu-btn{
+  background: #fff;
+  color: #4158d0;
+}
+#active:checked ~ .menu-btn i:before{
+  content: "\f00d";
+}
+#active:checked ~ .wrapper1{
+  clip-path: circle(75%);
+}

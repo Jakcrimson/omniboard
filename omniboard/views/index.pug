@@ -1,0 +1,28 @@
+doctype html
+html
+  head
+    meta(charset="utf-8")
+    meta(name="viewport", content="width=device-width, initial-scale=1, shrink-to-fit=no")
+    title #{title} | HomePage
+    link(rel="stylesheet" href="/style.css")
+    script(src='https://kit.fontawesome.com/a076d05399.js', type='text/javascript')
+
+  body
+    div#root
+      input#active(type='checkbox')
+      label.menu-btn(for='active')
+        i.fas.fa-bars
+      .wrapper
+        ul
+          li
+            a(href='/') Home
+          li
+            a(href='/edit') Start Editing
+          li
+            a(href='/about') About the Devs
+          li  
+            a(href='/rules') Rules
+      .content
+        .title
+          Omniboard OmniBoard Editor
+

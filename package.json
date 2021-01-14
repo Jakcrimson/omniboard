@@ -1,0 +1,26 @@
+{
+  "name": "omniboard.github.io",
+  "version": "1.0.0",
+  "description": "You can use the [editor on GitHub](https://github.com/Jakcrimson/omniboard.github.io/edit/main/README.md) to maintain and preview the content for your website in Markdown files.",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/Jakcrimson/omniboard.github.io.git"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/Jakcrimson/omniboard.github.io/issues"
+  },
+  "homepage": "https://github.com/Jakcrimson/omniboard.github.io#readme",
+  "devDependencies": {
+    "nodemon": "^2.0.6"
+  },
+  "dependencies": {
+    "express": "^4.17.1"
+  }
+}
