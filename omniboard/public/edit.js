@@ -42,22 +42,22 @@ function init() {
     d2.style = "height:" + globalHeight + "px;";
     d3.style = "height:" + globalHeight + "px;";
 
-    resize(image);
+    resize();
 }
 
 /**
- * This fuction is used to resize a picture
+ * This fuction is used to resize the two div d2 and d3 according to the picture
  * @param {*} img the picture
  */
-function resize(img) {
-    console.log(img);
-    image = img;
+function resize() {
+    image = document.getElementById('image');
+
     d2.style = "width:" + image.width + "px;height:" + globalHeight + "px;";
     var d3Width = screenWidth - image.width - 260;
     if (d3Width < 400) d3Width = 400;
     var d3Left = image.width + 240;
     d3.style = "width:" + d3Width + "px;left:" + d3Left + "px;height:" + globalHeight + "px;";
-    console.log(image.width);
+
 }
 
 /**
@@ -70,9 +70,8 @@ function addItem(name) {
     d2x += 3;
     img.src = '/images/' + name + '.jpg';
     img.style = "width:40px;height:40px;position:absolute;top:" + d2y + "px;left:" + d2x + "px;cursor:move;";
-    img.selectable = "true";
-    img.draggable = "true";
     d2.appendChild(img);
+
     if(dragItem!=null) dragItem.style.border = "none";
     dragItem = img;
     img.style.border = "2px solid black";
@@ -175,18 +174,6 @@ function drag(e) {
             currentX = e.clientX - initialX;
             currentY = e.clientY - initialY;
         }
-        if(currentX > parseInt(d2.style.width)-30) {
-            currentX = parseInt(d2.style.width)-30;
-        }
-        if(currentX < 0) {
-            currentX = 0;
-        }
-        if(currentY > parseInt(d2.style.height)-30) {
-            currentY = parseInt(d2.style.height)-30;
-        }
-        if(currentY < 0) {
-            currentY = 0;
-        }
 
         xOffset = currentX;
         yOffset = currentY;
@@ -218,13 +205,12 @@ function submitImg() {
         //load the image in the expected selection
         reader.onload = function(e) {
             document.getElementById('image').src = e.target.result;
-            resize(fichierSelectionne);
+            fichierSelectionne.onload = resize;
         }
 
         reader.readAsDataURL(document.getElementById('img').files[0]);
 
     }
-
 }
 /**
  * This function is use to update the name of the image when the file is uploaded
