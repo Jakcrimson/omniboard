@@ -1,6 +1,3 @@
-var d2, d2x, d2y, img, image;
-var dragItem, container;
-var d1;
 var info_panel, infos, handle;
 var active = false;
 var currentX;
@@ -12,6 +9,7 @@ var yOffset = 0;
 var inspector;
 var globalHeight = window.innerHeight - 20;
 var screenWidth;
+var itemId = 1;
 
 /**
  * This fuction wis used to initate
@@ -20,13 +18,11 @@ function init() {
     d2 = document.getElementById('d2');
     d1 = document.getElementById('d1');
     d3 = document.getElementById('d3');
-    d2x = 0;
-    d2y = 0;
+    d2x = d2.getBoundingClientRect().left;
+    d2y = d2.getBoundingClientRect().top;
     info_panel = document.getElementById('infoDraggable');
-    d2.appendChild(info_panel);
     container = d2;
-    screenWidth = document.body.clientWidth;
-    info_panel = document.getElementById('myInfo');
+    screenWidth = document.body.clientWidth
 
     container.addEventListener("touchstart", dragStart, false);
     container.addEventListener("touchend", dragEnd, false);
@@ -35,7 +31,7 @@ function init() {
     container.addEventListener("mousedown", dragStart, false);
     container.addEventListener("mouseup", dragEnd, false);
     container.addEventListener("mousemove", drag, false);
-
+    d3.appendChild(info_panel);
     image = document.getElementById('image');
     image.height = globalHeight;
     d1.style = "height:" + globalHeight + "px;";
@@ -44,6 +40,7 @@ function init() {
 
     resize(image);
 }
+
 
 /**
  * This fuction is used to resize a picture
@@ -73,25 +70,31 @@ function addItem(name) {
     img.selectable = "true";
     img.draggable = "true";
     d2.appendChild(img);
-    if(dragItem!=null) dragItem.style.border = "none";
     dragItem = img;
-    img.style.border = "2px solid black";
     img.onmousedown = currentDragged;
-    displayInfo();
+    img.onmouseout = toggleBorder;
+    displayInfo(name);
+    img.onmouseleave = toggleBorder;
 
 }
 
 /**
  * This fuction is used to display informations
+ * @param {*} name the item's name
  */
-function displayInfo() {
+function displayInfo(name) {
 
+    itemId++;
+    deleteInfo();
     infos = document.createElement('div');
-    infos.innerHTML += '<form><label for="name"> Name :</label><br>';
-    infos.innerHTML += '<input type="text" id="name" name="name"><br>';
+    infos.innerHTML += '<form><label for="name"> Element Name :</label><br>';
+    infos.innerHTML += '<input type="text" id="name" name="name" value="' + name + '_' + itemId + '"><br>';
     infos.innerHTML += '<label for="coordinates"> Coordinates :</label><br>';
     infos.innerHTML += '<input type="text" id="coord" name="coord" value="' + d2x + '; ' + d2y + '" readonly><br>';
-    infos.innerHTML += '<label for="rules"> Linked rules :</label><br>';
+    //infos.innerHTML += '<label for="input"> Element Input :</label><br>';
+    //infos.innerHTML += '<input type="text" id="input" name="input" value="//What element the rule relies on" size="50"><br>';
+    //infos.innerHTML += '<label for="operation"> Operation :</label><br>';
+    //infos.innerHTML += '<input type="text" id="operation" name="operation" value="//what the action provoques" size="50"><br>';
     infos.style = "background-color: lightblue;cursor: move;text-align: left;font: bold 12px sans-serif;";
     info_panel.appendChild(infos);
 }
@@ -103,7 +106,6 @@ function deleteItem() {
     if (dragItem != null) {
         dragItem.parentNode.removeChild(dragItem);
         deleteInfo();
-        dragItem = null;
     }
 }
 
@@ -125,7 +127,6 @@ function deleteInfo() {
 function currentDragged(rect) {
     xOffset = rect.layerX - 10;
     yOffset = rect.layerY - 10;
-    if(dragItem != null) dragItem.style.border = "none";
     dragItem = rect.target;
     dragItem.style.border = "2px solid black";
 }
@@ -175,19 +176,6 @@ function drag(e) {
             currentX = e.clientX - initialX;
             currentY = e.clientY - initialY;
         }
-        if(currentX > parseInt(d2.style.width)-30) {
-            currentX = parseInt(d2.style.width)-30;
-        }
-        if(currentX < 0) {
-            currentX = 0;
-        }
-        if(currentY > parseInt(d2.style.height)-30) {
-            currentY = parseInt(d2.style.height)-30;
-        }
-        if(currentY < 0) {
-            currentY = 0;
-        }
-
         xOffset = currentX;
         yOffset = currentY;
 
@@ -205,18 +193,19 @@ function setTranslate(xPos, yPos, el) {
     el.style.transform = "translate3d(" + xPos + "px, " + yPos + "px, 0)";
 }
 
+
 /**
  * This function load and save the upload image when the button was selected
  */
 function submitImg() {
     document.getElementById("image").style.display = "block";
-    var fichierSelectionne = document.getElementById('img').files[0];//get the upload image
-    //save the image in the localstorage
+    var fichierSelectionne = document.getElementById('img').files[0];
+
     if (document.getElementById('img').files && document.getElementById('img').files[0]) {
         var reader = new FileReader();
 
-        //load the image in the expected selection
         reader.onload = function(e) {
+            console.log("ok");
             document.getElementById('image').src = e.target.result;
             resize(fichierSelectionne);
         }
@@ -226,6 +215,7 @@ function submitImg() {
     }
 
 }
+
 /**
  * This function is use to update the name of the image when the file is uploaded
  */
