@@ -216,6 +216,7 @@ function submitImg() {
  * This function is use to update the name of the image when the file is uploaded
  */
 function previewImage() {
+    console.log("AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA <");
     var fichierSelectionne = document.getElementById('img').files[0];
     if (fichierSelectionne != null) {
         var preview = document.getElementById('preview');

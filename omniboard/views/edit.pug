@@ -15,8 +15,8 @@ body(onload='init()')
       #d1
         p  File :
         input.menu(type='button' value='Save')
-        input#img.inputfile(type='file' name='img' accept='image/*')
-        label.menu(for='img' onmouseout='previewImage()') Load
+        input#img.inputfile(type='file' name='img' accept='image/*' onload='previewImage()')
+        label.menu(for='img') Load
         p#preview no file selected
         input.menu(type='button' value='Submit' onclick='submitImg()')
         input.menu(type='button' value='Quit')
