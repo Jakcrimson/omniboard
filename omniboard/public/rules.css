@@ -7,7 +7,7 @@
   padding: 0;
   box-sizing: border-box;
   font-family: 'Poppins', sans-serif;
-  
+
 }
 
 html, body {
@@ -47,7 +47,7 @@ html, body {
   display: grid;
   flex-direction: column;
   justify-content: center;
-  align-items: center; 
+  align-items: center;
   font-family: Lato;
 }
 
@@ -81,7 +81,7 @@ span {
 {
   display: flex;
   justify-content: center;
-  align-items: center;  
+  align-items: center;
   background-color: #E0E0E0;
 }
 

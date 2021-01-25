@@ -38,23 +38,23 @@ function init() {
     d2.style = "height:" + globalHeight + "px;";
     d3.style = "height:" + globalHeight + "px;";
 
-    resize(image);
+    resize();
 }
 
 
 /**
- * This fuction is used to resize a picture
+ * This fuction is used to resize the two div d2 and d3 according to the picture
  * @param {*} img the picture
  */
-function resize(img) {
-    console.log(img);
-    image = img;
+function resize() {
+    image = document.getElementById('image');
+
     d2.style = "width:" + image.width + "px;height:" + globalHeight + "px;";
     var d3Width = screenWidth - image.width - 260;
     if (d3Width < 400) d3Width = 400;
     var d3Left = image.width + 240;
     d3.style = "width:" + d3Width + "px;left:" + d3Left + "px;height:" + globalHeight + "px;";
-    console.log(image.width);
+
 }
 
 /**
@@ -67,15 +67,12 @@ function addItem(name) {
     d2x += 3;
     img.src = '/images/' + name + '.jpg';
     img.style = "width:40px;height:40px;position:absolute;top:" + d2y + "px;left:" + d2x + "px;cursor:move;";
-    img.selectable = "true";
-    img.draggable = "true";
     d2.appendChild(img);
+    displayInfo(name);
     dragItem = img;
     img.onmousedown = currentDragged;
     img.onmouseout = toggleBorder;
-    displayInfo(name);
     img.onmouseleave = toggleBorder;
-
 }
 
 /**
@@ -85,6 +82,7 @@ function addItem(name) {
 function displayInfo(name) {
 
     itemId++;
+    console.log("coucou");
     deleteInfo();
     infos = document.createElement('div');
     infos.innerHTML += '<form><label for="name"> Element Name :</label><br>';
@@ -129,6 +127,7 @@ function currentDragged(rect) {
     yOffset = rect.layerY - 10;
     dragItem = rect.target;
     dragItem.style.border = "2px solid black";
+    displayInfo(rect);
 }
 
 /**
@@ -207,13 +206,12 @@ function submitImg() {
         reader.onload = function(e) {
             console.log("ok");
             document.getElementById('image').src = e.target.result;
-            resize(fichierSelectionne);
+            fichierSelectionne.onload = resize;
         }
 
         reader.readAsDataURL(document.getElementById('img').files[0]);
 
     }
-
 }
 
 /**
