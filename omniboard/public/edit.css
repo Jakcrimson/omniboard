@@ -19,7 +19,7 @@
     transition: all 0.3s ease-in-out;
 }
 
-.menu-btn{
+.menu-btn {
     position: absolute;
     z-index: 2;
     right: 20px;
@@ -36,17 +36,19 @@
     transition: all 0.3s ease-in-out;
 }
 
-#active:checked ~ .menu-btn {
+#active:checked~.menu-btn {
     background: #fff;
     color: #4158d0;
 }
 
-#active:checked ~ .menu-btn i:before {
+#active:checked~.menu-btn i:before {
     content: "\f00d";
 }
-#active:checked ~ .wrapper {
+
+#active:checked~.wrapper {
     clip-path: circle(75%);
 }
+
 .wrapper ul {
     position: absolute;
     top: 50%;
@@ -176,7 +178,7 @@ input[type="checkbox"] {
 
 #infoDraggable {
     font: 12px helvetica, sans-serif;
-    min-width: 213px;
+    min-width: 600px;
 }
 
 #myInfo {
