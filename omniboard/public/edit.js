@@ -10,6 +10,8 @@ var inspector;
 var globalHeight = window.innerHeight - 20;
 var screenWidth;
 var itemId = 1;
+var listElement = [];
+var rule;
 
 /**
  * This fuction wis used to initate
@@ -21,8 +23,9 @@ function init() {
     d2x = d2.getBoundingClientRect().left;
     d2y = d2.getBoundingClientRect().top;
     info_panel = document.getElementById('infoDraggable');
+    rule_panel = document.getElementById('rule');
     container = d2;
-    screenWidth = document.body.clientWidth
+    screenWidth = document.body.clientWidth;
 
     container.addEventListener("touchstart", dragStart, false);
     container.addEventListener("touchend", dragEnd, false);
@@ -32,6 +35,7 @@ function init() {
     container.addEventListener("mouseup", dragEnd, false);
     container.addEventListener("mousemove", drag, false);
     d3.appendChild(info_panel);
+    d3.appendChild(rule_panel);
     image = document.getElementById('image');
     image.height = globalHeight;
     d1.style = "height:" + globalHeight + "px;";
@@ -41,7 +45,35 @@ function init() {
     resize();
 }
 
+function displayRule() {
+    itemId++;
+    console.log("ok");
+    rule = document.createElement('div2');
+    rule.innerHTML += '<form><label for="name"> Choose Element :</label><br>';
+    rule.innerHTML += '<select id="name" name="name">' + element();
+    rule.innerHTML += '<label for="coordinates"> Coordinates :</label><br>';
+    rule.innerHTML += '<input type="text" id="coord" name="coord" value="' + d2x + '; ' + d2y + '" readonly><br>';
+    rule.style = "background-color: red;cursor: move;text-align: left;font: bold 12px sans-serif;";
+    rule_panel.appendChild(rule);
+}
+function deleteRule() {
+    let children = document.getElementById('infoDraggable').childNodes;
 
+    for (let i = 1; i < children.length; i++) {
+        children[i].parentNode.removeChild(children[i]);
+    }
+}
+function loadRule() {
+    rule.innerHTML
+}
+
+function element() {
+    var string = "";
+    for(let i = 0; i < listElement.length; i++) {
+        // string += '<option value=' + listElement[i]+ '>' + listElement[i]+ 'Spider</option>';
+        string = '<option value="Test">Spider</option>';
+    }
+}
 /**
  * This fuction is used to resize the two div d2 and d3 according to the picture
  * @param {*} img the picture
@@ -70,9 +102,12 @@ function addItem(name) {
     d2.appendChild(img);
     displayInfo(name);
     dragItem = img;
+    listElement.push(img);    
+    displayRule();
     img.onmousedown = currentDragged;
     img.onmouseout = toggleBorder;
     img.onmouseleave = toggleBorder;
+    
 }
 
 /**
@@ -89,10 +124,6 @@ function displayInfo(name) {
     infos.innerHTML += '<input type="text" id="name" name="name" value="' + name + '_' + itemId + '"><br>';
     infos.innerHTML += '<label for="coordinates"> Coordinates :</label><br>';
     infos.innerHTML += '<input type="text" id="coord" name="coord" value="' + d2x + '; ' + d2y + '" readonly><br>';
-    //infos.innerHTML += '<label for="input"> Element Input :</label><br>';
-    //infos.innerHTML += '<input type="text" id="input" name="input" value="//What element the rule relies on" size="50"><br>';
-    //infos.innerHTML += '<label for="operation"> Operation :</label><br>';
-    //infos.innerHTML += '<input type="text" id="operation" name="operation" value="//what the action provoques" size="50"><br>';
     infos.style = "background-color: lightblue;cursor: move;text-align: left;font: bold 12px sans-serif;";
     info_panel.appendChild(infos);
 }
@@ -103,6 +134,11 @@ function displayInfo(name) {
 function deleteItem() {
     if (dragItem != null) {
         dragItem.parentNode.removeChild(dragItem);
+        for(let i = 0; i < listElement.length; i++) {
+            if(dragItem == listElement[i]) {
+                listElement.splice(i, 1);
+            }
+        }
         deleteInfo();
     }
 }
