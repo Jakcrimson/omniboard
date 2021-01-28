@@ -12,6 +12,7 @@ var screenWidth;
 var itemId = 1;
 var listElement = [];
 var rule;
+var dragItem;
 
 /**
  * This fuction wis used to initate
@@ -56,6 +57,7 @@ function displayRule() {
     rule.style = "background-color: red;cursor: move;text-align: left;font: bold 12px sans-serif;";
     rule_panel.appendChild(rule);
 }
+
 function deleteRule() {
     let children = document.getElementById('infoDraggable').childNodes;
 
@@ -101,8 +103,8 @@ function addItem(name) {
     img.style = "width:40px;height:40px;position:absolute;top:" + d2y + "px;left:" + d2x + "px;cursor:move;";
     d2.appendChild(img);
     displayInfo(name);
-    dragItem = img;
-    listElement.push(img);    
+    changeDragItem(img);
+    listElement.push(img);
     displayRule();
     img.onmousedown = currentDragged;
     img.onmouseout = toggleBorder;
@@ -161,9 +163,18 @@ function deleteInfo() {
 function currentDragged(rect) {
     xOffset = rect.layerX - 10;
     yOffset = rect.layerY - 10;
-    dragItem = rect.target;
-    dragItem.style.border = "2px solid black";
+    changeDragItem(rect.target);
     displayInfo(rect);
+}
+
+/**
+ * This function change the dragItem and manage its border
+ * @param {*} nextItem the new dragItem
+ */
+function changeDragItem(nextItem){
+    if(dragItem != null) dragItem.style.border = "0px solid black";
+    dragItem = nextItem;
+    dragItem.style.border = "2px solid black";
 }
 
 /**
