@@ -10,12 +10,8 @@ var inspector;
 var globalHeight = window.innerHeight - 20;
 var screenWidth;
 var itemId = 1;
-<<<<<<< HEAD
-var imageName;
-=======
 var listElement = [];
 var rule;
->>>>>>> 75ddf0ca3dd5a58eebfe82c86484ba9367d278a1
 
 /**
  * This fuction wis used to initate
@@ -60,6 +56,7 @@ function displayRule() {
     rule.style = "background-color: red;cursor: move;text-align: left;font: bold 12px sans-serif;";
     rule_panel.appendChild(rule);
 }
+
 function deleteRule() {
     let children = document.getElementById('infoDraggable').childNodes;
 
@@ -67,13 +64,14 @@ function deleteRule() {
         children[i].parentNode.removeChild(children[i]);
     }
 }
+
 function loadRule() {
     rule.innerHTML
 }
 
 function element() {
     var string = "";
-    for(let i = 0; i < listElement.length; i++) {
+    for (let i = 0; i < listElement.length; i++) {
         // string += '<option value=' + listElement[i]+ '>' + listElement[i]+ 'Spider</option>';
         string = '<option value="Test">Spider</option>';
     }
@@ -108,12 +106,12 @@ function addItem(name) {
     displayInfo(name);
     imageName = name;
     dragItem = img;
-    listElement.push(img);    
+    listElement.push(img);
     displayRule();
     img.onmousedown = currentDragged;
     img.onmouseout = toggleBorder;
     img.onmouseleave = toggleBorder;
-    
+
 }
 
 /**
@@ -121,7 +119,6 @@ function addItem(name) {
  * @param {*} name the item's name
  */
 function displayInfo(name) {
-    console.log("coucou");
     deleteInfo();
     infos = document.createElement('div');
     infos.innerHTML += '<form><label for="name"> Element Name :</label><br>';
@@ -138,8 +135,8 @@ function displayInfo(name) {
 function deleteItem() {
     if (dragItem != null) {
         dragItem.parentNode.removeChild(dragItem);
-        for(let i = 0; i < listElement.length; i++) {
-            if(dragItem == listElement[i]) {
+        for (let i = 0; i < listElement.length; i++) {
+            if (dragItem == listElement[i]) {
                 listElement.splice(i, 1);
             }
         }
@@ -167,6 +164,7 @@ function currentDragged(rect) {
     yOffset = rect.layerY - 10;
     dragItem = rect.target;
     dragItem.style.border = "2px solid black";
+    console.log("Current dragged is " + imageName);
     displayInfo(imageName);
 }
 
