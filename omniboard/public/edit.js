@@ -10,6 +10,7 @@ var inspector;
 var globalHeight = window.innerHeight - 20;
 var screenWidth;
 var itemId = 1;
+var imageName;
 
 /**
  * This fuction wis used to initate
@@ -63,12 +64,14 @@ function resize() {
  */
 function addItem(name) {
     img = document.createElement("img");
+    itemId++;
     d2y += 3;
     d2x += 3;
     img.src = '/images/' + name + '.jpg';
     img.style = "width:40px;height:40px;position:absolute;top:" + d2y + "px;left:" + d2x + "px;cursor:move;";
     d2.appendChild(img);
     displayInfo(name);
+    imageName = name;
     dragItem = img;
     img.onmousedown = currentDragged;
     img.onmouseout = toggleBorder;
@@ -80,8 +83,6 @@ function addItem(name) {
  * @param {*} name the item's name
  */
 function displayInfo(name) {
-
-    itemId++;
     console.log("coucou");
     deleteInfo();
     infos = document.createElement('div');
@@ -127,7 +128,7 @@ function currentDragged(rect) {
     yOffset = rect.layerY - 10;
     dragItem = rect.target;
     dragItem.style.border = "2px solid black";
-    displayInfo(rect);
+    displayInfo(imageName);
 }
 
 /**
