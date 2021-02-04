@@ -124,8 +124,7 @@ function addItem(name) {
     listElement.push(img);
     displayRule();
     img.onmousedown = currentDragged;
-    img.onmouseout = toggleBorder;
-    img.onmouseleave = toggleBorder;
+    console.log(img.src)
 
 }
 
@@ -135,9 +134,10 @@ function addItem(name) {
  */
 function displayInfo(name) {
     deleteInfo();
+    console.log(name)
     infos = document.createElement('div');
     infos.innerHTML += '<form><label for="name"> Element Name :</label><br>';
-    infos.innerHTML += '<input type="text" id="name" name="name" value="' + nameImage + '_' + itemId + '"><br>';
+    infos.innerHTML += '<input type="text" id="name" name="name" value="' + name + '"><br>';
     infos.innerHTML += '<label for="coordinates"> Coordinates :</label><br>';
     infos.innerHTML += '<input type="text" id="coord" name="coord" value="' + d2x + '; ' + d2y + '" readonly><br>';
     infos.style = "background-color: lightblue;cursor: move;text-align: left;font: bold 12px sans-serif;";
@@ -179,7 +179,7 @@ function currentDragged(rect) {
     xOffset = rect.layerX - 10;
     yOffset = rect.layerY - 10;
     changeDragItem(rect.target);
-    displayInfo(rect);
+    displayInfo(rect.target.src.split(".")[0].split("/")[4]);
 }
 
 /**
