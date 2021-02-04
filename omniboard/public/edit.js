@@ -47,32 +47,48 @@ function init() {
 
 function displayRule() {
     itemId++;
-    console.log("ok");
+    deleteRule();
     rule = document.createElement('div2');
     rule.innerHTML += '<form><label for="name"> Choose Element :</label><br>';
-    rule.innerHTML += '<select id="name" name="name">' + element();
-    rule.innerHTML += '<label for="coordinates"> Coordinates :</label><br>';
-    rule.innerHTML += '<input type="text" id="coord" name="coord" value="' + d2x + '; ' + d2y + '" readonly><br>';
+    rule.innerHTML += '<label for="type"> type :</label><br>';
+    rule.innerHTML += '<input type="text" name="search" placeholder="Enter the type of the rule"/><br>';
+    rule.innerHTML += '<label for="name"> name :</label><br>';
+    rule.innerHTML += '<input type="text" name="search" placeholder="Enter the name of the rule"/><br>';
+    rule.innerHTML += '<label for="name"> Choose Type for the loop :</label><br>';
+    rule.innerHTML += '<select id="loop" name="loop">' +
+                        '<option value=conditions>conditions</option>' +
+                        '<option value=actions>actions</option></select><br>';
+    rule.innerHTML += '<label for="name"> name :</label><br>';
+    rule.innerHTML += '<select id="name" name="name">' + element() + '</select><br>';
+    rule.innerHTML += '<label for="name"> input :</label><br>';
+    rule.innerHTML += '<input type="text" name="search"/><br>';
+    rule.innerHTML += '<label for="name"> operation :</label><br>';
+    rule.innerHTML += '<select id="loop" name="loop">' +
+                        '<option value=less_than>less_than</option>' +
+                        '<option value=equals >equals </option>' +
+                        '<option value=not_equals >not_equals </option>' +
+                        '<option value=greater_than>greater_than</option></select><br>';
+    rule.innerHTML += '<label for="name"> value :</label><br>';
+    rule.innerHTML += '<input type="text" name="search"/><br>';
+    rule.innerHTML += '<button for="name"> new conditions </label>';
+    rule.innerHTML += '<button for="name"> new actions </label><br>';
     rule.style = "background-color: red;cursor: move;text-align: left;font: bold 12px sans-serif;";
     rule_panel.appendChild(rule);
 }
 function deleteRule() {
-    let children = document.getElementById('infoDraggable').childNodes;
+    let children = document.getElementById('rule').childNodes;
 
     for (let i = 1; i < children.length; i++) {
         children[i].parentNode.removeChild(children[i]);
     }
 }
-function loadRule() {
-    rule.innerHTML
-}
 
 function element() {
     var string = "";
     for(let i = 0; i < listElement.length; i++) {
-        // string += '<option value=' + listElement[i]+ '>' + listElement[i]+ 'Spider</option>';
-        string = '<option value="Test">Spider</option>';
+        string += '<option value=' + listElement[i] + '>' + listElement[i] + '</option>';
     }
+    return string;
 }
 /**
  * This fuction is used to resize the two div d2 and d3 according to the picture
@@ -102,7 +118,7 @@ function addItem(name) {
     d2.appendChild(img);
     displayInfo(name);
     dragItem = img;
-    listElement.push(img);    
+    listElement.push(name);
     displayRule();
     img.onmousedown = currentDragged;
     img.onmouseout = toggleBorder;
@@ -117,7 +133,6 @@ function addItem(name) {
 function displayInfo(name) {
 
     itemId++;
-    console.log("coucou");
     deleteInfo();
     infos = document.createElement('div');
     infos.innerHTML += '<form><label for="name"> Element Name :</label><br>';
@@ -159,8 +174,8 @@ function deleteInfo() {
  * @param {*} rect the picture currently selected
  */
 function currentDragged(rect) {
-    xOffset = rect.layerX - 10;
-    yOffset = rect.layerY - 10;
+    d2x = xOffset = rect.layerX - 10;
+    d2y = yOffset = rect.layerY - 10;
     dragItem = rect.target;
     dragItem.style.border = "2px solid black";
     displayInfo(rect);
@@ -172,11 +187,11 @@ function currentDragged(rect) {
  */
 function dragStart(e) {
     if (e.type === "touchstart") {
-        initialX = e.touches[0].clientX - xOffset;
-        initialY = e.touches[0].clientY - yOffset;
+        d2x = initialX = e.touches[0].clientX - xOffset;
+        d2y =initialY = e.touches[0].clientY - yOffset;
     } else {
-        initialX = e.clientX - xOffset;
-        initialY = e.clientY - yOffset;
+        d2x = initialX = e.clientX - xOffset;
+        d2y = initialY = e.clientY - yOffset;
     }
 
     if (e.target === dragItem) {
@@ -189,8 +204,8 @@ function dragStart(e) {
  * @param {*} e the item in the view
  */
 function dragEnd(e) {
-    initialX = currentX;
-    initialY = currentY;
+    d2x = initialX = currentX;
+    d2y = initialY = currentY;
 
     active = false;
 }
@@ -205,14 +220,14 @@ function drag(e) {
         e.preventDefault();
 
         if (e.type === "touchmove") {
-            currentX = e.touches[0].clientX - initialX;
-            currentY = e.touches[0].clientY - initialY;
+            d2x = currentX = e.touches[0].clientX - initialX;
+            d2y = currentY = e.touches[0].clientY - initialY;
         } else {
-            currentX = e.clientX - initialX;
-            currentY = e.clientY - initialY;
+            d2x = currentX = e.clientX - initialX;
+            d2y = currentY = e.clientY - initialY;
         }
-        xOffset = currentX;
-        yOffset = currentY;
+        d2x = xOffset = currentX;
+        d2y = yOffset = currentY;
 
         setTranslate(currentX, currentY, dragItem);
     }
