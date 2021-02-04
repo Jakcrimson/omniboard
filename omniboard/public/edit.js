@@ -12,6 +12,8 @@ var screenWidth;
 var itemId = 1;
 var listElement = [];
 var rule;
+var dragItem;
+var nameImage;
 
 /**
  * This fuction wis used to initate
@@ -45,6 +47,9 @@ function init() {
     resize();
 }
 
+/**
+ * Funtion used to display the rules and update the data in the rules
+ */
 function displayRule() {
     itemId++;
     deleteRule();
@@ -75,6 +80,10 @@ function displayRule() {
     rule.style = "background-color: red;cursor: move;text-align: left;font: bold 12px sans-serif;";
     rule_panel.appendChild(rule);
 }
+
+/**
+ * Function used to delete the rules
+ */
 function deleteRule() {
     let children = document.getElementById('rule').childNodes;
 
@@ -82,16 +91,35 @@ function deleteRule() {
         children[i].parentNode.removeChild(children[i]);
     }
 }
+<<<<<<< HEAD
+=======
 
+/**
+ * Function used to load the rules
+ */
+function loadRule() {
+    rule.innerHTML
+}
+>>>>>>> e735f5a20519fc66e72d5583a5143cfbe44e3f50
+
+/**
+ * Funtion used to display an element
+ */
 function element() {
     var string = "";
+<<<<<<< HEAD
     for(let i = 0; i < listElement.length; i++) {
         string += '<option value=' + listElement[i] + '>' + listElement[i] + '</option>';
+=======
+    for (let i = 0; i < listElement.length; i++) {
+        // string += '<option value=' + listElement[i]+ '>' + listElement[i]+ 'Spider</option>';
+        string = '<option value="Test">Spider</option>';
+>>>>>>> e735f5a20519fc66e72d5583a5143cfbe44e3f50
     }
     return string;
 }
 /**
- * This fuction is used to resize the two div d2 and d3 according to the picture
+ * This fucntion is used to resize the two div d2 and d3 according to the picture
  * @param {*} img the picture
  */
 function resize() {
@@ -106,37 +134,48 @@ function resize() {
 }
 
 /**
- * This fuction was called to add an item
+ * This function was called to add an item
  * @param {*} name item's name
  */
 function addItem(name) {
+    nameImage = name;
     img = document.createElement("img");
+    itemId++;
     d2y += 3;
     d2x += 3;
     img.src = '/images/' + name + '.jpg';
     img.style = "width:40px;height:40px;position:absolute;top:" + d2y + "px;left:" + d2x + "px;cursor:move;";
     d2.appendChild(img);
     displayInfo(name);
+<<<<<<< HEAD
     dragItem = img;
     listElement.push(name);
+=======
+    changeDragItem(img);
+    console.log("Current item dragged is :" + name);
+    listElement.push(img);
+>>>>>>> e735f5a20519fc66e72d5583a5143cfbe44e3f50
     displayRule();
     img.onmousedown = currentDragged;
     img.onmouseout = toggleBorder;
     img.onmouseleave = toggleBorder;
-    
+
 }
 
 /**
- * This fuction is used to display informations
+ * This function is used to display informations
  * @param {*} name the item's name
  */
 function displayInfo(name) {
+<<<<<<< HEAD
 
     itemId++;
+=======
+>>>>>>> e735f5a20519fc66e72d5583a5143cfbe44e3f50
     deleteInfo();
     infos = document.createElement('div');
     infos.innerHTML += '<form><label for="name"> Element Name :</label><br>';
-    infos.innerHTML += '<input type="text" id="name" name="name" value="' + name + '_' + itemId + '"><br>';
+    infos.innerHTML += '<input type="text" id="name" name="name" value="' + nameImage + '_' + itemId + '"><br>';
     infos.innerHTML += '<label for="coordinates"> Coordinates :</label><br>';
     infos.innerHTML += '<input type="text" id="coord" name="coord" value="' + d2x + '; ' + d2y + '" readonly><br>';
     infos.style = "background-color: lightblue;cursor: move;text-align: left;font: bold 12px sans-serif;";
@@ -144,13 +183,13 @@ function displayInfo(name) {
 }
 
 /**
- * This fuction is used to delete an element
+ * This function is used to delete an element
  */
 function deleteItem() {
     if (dragItem != null) {
         dragItem.parentNode.removeChild(dragItem);
-        for(let i = 0; i < listElement.length; i++) {
-            if(dragItem == listElement[i]) {
+        for (let i = 0; i < listElement.length; i++) {
+            if (dragItem == listElement[i]) {
                 listElement.splice(i, 1);
             }
         }
@@ -159,7 +198,7 @@ function deleteItem() {
 }
 
 /**
- * This fuction is used to delete an information
+ * This function is used to delete an information
  */
 function deleteInfo() {
     let children = document.getElementById('infoDraggable').childNodes;
@@ -170,15 +209,32 @@ function deleteInfo() {
 }
 
 /**
- * This fuction was called to drag the current picture
+ * This function was called to drag the current picture
  * @param {*} rect the picture currently selected
  */
 function currentDragged(rect) {
+<<<<<<< HEAD
     d2x = xOffset = rect.layerX - 10;
     d2y = yOffset = rect.layerY - 10;
     dragItem = rect.target;
     dragItem.style.border = "2px solid black";
+=======
+    console.log("Current item dragged is " + rect);
+    xOffset = rect.layerX - 10;
+    yOffset = rect.layerY - 10;
+    changeDragItem(rect.target);
+>>>>>>> e735f5a20519fc66e72d5583a5143cfbe44e3f50
     displayInfo(rect);
+}
+
+/**
+ * This function change the dragItem and manage its border
+ * @param {*} nextItem the new dragItem
+ */
+function changeDragItem(nextItem) {
+    if (dragItem != null) dragItem.style.border = "0px solid black";
+    dragItem = nextItem;
+    dragItem.style.border = "2px solid black";
 }
 
 /**
@@ -279,11 +335,14 @@ function previewImage() {
 /**
  * This function is use to hide the infobox when the menu was selected
  */
-function hideInfo() {
+function hidePanels() {
     var x = document.getElementById("infoDraggable");
+    var y = document.getElementById("rule");
     if (x.style.display === "none") {
         x.style.display = "inline-block";
+        y.style.display = "inline-block";
     } else {
         x.style.display = "none";
+        y.style.display = "none";
     }
 }
