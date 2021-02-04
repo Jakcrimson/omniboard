@@ -22,8 +22,8 @@ function init() {
     d2 = document.getElementById('d2');
     d1 = document.getElementById('d1');
     d3 = document.getElementById('d3');
-    d2x = d2.getBoundingClientRect().left;
-    d2y = d2.getBoundingClientRect().top;
+    d2x = 0;
+    d2y = 0;
     info_panel = document.getElementById('infoDraggable');
     rule_panel = document.getElementById('rule');
     container = d2;
@@ -52,12 +52,31 @@ function init() {
  */
 function displayRule() {
     itemId++;
-    console.log("ok");
+    deleteRule();
     rule = document.createElement('div2');
     rule.innerHTML += '<form><label for="name"> Choose Element :</label><br>';
-    rule.innerHTML += '<select id="name" name="name">' + element();
-    rule.innerHTML += '<label for="coordinates"> Coordinates :</label><br>';
-    rule.innerHTML += '<input type="text" id="coord" name="coord" value="' + d2x + '; ' + d2y + '" readonly><br>';
+    rule.innerHTML += '<label for="type"> type :</label><br>';
+    rule.innerHTML += '<input type="text" name="search" placeholder="Enter the type of the rule"/><br>';
+    rule.innerHTML += '<label for="name"> name :</label><br>';
+    rule.innerHTML += '<input type="text" name="search" placeholder="Enter the name of the rule"/><br>';
+    rule.innerHTML += '<label for="name"> Choose Type for the loop :</label><br>';
+    rule.innerHTML += '<select id="loop" name="loop">' +
+                        '<option value=conditions>conditions</option>' +
+                        '<option value=actions>actions</option></select><br>';
+    rule.innerHTML += '<label for="name"> name :</label><br>';
+    rule.innerHTML += '<select id="name" name="name">' + element() + '</select><br>';
+    rule.innerHTML += '<label for="name"> input :</label><br>';
+    rule.innerHTML += '<input type="text" name="search"/><br>';
+    rule.innerHTML += '<label for="name"> operation :</label><br>';
+    rule.innerHTML += '<select id="loop" name="loop">' +
+                        '<option value=less_than>less_than</option>' +
+                        '<option value=equals >equals </option>' +
+                        '<option value=not_equals >not_equals </option>' +
+                        '<option value=greater_than>greater_than</option></select><br>';
+    rule.innerHTML += '<label for="name"> value :</label><br>';
+    rule.innerHTML += '<input type="text" name="search"/><br>';
+    rule.innerHTML += '<button for="name"> new conditions </label>';
+    rule.innerHTML += '<button for="name"> new actions </label><br>';
     rule.style = "background-color: red;cursor: move;text-align: left;font: bold 12px sans-serif;";
     rule_panel.appendChild(rule);
 }
@@ -66,7 +85,7 @@ function displayRule() {
  * Function used to delete the rules
  */
 function deleteRule() {
-    let children = document.getElementById('infoDraggable').childNodes;
+    let children = document.getElementById('rule').childNodes;
 
     for (let i = 1; i < children.length; i++) {
         children[i].parentNode.removeChild(children[i]);
@@ -89,6 +108,7 @@ function element() {
         // string += '<option value=' + listElement[i]+ '>' + listElement[i]+ 'Spider</option>';
         string = '<option value="Test">Spider</option>';
     }
+    return string;
 }
 /**
  * This fucntion is used to resize the two div d2 and d3 according to the picture
