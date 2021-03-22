@@ -18,6 +18,8 @@ var nameImage; // name of the image fetched when called
  * It adds the listeners to the components and sets up the parent nodes.
  */
 function init() {
+    //setting up the localStorage for the list containing the elements
+    window.localStorage.setItem("listElement", JSON.stringify(listElement));
     d2 = document.getElementById('d2');
     d1 = document.getElementById('d1');
     d3 = document.getElementById('d3');
@@ -94,8 +96,7 @@ function deleteRule() {
 }
 
 /**
- * Funtion used to display an element.
- * Funtion used to display an element.
+ * Function used to display an element.
  * It fetches the listContaining all the elements.
  */
 function element() {
@@ -136,11 +137,12 @@ function addItem(name) {
     displayInfo(name);
     changeDragItem(img);
     console.log("Current item dragged is :" + name);
-    listElement.push(img);
+    var list = JSON.parse(localStorage.getItem("listElement"));
+    list.push(img.src.split('/')[4].split('.')[0]);
+    window.localStorage.setItem("listElement", JSON.stringify(list));
     displayRule();
     img.onmousedown = currentDragged;
     console.log(img.src)
-
 }
 
 /**
