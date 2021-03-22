@@ -1,5 +1,5 @@
 function addCondition() {
-    d = document.getElementById('main');
+    d = document.getElementById('rule');
     console.log(d);
 }
 
