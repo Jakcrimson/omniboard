@@ -110,6 +110,7 @@ function element() {
     }
     return string;
 }
+
 /**
  * This fucntion is used to resize the two div d2 and d3 according to the picture
  * @param {*} img the picture
@@ -159,7 +160,7 @@ function displayInfo(name) {
     infos.innerHTML += '<form><label for="name"> Element Name :</label><br>';
     infos.innerHTML += '<input type="text" id="name" name="name" value="' + name + '"><br>';
     infos.innerHTML += '<label for="coordinates"> Coordinates :</label><br>';
-    infos.innerHTML += '<input type="text" id="coord" name="coord" value="' + d2x + '; ' + d2y + '" readonly><br>';
+    infos.innerHTML += '<input type="text" id="coord" name="coord" value="' + currentX + '; ' + currentY + '" readonly><br>';
     infos.style = "background-color: lightblue;cursor: move;text-align: left;font: bold 12px sans-serif;";
     info_panel.appendChild(infos);
 }
