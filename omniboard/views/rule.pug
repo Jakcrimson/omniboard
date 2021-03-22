@@ -4,34 +4,27 @@ head
   meta(name="viewport", content="width=device-width, initial-scale=1, shrink-to-fit=no")
   title #{title} | Edit
   link(rel="stylesheet" href="/edit.css")
-  script(type='text/javascript' src='edit.js')
-  script(src='https://kit.fontawesome.com/a076d05399.js', type='text/javascript')
+  script(type='text/javascript' src='/edit/rules.js')
   
 body
+  #main 
     <form><label for="name"> Choose Element :</label><br>
     <label for="type"> type :</label><br>
     <input type="text" name="search" placeholder="Enter the type of the rule"/><br>
     <label for="name"> name :</label><br>
     <input type="text" name="search" placeholder="Enter the name of the rule"/><br>
     <label for="name"> Choose Type for the loop :</label><br>
-    <select id="loop" name="loop">
-        <option value=1>conditions</option>
-        <option value=2>actions</option></select><br>
-    script
-        var e = document.getElementById("loop");
-        var strUser = e.options[e.selectedIndex].text;
-        console.log()
-    <label for="name"> name :</label><br>
-    <select id="name" name="name">script:element()</select><br>
-    <label for="name"> input :</label><br>
-    <input type="text" name="search"/><br>
-    <label for="name"> operation :</label><br>
-    <select id="loop" name="loop">
-        <option value=1>less_than</option>
-        <option value=2 >equals </option>
-        <option value=3 >not_equals </option>
-        <option value=4>greater_than</option></select><br>
-    <label for="name"> value :</label><br>
-    <input type="text" name="search"/><br>
-    <button for="name"> new conditions </label>
-    <button for="name"> new actions </label><br>
+    <button for="name" onclick='addCondition()'> new conditions </label></button>
+    <button for="name" onclick='addAction()'> new actions </label></button><br>
+    //- <label for="name"> name :</label><br>
+    //- <select id="name" name="name">script:element()</select><br>
+    //- <label for="name"> input :</label><br>
+    //- <input type="text" name="search"/><br>
+    //- <label for="name"> operation :</label><br>
+    //- <select id="loop" name="loop">
+    //-     <option value=1>less_than</option>
+    //-     <option value=2 >equals </option>
+    //-     <option value=3 >not_equals </option>
+    //-     <option value=4>greater_than</option></select><br>
+    //- <label for="name"> value :</label><br>
+    //- <input type="text" name="search"/><br>

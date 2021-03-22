@@ -1,22 +1,21 @@
-var info_panel, infos, handle;
-var active = false;
-var currentX;
-var currentY;
-var initialX;
-var initialY;
-var xOffset = 0;
-var yOffset = 0;
-var inspector;
-var globalHeight = window.innerHeight - 20;
-var screenWidth;
-var itemId = 1;
-var listElement = [];
-var rule;
-var dragItem;
-var nameImage;
+var info_panel, infos, handle; //the information panels on the right side of the editing page
+var active = false; // boolean used to check if a drag action is active
+var currentX; // the current x coordinate of the dragged item
+var currentY; // the current y coordinate of the dragged item
+var initialX; // the starting x coordinate of the dragged item
+var initialY; // the starting y coordinate of the dragged item
+var xOffset = 0; // x offset from the cursor whyen dragged and dropped
+var yOffset = 0; // y offset from the cursor whyen dragged and dropped
+var globalHeight = window.innerHeight - 20; // height of the different frames
+var screenWidth; // screen width
+var listElement = []; // list of the components present on the board
+var rule; // block of rule
+var dragItem; // currently dragged item
+var nameImage; // name of the image fetched when called
 
 /**
- * This fuction wis used to initate
+ * This fuction is used to initate the board and the frames.
+ * It adds the listeners to the components and sets up the parent nodes.
  */
 function init() {
     d2 = document.getElementById('d2');
@@ -48,10 +47,11 @@ function init() {
 }
 
 /**
- * Funtion used to display the rules and update the data in the rules
+ * Funtion used to display the rules and update the data in the rules.
+ * It displays HTML beacons sets up a global structure for the infoPanel.
+ * It update the name of the dragged element.
  */
 function displayRule() {
-    itemId++;
     deleteRule();
     rule = document.createElement('div2');
     rule.innerHTML += '<form><label for="name"> Choose Element :</label><br>';
@@ -61,18 +61,18 @@ function displayRule() {
     rule.innerHTML += '<input type="text" name="search" placeholder="Enter the name of the rule"/><br>';
     rule.innerHTML += '<label for="name"> Choose Type for the loop :</label><br>';
     rule.innerHTML += '<select id="loop" name="loop">' +
-                        '<option value=conditions>conditions</option>' +
-                        '<option value=actions>actions</option></select><br>';
+        '<option value=conditions>conditions</option>' +
+        '<option value=actions>actions</option></select><br>';
     rule.innerHTML += '<label for="name"> name :</label><br>';
     rule.innerHTML += '<select id="name" name="name">' + element() + '</select><br>';
     rule.innerHTML += '<label for="name"> input :</label><br>';
     rule.innerHTML += '<input type="text" name="search"/><br>';
     rule.innerHTML += '<label for="name"> operation :</label><br>';
     rule.innerHTML += '<select id="loop" name="loop">' +
-                        '<option value=less_than>less_than</option>' +
-                        '<option value=equals >equals </option>' +
-                        '<option value=not_equals >not_equals </option>' +
-                        '<option value=greater_than>greater_than</option></select><br>';
+        '<option value=less_than>less_than</option>' +
+        '<option value=equals >equals </option>' +
+        '<option value=not_equals >not_equals </option>' +
+        '<option value=greater_than>greater_than</option></select><br>';
     rule.innerHTML += '<label for="name"> value :</label><br>';
     rule.innerHTML += '<input type="text" name="search"/><br>';
     rule.innerHTML += '<button for="name"> new conditions </label>';
@@ -82,7 +82,8 @@ function displayRule() {
 }
 
 /**
- * Function used to delete the rules
+ * Function used to delete the rules.
+ * It deletes the childNode of the rule panel.
  */
 function deleteRule() {
     let children = document.getElementById('rule').childNodes;
@@ -92,27 +93,26 @@ function deleteRule() {
     }
 }
 
-/**
- * Function used to load the rules
- */
-function loadRule() {
-    rule.innerHTML
-}
-
+<<<<<<< HEAD:omniboard/public/edit/edit.js
 /**
  * Funtion used to display an element
+=======
+
+/**
+ * Funtion used to display an element.
+ * It fetches the listContaining all the elements.
+>>>>>>> 31a6d907b2a34bc9f9bedc19314c690b2cd105ce:omniboard/public/edit.js
  */
-function element() {
+ function element() {
     var string = "";
-    for (let i = 0; i < listElement.length; i++) {
-        // string += '<option value=' + listElement[i]+ '>' + listElement[i]+ 'Spider</option>';
-        string = '<option value="Test">Spider</option>';
+    for(let i = 0; i < listElement.length; i++) {
+        string += '<option value=' + listElement[i] + '>' + listElement[i] + '</option>';
     }
     return string;
 }
 
 /**
- * This fucntion is used to resize the two div d2 and d3 according to the picture
+ * This function is used to resize the two div d2 and d3 according to the picture
  * @param {*} img the picture
  */
 function resize() {
@@ -127,13 +127,12 @@ function resize() {
 }
 
 /**
- * This function was called to add an item
- * @param {*} name item's name
+ * This function was called to add an item.
+ * @param {*} name item's name (resource image name)
  */
 function addItem(name) {
     nameImage = name;
     img = document.createElement("img");
-    itemId++;
     d2y += 3;
     d2x += 3;
     img.src = '/images/' + name + '.jpg';
@@ -150,7 +149,8 @@ function addItem(name) {
 }
 
 /**
- * This function is used to display informations
+ * This function is used to display informations.
+ * As the displayRule method it adds inner HTML to the div and updates the content of the fields.
  * @param {*} name the item's name
  */
 function displayInfo(name) {
@@ -166,7 +166,8 @@ function displayInfo(name) {
 }
 
 /**
- * This function is used to delete an element
+ * This function is used to delete an element.
+ * It goes through the childNodes of the main div and deletes the one currently selected.
  */
 function deleteItem() {
     if (dragItem != null) {
@@ -181,7 +182,8 @@ function deleteItem() {
 }
 
 /**
- * This function is used to delete an information
+ * This function is used to delete an information.
+ * It goes through the nodes and deletes the information in the infoPanel
  */
 function deleteInfo() {
     let children = document.getElementById('infoDraggable').childNodes;
@@ -192,7 +194,7 @@ function deleteInfo() {
 }
 
 /**
- * This function was called to drag the current picture
+ * This function was called to drag the current picture (pinball item)
  * @param {*} rect the picture currently selected
  */
 function currentDragged(rect) {
@@ -204,7 +206,8 @@ function currentDragged(rect) {
 }
 
 /**
- * This function change the dragItem and manage its border
+ * This function change the dragItem and manage its border.
+ * A black border is toggled when the item is selected and dragged.
  * @param {*} nextItem the new dragItem
  */
 function changeDragItem(nextItem) {
@@ -214,7 +217,7 @@ function changeDragItem(nextItem) {
 }
 
 /**
- * This function allow to start the drag of an item in the current view
+ * This function allow to start the drag of an item in the current view.
  * @param {*} e The item in the view
  */
 function dragStart(e) {
@@ -232,7 +235,7 @@ function dragStart(e) {
 }
 
 /**
- * This method en the drag of the item in the current view
+ * This method ends the drag of the item in the current view
  * @param {*} e the item in the view
  */
 function dragEnd(e) {
@@ -243,7 +246,7 @@ function dragEnd(e) {
 }
 
 /**
- * This fuction was called to drag the item in the view
+ * This fuction is called to drag the item in the view
  * @param {*} e the item in the view
  */
 function drag(e) {
@@ -266,7 +269,7 @@ function drag(e) {
 }
 
 /**
- * This method update the display
+ * This method updates the display (position) of the dragged item
  * @param {*} xPos the new x position of the item
  * @param {*} yPos the new y position of the item
  * @param {*} el the item in the view
@@ -277,7 +280,7 @@ function setTranslate(xPos, yPos, el) {
 
 
 /**
- * This function load and save the upload image when the button was selected
+ * This function loads and saves the uploaded image when the button is selected.
  */
 function submitImg() {
     document.getElementById("image").style.display = "block";
@@ -298,7 +301,7 @@ function submitImg() {
 }
 
 /**
- * This function is use to update the name of the image when the file is uploaded
+ * This function is use to update the name of the image when the file is uploaded.
  */
 function previewImage() {
     var fichierSelectionne = document.getElementById('img').files[0];
@@ -309,7 +312,7 @@ function previewImage() {
 }
 
 /**
- * This function is use to hide the infobox when the menu was selected
+ * This function is use to hide the infobox when the menu is selected
  */
 function hidePanels() {
     var x = document.getElementById("infoDraggable");
