@@ -139,18 +139,9 @@ function addItem(name) {
     displayInfo(name);
     changeDragItem(img);
     console.log("Current item dragged is :" + name);
-    var list = JSON.parse(localStorage.getItem("listElement"));
-    if (list != undefined) {
-        var reg = '.*'
-        for (let i = 0; i < list.length; i++) {
-            var match = list[i].match(reg)
-            console.log(match);
-            if (list.includes(match)) {
-                itemId++;
-            }
-        }
-    }
-    list.push(img.src.split('/')[4].split('.')[0] + itemId);
+    var list = JSON.parse(window.localStorage.getItem("listElement"));
+    itemId++
+    list.push(name + itemId);
     window.localStorage.setItem("listElement", JSON.stringify(list));
     displayRule();
     img.onmousedown = currentDragged;
