@@ -93,23 +93,16 @@ function deleteRule() {
 }
 
 /**
- * Function used to load the rules
- */
-function loadRule() {
-    rule.innerHTML
-}
-
-/**
  * Funtion used to display an element
  */
-function element() {
+ function element() {
     var string = "";
-    for (let i = 0; i < listElement.length; i++) {
-        // string += '<option value=' + listElement[i]+ '>' + listElement[i]+ 'Spider</option>';
-        string = '<option value="Test">Spider</option>';
+    for(let i = 0; i < listElement.length; i++) {
+        string += '<option value=' + listElement[i] + '>' + listElement[i] + '</option>';
     }
     return string;
 }
+
 /**
  * This fucntion is used to resize the two div d2 and d3 according to the picture
  * @param {*} img the picture
