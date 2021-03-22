@@ -12,6 +12,7 @@ var listElement = []; // list of the components present on the board
 var rule; // block of rule
 var dragItem; // currently dragged item
 var nameImage; // name of the image fetched when called
+var itemId; // id concatenated to the item's name to distinguish 2 items beonging to the same type
 
 /**
  * This fuction is used to initate the board and the frames.
@@ -29,6 +30,7 @@ function init() {
     rule_panel = document.getElementById('rule');
     container = d2;
     screenWidth = document.body.clientWidth;
+    itemId = 0;
 
     container.addEventListener("touchstart", dragStart, false);
     container.addEventListener("touchend", dragEnd, false);
@@ -138,7 +140,17 @@ function addItem(name) {
     changeDragItem(img);
     console.log("Current item dragged is :" + name);
     var list = JSON.parse(localStorage.getItem("listElement"));
-    list.push(img.src.split('/')[4].split('.')[0]);
+    if (list != undefined) {
+        var reg = '.*'
+        for (let i = 0; i < list.length; i++) {
+            var match = list[i].match(reg)
+            console.log(match);
+            if (list.includes(match)) {
+                itemId++;
+            }
+        }
+    }
+    list.push(img.src.split('/')[4].split('.')[0] + itemId);
     window.localStorage.setItem("listElement", JSON.stringify(list));
     displayRule();
     img.onmousedown = currentDragged;
