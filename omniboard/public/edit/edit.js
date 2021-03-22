@@ -93,15 +93,10 @@ function deleteRule() {
     }
 }
 
-<<<<<<< HEAD:omniboard/public/edit/edit.js
-/**
- * Funtion used to display an element
-=======
 
 /**
  * Funtion used to display an element.
  * It fetches the listContaining all the elements.
->>>>>>> 31a6d907b2a34bc9f9bedc19314c690b2cd105ce:omniboard/public/edit.js
  */
  function element() {
     var string = "";
