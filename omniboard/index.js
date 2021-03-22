@@ -25,21 +25,21 @@ app.use(express.static(path.join(__dirname, "public")));
  */
 app.get("/", (req, res) => {
     res.render("index", { title: "Omniboard" });
-  });
+});
 app.get("/about", (req, res) => {
-    res.render("about", {title: "Omniboard"});
+    res.render("about", { title: "Omniboard" });
 });
 app.get("/rules", (req, res) => {
-  res.render("rules", {title: "Omniboard"});
+    res.render("rules", { title: "Omniboard" });
 });
 app.get("/edit", (req, res) => {
-  res.render("edit", {title: "Omniboard"});
+    res.render("edit", { title: "Omniboard" });
 });
-  
+
 
 /**
  * Server Activation
  */
 app.listen(port, () => {
     console.log(`Listening to requests on http://localhost:${port}`);
-  });
+});
