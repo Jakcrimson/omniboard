@@ -93,19 +93,14 @@ function deleteRule() {
     }
 }
 
-<<<<<<< HEAD:omniboard/public/edit/edit.js
-/**
- * Funtion used to display an element
-=======
-
 /**
  * Funtion used to display an element.
+ * Funtion used to display an element.
  * It fetches the listContaining all the elements.
->>>>>>> 31a6d907b2a34bc9f9bedc19314c690b2cd105ce:omniboard/public/edit.js
  */
- function element() {
+function element() {
     var string = "";
-    for(let i = 0; i < listElement.length; i++) {
+    for (let i = 0; i < listElement.length; i++) {
         string += '<option value=' + listElement[i] + '>' + listElement[i] + '</option>';
     }
     return string;
@@ -136,7 +131,7 @@ function addItem(name) {
     d2y += 3;
     d2x += 3;
     img.src = '/images/' + name + '.jpg';
-    img.style = "width:40px;height:40px;position:absolute;top:" + d2y + "px;left:" + d2x + "px;cursor:move;";
+    img.style = "width:40px;height:40px;position:absolute;top:" + d2y + "px;left:" + d2x + "px;cursor:move;border-radius: 20px;";
     d2.appendChild(img);
     displayInfo(name);
     changeDragItem(img);
