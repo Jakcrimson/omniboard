@@ -3,7 +3,7 @@ head
   meta(charset="utf-8")
   meta(name="viewport", content="width=device-width, initial-scale=1, shrink-to-fit=no")
   title #{title} | Edit
-  link(rel="stylesheet" href="/style/edit.css")
+  link(rel="stylesheet" href="/style/rule.css")
   script(type='text/javascript' src='/js/edit/rules.js')
   
 body
@@ -22,17 +22,5 @@ body
       br
       label(for='name')  Choose Type for the loop :
       br
-      input.elem(type='button' value='new conditions' onclick='addCondition()')
+      input.elem(type='button' value='new conditions' onclick='addCondition(); addListener()')
       input.elem(type='button' value='new actions' onclick='addAction()')
-    //- <label for="name"> name :</label><br>
-    //- <select id="name" name="name">script:element()</select><br>
-    //- <label for="name"> input :</label><br>
-    //- <input type="text" name="search"/><br>
-    //- <label for="name"> operation :</label><br>
-    //- <select id="loop" name="loop">
-    //-     <option value=1>less_than</option>
-    //-     <option value=2 >equals </option>
-    //-     <option value=3 >not_equals </option>
-    //-     <option value=4>greater_than</option></select><br>
-    //- <label for="name"> value :</label><br>
-    //- <input type="text" name="search"/><br>
