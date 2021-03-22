@@ -137,11 +137,12 @@ function addItem(name) {
     img.style = "width:40px;height:40px;position:absolute;top:" + d2y + "px;left:" + d2x + "px;cursor:move;border-radius: 20px;";
     d2.appendChild(img);
     displayInfo(name);
+    itemId++;
+    img.id = itemId;
     changeDragItem(img);
     console.log("Current item dragged is :" + name);
     var list = JSON.parse(window.localStorage.getItem("listElement"));
-    itemId++
-    list.push(name + itemId);
+    list.push({ name, itemId });
     window.localStorage.setItem("listElement", JSON.stringify(list));
     displayRule();
     img.onmousedown = currentDragged;
@@ -170,11 +171,17 @@ function displayInfo(name) {
  * It goes through the childNodes of the main div and deletes the one currently selected.
  */
 function deleteItem() {
+    var list = JSON.parse(window.localStorage.getItem("listElement"));
     if (dragItem != null) {
         dragItem.parentNode.removeChild(dragItem);
-        for (let i = 0; i < listElement.length; i++) {
-            if (dragItem == listElement[i]) {
-                listElement.splice(i, 1);
+        console.log(dragItem.id);
+        for (let i = 0; i < list.length; i++) {
+            console.log(list[i]);
+
+            if (dragItem.id == list[i].itemId) {
+                list.splice(i, 1);
+                console.log(list);
+                window.localStorage.setItem("listElement", JSON.stringify(list));
             }
         }
         deleteInfo();
