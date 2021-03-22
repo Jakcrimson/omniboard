@@ -3,19 +3,28 @@ head
   meta(charset="utf-8")
   meta(name="viewport", content="width=device-width, initial-scale=1, shrink-to-fit=no")
   title #{title} | Edit
-  link(rel="stylesheet" href="/edit.css")
-  script(type='text/javascript' src='/edit/rules.js')
+  link(rel="stylesheet" href="/style/edit.css")
+  script(type='text/javascript' src='/js/edit/rules.js')
   
 body
-  #main 
-    <form><label for="name"> Choose Element :</label><br>
-    <label for="type"> type :</label><br>
-    <input type="text" name="search" placeholder="Enter the type of the rule"/><br>
-    <label for="name"> name :</label><br>
-    <input type="text" name="search" placeholder="Enter the name of the rule"/><br>
-    <label for="name"> Choose Type for the loop :</label><br>
-    <button for="name" onclick='addCondition()'> new conditions </label></button>
-    <button for="name" onclick='addAction()'> new actions </label></button><br>
+  #rule 
+
+    h1 Rule 
+     form
+      label(for='name')  Choose Element :
+      br
+      label(for='type')  type :
+      br
+      input(type='text' name='search' placeholder='Enter the type of the rule')
+      br
+      label(for='name')  name :
+      br
+      input(type='text' name='search' placeholder='Enter the name of the rule')
+      br
+      label(for='name')  Choose Type for the loop :
+      br
+      input.elem(type='button' value='new conditions' onclick='addCondition()')
+      input.elem(type='button' value='new actions' onclick='addAction()')
     //- <label for="name"> name :</label><br>
     //- <select id="name" name="name">script:element()</select><br>
     //- <label for="name"> input :</label><br>

@@ -18,6 +18,8 @@ var nameImage; // name of the image fetched when called
  * It adds the listeners to the components and sets up the parent nodes.
  */
 function init() {
+    //setting up the localStorage for the list containing the elements
+    window.localStorage.setItem("listElement", JSON.stringify(listElement));
     d2 = document.getElementById('d2');
     d1 = document.getElementById('d1');
     d3 = document.getElementById('d3');
@@ -93,14 +95,13 @@ function deleteRule() {
     }
 }
 
-
 /**
- * Funtion used to display an element.
+ * Function used to display an element.
  * It fetches the listContaining all the elements.
  */
- function element() {
+function element() {
     var string = "";
-    for(let i = 0; i < listElement.length; i++) {
+    for (let i = 0; i < listElement.length; i++) {
         string += '<option value=' + listElement[i] + '>' + listElement[i] + '</option>';
     }
     return string;
@@ -131,16 +132,17 @@ function addItem(name) {
     d2y += 3;
     d2x += 3;
     img.src = '/images/' + name + '.jpg';
-    img.style = "width:40px;height:40px;position:absolute;top:" + d2y + "px;left:" + d2x + "px;cursor:move;";
+    img.style = "width:40px;height:40px;position:absolute;top:" + d2y + "px;left:" + d2x + "px;cursor:move;border-radius: 20px;";
     d2.appendChild(img);
     displayInfo(name);
     changeDragItem(img);
     console.log("Current item dragged is :" + name);
-    listElement.push(img);
+    var list = JSON.parse(localStorage.getItem("listElement"));
+    list.push(img.src.split('/')[4].split('.')[0]);
+    window.localStorage.setItem("listElement", JSON.stringify(list));
     displayRule();
     img.onmousedown = currentDragged;
     console.log(img.src)
-
 }
 
 /**
