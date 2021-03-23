@@ -52,7 +52,7 @@ function init() {
 
 /**
  * Function used to display the rules and update the data in the rules.
- * It displays HTML beacons sets up a global structure for the infoPanel.
+ * It displays HTML to set up a global structure for the different panels such as rulePanel.
  * It update the name of the dragged element.
  */
 function displayRule() {
@@ -87,7 +87,7 @@ function displayRule() {
 
 /**
  * Function used to delete the rules.
- * It deletes the childNode of the rule panel.
+ * It deletes the childNode of the rule panel. Child nodes are the elements that are contained in a HTML section or division.
  */
 function deleteRule() {
     let children = document.getElementById('rule').childNodes;
@@ -99,7 +99,7 @@ function deleteRule() {
 
 /**
  * Function used to display an element.
- * It fetches the listContaining all the elements.
+ * It fetches the list containing all the elements (bumper, spinner etc.)
  */
 function element() {
     var string = "";
