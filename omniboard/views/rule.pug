@@ -7,13 +7,6 @@ head
   script(type='text/javascript' src='/js/edit/rules.js')
   script(type='text/javascript' src='/js/edit/rules.js')
   script(src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js")
-  script(type='text/javascript').
-    $(document).ready(function(){
-      $(".test").click(function(){
-        console.log("test");
-        $(".test").load(location.href + " .test");
-      });
-    });
   
 body
   #rule 
@@ -21,15 +14,3 @@ body
      form
       input.elem(type='button' class="test" value='new Rule' onclick='addRule()')
       br
-      //- label(for='type')  type :
-      //- br
-      //- input(type='text' name='search' placeholder='Enter the type of the rule')
-      //- br
-      //- label(for='name')  name :
-      //- br
-      //- input(type='text' name='search' placeholder='Enter the name of the rule')
-      //- br
-      //- label(for='name')  Choose Type for the loop :
-      //- br
-      //- input.elem(type='button' value='new conditions' onclick='addCondition(); addListener()')
-      //- input.elem(type='button' value='new actions' onclick='addAction(); addListener()')
