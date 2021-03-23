@@ -157,9 +157,9 @@ function downloadJson(){
     if(confirm('You will download a save on your computer')){
         var dataStr = "data:text/json;charset=utf-8," + encodeURIComponent(window.localStorage.getItem("listElement"));
         var downloadAnchorNode = document.createElement('a');
-        downloadAnchorNode.setAttribute("href",     dataStr);
+        downloadAnchorNode.setAttribute("href", dataStr);
         downloadAnchorNode.setAttribute("download", "rules.json");
-        document.body.appendChild(downloadAnchorNode); // required for firefox
+        document.body.appendChild(downloadAnchorNode);
         downloadAnchorNode.click();
         downloadAnchorNode.remove();
     }
