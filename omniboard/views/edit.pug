@@ -4,6 +4,7 @@ head
   meta(name="viewport", content="width=device-width, initial-scale=1, shrink-to-fit=no")
   title #{title} | Edit
   link(rel="stylesheet" href="/style/edit.css")
+  link(rel="icon" href="/images/icon.png")
   script(type='text/javascript' src='/js/edit/edit.js')
   script(src='https://kit.fontawesome.com/a076d05399.js', type='text/javascript')
   
@@ -18,7 +19,7 @@ body(onload='init()')
           include rule.pug
       #d1
         p  File :
-        input.menu(type='button' value='Save')
+        input.menu(type='button' value='Save' onclick='downloadJson()')
         input#img.inputfile(type='file' name='img' accept='image/*' onchange='previewImage()')
         label.menu(for='img') Load
         p#preview no file selected

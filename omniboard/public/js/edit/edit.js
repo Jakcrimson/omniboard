@@ -12,12 +12,15 @@ var listElement = []; // list of the components present on the board
 var rule; // block of rule
 var dragItem; // currently dragged item
 var nameImage; // name of the image fetched when called
+var itemId; // id concatenated to the item's name to distinguish 2 items beonging to the same type
 
 /**
- * This fuction is used to initate the board and the frames.
- * It adds the listeners to the components and sets up the parent nodes.
+ * This function is used to initiate the board and the frames on the right and left side of the editing page.
+ * It adds the listeners to the components and sets up the parent nodes (the information panels and the rule panels)
  */
 function init() {
+    //setting up the localStorage for the list containing the elements
+    window.localStorage.setItem("listElement", JSON.stringify(listElement));
     d2 = document.getElementById('d2');
     d1 = document.getElementById('d1');
     d3 = document.getElementById('d3');
@@ -27,6 +30,7 @@ function init() {
     rule_panel = document.getElementById('rule');
     container = d2;
     screenWidth = document.body.clientWidth;
+    itemId = 0;
 
     container.addEventListener("touchstart", dragStart, false);
     container.addEventListener("touchend", dragEnd, false);
@@ -47,8 +51,8 @@ function init() {
 }
 
 /**
- * Funtion used to display the rules and update the data in the rules.
- * It displays HTML beacons sets up a global structure for the infoPanel.
+ * Function used to display the rules and update the data in the rules.
+ * It displays HTML to set up a global structure for the different panels such as rulePanel.
  * It update the name of the dragged element.
  */
 function displayRule() {
@@ -83,7 +87,7 @@ function displayRule() {
 
 /**
  * Function used to delete the rules.
- * It deletes the childNode of the rule panel.
+ * It deletes the childNode of the rule panel. Child nodes are the elements that are contained in a HTML section or division.
  */
 function deleteRule() {
     let children = document.getElementById('rule').childNodes;
@@ -94,9 +98,8 @@ function deleteRule() {
 }
 
 /**
- * Funtion used to display an element.
- * Funtion used to display an element.
- * It fetches the listContaining all the elements.
+ * Function used to display an element.
+ * It fetches the list containing all the elements (bumper, spinner etc.)
  */
 function element() {
     var string = "";
@@ -134,13 +137,32 @@ function addItem(name) {
     img.style = "width:40px;height:40px;position:absolute;top:" + d2y + "px;left:" + d2x + "px;cursor:move;border-radius: 20px;";
     d2.appendChild(img);
     displayInfo(name);
+    itemId++;
+    img.id = itemId;
     changeDragItem(img);
     console.log("Current item dragged is :" + name);
-    listElement.push(img);
+    var list = JSON.parse(window.localStorage.getItem("listElement"));
+    list.push({ name, itemId });
+    window.localStorage.setItem("listElement", JSON.stringify(list));
     displayRule();
     img.onmousedown = currentDragged;
     console.log(img.src)
+}
 
+/**
+ * This function is call when the button 'Save' is clicked
+ * Download the rules file 
+ */
+function downloadJson() {
+    if (confirm('You will download a save on your computer')) {
+        var dataStr = "data:text/json;charset=utf-8," + encodeURIComponent(window.localStorage.getItem("listElement"));
+        var downloadAnchorNode = document.createElement('a');
+        downloadAnchorNode.setAttribute("href", dataStr);
+        downloadAnchorNode.setAttribute("download", "rules.json");
+        document.body.appendChild(downloadAnchorNode);
+        downloadAnchorNode.click();
+        downloadAnchorNode.remove();
+    }
 }
 
 /**
@@ -155,7 +177,7 @@ function displayInfo(name) {
     infos.innerHTML += '<form><label for="name"> Element Name :</label><br>';
     infos.innerHTML += '<input type="text" id="name" name="name" value="' + name + '"><br>';
     infos.innerHTML += '<label for="coordinates"> Coordinates :</label><br>';
-    infos.innerHTML += '<input type="text" id="coord" name="coord" value="' + d2x + '; ' + d2y + '" readonly><br>';
+    infos.innerHTML += '<input type="text" id="coord" name="coord" value="' + currentX + '; ' + currentY + '" readonly><br>';
     infos.style = "background-color: lightblue;cursor: move;text-align: left;font: bold 12px sans-serif;";
     info_panel.appendChild(infos);
 }
@@ -165,11 +187,17 @@ function displayInfo(name) {
  * It goes through the childNodes of the main div and deletes the one currently selected.
  */
 function deleteItem() {
+    var list = JSON.parse(window.localStorage.getItem("listElement"));
     if (dragItem != null) {
         dragItem.parentNode.removeChild(dragItem);
-        for (let i = 0; i < listElement.length; i++) {
-            if (dragItem == listElement[i]) {
-                listElement.splice(i, 1);
+        console.log(dragItem.id);
+        for (let i = 0; i < list.length; i++) {
+            console.log(list[i]);
+
+            if (dragItem.id == list[i].itemId) {
+                list.splice(i, 1);
+                console.log(list);
+                window.localStorage.setItem("listElement", JSON.stringify(list));
             }
         }
         deleteInfo();
@@ -241,7 +269,7 @@ function dragEnd(e) {
 }
 
 /**
- * This fuction is called to drag the item in the view
+ * This function is called to drag the item in the view
  * @param {*} e the item in the view
  */
 function drag(e) {
