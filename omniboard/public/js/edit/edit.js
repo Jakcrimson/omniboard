@@ -150,7 +150,7 @@ function addItem(name) {
 }
 
 /**
- * This function is call when the button 'Save' is click
+ * This function is call when the button 'Save' is clicked
  * Download the rules file 
  */
 function downloadJson() {
