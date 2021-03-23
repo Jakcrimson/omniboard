@@ -6,6 +6,11 @@ var listCond = []; //list the number of condition in the condition block with th
 var listAct = []; //list the number of action in the action block with the index is the
 //num of the action block
 
+/**
+ * This function adds inner HTML to the rule panel.
+ * It adds the caracteristics of the rule such as its number.
+ * The user will be able to complete the type of the rule, the name of the rule and add conditions or actions.
+ */
 function addRule() {
     d = document.getElementById('rule');
     d.innerHTML += "<button class='accordionR' id='accordionR" + numberR + "'>" + 'Rule' + numberR + "</button>" +
@@ -21,6 +26,11 @@ function addRule() {
     numberR += 1;
 }
 
+/**
+ * This method adds inner HTML to the rule that was previously added by the user.
+ * The user can then choose the element the action applies to, the possible loops, and multiple conditions.
+ * @param {int} x the rule's ID
+ */
 function addCondition(x) {
     d = document.getElementById('Rule' + x);
     console.log(d);
@@ -52,6 +62,12 @@ function addCondition(x) {
     numberC += 1;
 }
 
+/**
+ * This method is used to add a condition to a particular element in the board by adding inner HTML.
+ * The user has to refer the element's name and then further information on the operations, the loops etc.
+ * When the user clicks on delete condition the element with the id given in parameter is removed from the list containing the rules.
+ * @param {int} x the rule's ID
+ */
 function addConditionElement(x) {
     listCond[x] += 1;
     console.log(listCond);
@@ -79,6 +95,12 @@ function addConditionElement(x) {
         "<label for='name'>-------------------------------------------------------</label><br>";
 }
 
+/**
+ * This method is used to add an action to the rule when the user previously clicks on the addAction button.
+ * It expands the HTML of the rule panel and provides information such as the ID of the action Block that contains the conditions for the rule, the loops, the operations ect.
+ * The user can also delete the action of the rule by clicking on the buttons.
+ * @param {int} x 
+ */
 function addAction(x) {
     d = document.getElementById('rule');
     d.innerHTML += "<button class='accordion' id='accordionA" + numberA + "'>" + 'Action' + numberA + "</button>" +
@@ -133,7 +155,7 @@ function delOne(x, y) {
 }
 
 /**
- * Add EventListener in the list of rule for hide and show the rule element
+ * Add EventListener in the list of rule for hide and show the rule element.
  */
 function addListener() {
     var acc = document.getElementsByClassName("accordion");

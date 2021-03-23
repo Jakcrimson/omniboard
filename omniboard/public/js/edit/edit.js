@@ -269,7 +269,7 @@ function dragEnd(e) {
 }
 
 /**
- * This fuction is called to drag the item in the view
+ * This function is called to drag the item in the view
  * @param {*} e the item in the view
  */
 function drag(e) {
