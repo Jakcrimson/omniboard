@@ -7,20 +7,26 @@ head
   script(type='text/javascript' src='/js/edit/rules.js')
   
 body
+  script: 
+    //- $(document).ready(function() {
+    //-   $("#button").click(function(){
+    //-       $("#div1").load("demo_test.txt");
+    //-   });
+    //- });
   #rule 
     h1 Rule 
      form
-      label(for='name')  Choose Element :
+      input.elem(type='button' value='new Rule' onclick='addRule(); addRuleListener()')
       br
-      label(for='type')  type :
-      br
-      input(type='text' name='search' placeholder='Enter the type of the rule')
-      br
-      label(for='name')  name :
-      br
-      input(type='text' name='search' placeholder='Enter the name of the rule')
-      br
-      label(for='name')  Choose Type for the loop :
-      br
-      input.elem(type='button' value='new conditions' onclick='addCondition(); addListener()')
-      input.elem(type='button' value='new actions' onclick='addAction()')
+      //- label(for='type')  type :
+      //- br
+      //- input(type='text' name='search' placeholder='Enter the type of the rule')
+      //- br
+      //- label(for='name')  name :
+      //- br
+      //- input(type='text' name='search' placeholder='Enter the name of the rule')
+      //- br
+      //- label(for='name')  Choose Type for the loop :
+      //- br
+      //- input.elem(type='button' value='new conditions' onclick='addCondition(); addListener()')
+      //- input.elem(type='button' value='new actions' onclick='addAction(); addListener()')
