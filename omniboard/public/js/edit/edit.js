@@ -15,8 +15,8 @@ var nameImage; // name of the image fetched when called
 var itemId; // id concatenated to the item's name to distinguish 2 items beonging to the same type
 
 /**
- * This fuction is used to initate the board and the frames.
- * It adds the listeners to the components and sets up the parent nodes.
+ * This function is used to initiate the board and the frames on the right and left side of the editing page.
+ * It adds the listeners to the components and sets up the parent nodes (the information panels and the rule panels)
  */
 function init() {
     //setting up the localStorage for the list containing the elements
@@ -51,8 +51,8 @@ function init() {
 }
 
 /**
- * Funtion used to display the rules and update the data in the rules.
- * It displays HTML beacons sets up a global structure for the infoPanel.
+ * Function used to display the rules and update the data in the rules.
+ * It displays HTML to set up a global structure for the different panels such as rulePanel.
  * It update the name of the dragged element.
  */
 function displayRule() {
@@ -87,7 +87,7 @@ function displayRule() {
 
 /**
  * Function used to delete the rules.
- * It deletes the childNode of the rule panel.
+ * It deletes the childNode of the rule panel. Child nodes are the elements that are contained in a HTML section or division.
  */
 function deleteRule() {
     let children = document.getElementById('rule').childNodes;
@@ -99,7 +99,7 @@ function deleteRule() {
 
 /**
  * Function used to display an element.
- * It fetches the listContaining all the elements.
+ * It fetches the list containing all the elements (bumper, spinner etc.)
  */
 function element() {
     var string = "";
@@ -150,11 +150,11 @@ function addItem(name) {
 }
 
 /**
- * This function is call when the button 'Save' is click
+ * This function is call when the button 'Save' is clicked
  * Download the rules file 
  */
-function downloadJson(){
-    if(confirm('You will download a save on your computer')){
+function downloadJson() {
+    if (confirm('You will download a save on your computer')) {
         var dataStr = "data:text/json;charset=utf-8," + encodeURIComponent(window.localStorage.getItem("listElement"));
         var downloadAnchorNode = document.createElement('a');
         downloadAnchorNode.setAttribute("href", dataStr);

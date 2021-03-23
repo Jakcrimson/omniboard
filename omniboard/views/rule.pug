@@ -8,33 +8,26 @@ head
   script(type='text/javascript' src='/js/edit/rules.js')
   
 body
+  script: 
+    //- $(document).ready(function() {
+    //-   $("#button").click(function(){
+    //-       $("#div1").load("demo_test.txt");
+    //-   });
+    //- });
   #rule 
-
     h1 Rule 
      form
-      label(for='name')  Choose Element :
+      input.elem(type='button' value='new Rule' onclick='addRule(); addRuleListener()')
       br
-      label(for='type')  type :
-      br
-      input(type='text' name='search' placeholder='Enter the type of the rule')
-      br
-      label(for='name')  name :
-      br
-      input(type='text' name='search' placeholder='Enter the name of the rule')
-      br
-      label(for='name')  Choose Type for the loop :
-      br
-      input.elem(type='button' value='new conditions' onclick='addCondition()')
-      input.elem(type='button' value='new actions' onclick='addAction()')
-    //- <label for="name"> name :</label><br>
-    //- <select id="name" name="name">script:element()</select><br>
-    //- <label for="name"> input :</label><br>
-    //- <input type="text" name="search"/><br>
-    //- <label for="name"> operation :</label><br>
-    //- <select id="loop" name="loop">
-    //-     <option value=1>less_than</option>
-    //-     <option value=2 >equals </option>
-    //-     <option value=3 >not_equals </option>
-    //-     <option value=4>greater_than</option></select><br>
-    //- <label for="name"> value :</label><br>
-    //- <input type="text" name="search"/><br>
+      //- label(for='type')  type :
+      //- br
+      //- input(type='text' name='search' placeholder='Enter the type of the rule')
+      //- br
+      //- label(for='name')  name :
+      //- br
+      //- input(type='text' name='search' placeholder='Enter the name of the rule')
+      //- br
+      //- label(for='name')  Choose Type for the loop :
+      //- br
+      //- input.elem(type='button' value='new conditions' onclick='addCondition(); addListener()')
+      //- input.elem(type='button' value='new actions' onclick='addAction(); addListener()')
