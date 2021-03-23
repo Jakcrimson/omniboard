@@ -67,29 +67,29 @@ var blockList = {
 window.localStorage.setItem("blockList", JSON.stringify(blockList));
 
 
-function getInput() {
-    d = document.getElementById('rule');
-    console.log("D.VALUE: " + d.value);
-    console.log(d.value == undefined)
+function getInput(x) {
+    var type = document.getElementById('type'+x)
+    var name = document.getElementById('name'+x)
+
     if (d.value != undefined) {
-        var blockList = JSON.parse(window.localStorage.getItem("blockList"));
-        blockList[numberR] = {
+        var blockList = JSON.parse(window.localStorage.getItem("blockList"))
+        blockList[x] = {
             'rule': {
-                'name': d.value,
+                'name': name.value,
+                'type': type.value
             }
         }
     }
-    //window.alert("Veuillez compléter les champs de texte !")
 }
 
 function addRule() {
     d = document.getElementById('rule');
-    d.innerHTML += "<button class='accordionR' id='accordionR" + numberR + "' onclick=getInput()>" + 'Rule' + numberR + "</button>" +
+    d.innerHTML += "<button class='accordionR' id='accordionR" + numberR + "' onclick=getInput(" + numberR + ")>" + 'Rule' + numberR + "</button>" +
         "<div class='panel1' id='Rule" + numberR + "'>" +
         "<label for='type'> type :<br />" +
-        "<input type='text' name='search' placeholder='Enter the type of the rule' /><br />" +
+        "<input id='type" + numberR + "' type='text' name='search' placeholder='Enter the type of the rule' /><br />" +
         "<label for='name'> name :</label><br />" +
-        "<input type='text' name='search' placeholder='Enter the name of the rule' /><br />" +
+        "<input id='name" + numberR + "' type='text' name='search' placeholder='Enter the name of the rule' /><br />" +
         "<label for='name'> Choose Type for the loop :</label><br />" +
         "<input class='elem' type='button' value='new conditions' onclick='addCondition(" + numberR + "); addListener()' />" +
         "<input class='elem' type='button' value='new actions' onclick='addAction(); addListener()' />" +
