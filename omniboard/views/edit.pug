@@ -1,6 +1,3 @@
-//- View for the "editing" page on the web application.
-//- It receives further inner html from the edit.js script when ann item is added. There is no type error when mixing PUG to HTML on dynamic access
-//- Using PUG for simplified beacon syntax and easier manipulation and accessiblity from the .js scripts.
 doctype html
 head
   meta(charset="utf-8")
@@ -21,7 +18,7 @@ body(onload='init()')
           include rule.pug
       #d1
         p  File :
-        input.menu(type='button' value='Save')
+        input.menu(type='button' value='Save' onclick='downloadJson()')
         input#img.inputfile(type='file' name='img' accept='image/*' onchange='previewImage()')
         label.menu(for='img') Load
         p#preview no file selected
