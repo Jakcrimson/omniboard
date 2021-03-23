@@ -50,40 +50,6 @@ function init() {
     resize();
 }
 
-/**
- * Function used to display the rules and update the data in the rules.
- * It displays HTML to set up a global structure for the different panels such as rulePanel.
- * It update the name of the dragged element.
- */
-function displayRule() {
-    deleteRule();
-    rule = document.createElement('div2');
-    rule.innerHTML += '<form><label for="name"> Choose Element :</label><br>';
-    rule.innerHTML += '<label for="type"> type :</label><br>';
-    rule.innerHTML += '<input type="text" name="search" placeholder="Enter the type of the rule"/><br>';
-    rule.innerHTML += '<label for="name"> name :</label><br>';
-    rule.innerHTML += '<input type="text" name="search" placeholder="Enter the name of the rule"/><br>';
-    rule.innerHTML += '<label for="name"> Choose Type for the loop :</label><br>';
-    rule.innerHTML += '<select id="loop" name="loop">' +
-        '<option value=conditions>conditions</option>' +
-        '<option value=actions>actions</option></select><br>';
-    rule.innerHTML += '<label for="name"> name :</label><br>';
-    rule.innerHTML += '<select id="name" name="name">' + element() + '</select><br>';
-    rule.innerHTML += '<label for="name"> input :</label><br>';
-    rule.innerHTML += '<input type="text" name="search"/><br>';
-    rule.innerHTML += '<label for="name"> operation :</label><br>';
-    rule.innerHTML += '<select id="loop" name="loop">' +
-        '<option value=less_than>less_than</option>' +
-        '<option value=equals >equals </option>' +
-        '<option value=not_equals >not_equals </option>' +
-        '<option value=greater_than>greater_than</option></select><br>';
-    rule.innerHTML += '<label for="name"> value :</label><br>';
-    rule.innerHTML += '<input type="text" name="search"/><br>';
-    rule.innerHTML += '<button for="name"> new conditions </label>';
-    rule.innerHTML += '<button for="name"> new actions </label><br>';
-    rule.style = "background-color: red;cursor: move;text-align: left;font: bold 12px sans-serif;";
-    rule_panel.appendChild(rule);
-}
 
 /**
  * Function used to delete the rules.
@@ -96,6 +62,7 @@ function deleteRule() {
         children[i].parentNode.removeChild(children[i]);
     }
 }
+
 
 /**
  * Function used to display an element.
@@ -144,7 +111,6 @@ function addItem(name) {
     var list = JSON.parse(window.localStorage.getItem("listElement"));
     list.push({ name, itemId });
     window.localStorage.setItem("listElement", JSON.stringify(list));
-    displayRule();
     img.onmousedown = currentDragged;
     console.log(img.src)
 }
