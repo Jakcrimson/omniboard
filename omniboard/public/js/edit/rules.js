@@ -9,7 +9,7 @@ var listAct = []; //list the number of action in the action block with the index
 function addRule() {
     d = document.getElementById('rule');
     d.innerHTML += "<button class='accordionR' id='accordionR"+numberR+"'>"+  'Rule' +numberR+"</button>" +
-    "<div class='panel' id='Rule"+numberR+"'>"+
+    "<div class='panel1' id='Rule"+numberR+"'>"+
     "<label for='type'> type :<br />" +
     "<input type='text' name='search' placeholder='Enter the type of the rule' /><br />" +
     "<label for='name'> name :</label><br />" +
@@ -19,10 +19,10 @@ function addRule() {
     "<input class='elem' type='button' value='new actions' onclick='addAction(); addListener()' />" +
     "</label>";
     numberR += 1;
+    addRuleListener();
 }
 function addCondition(x) {
     d = document.getElementById('Rule'+x);
-    console.log(d);
     d.innerHTML += "<button class='accordion' id='accordionC"+numberC+"'>"+  'Condition' +numberC+"</button>" +
     "<div class='panel' id='Condition"+numberC+"'>"+
     "<button for='name' onClick='del("+numberC+")'> delete </button><br>"+
@@ -45,15 +45,19 @@ function addCondition(x) {
     "<label for='name'> value :</label><br>" +
     "<input type='text' name='search'/><br>"+
     "<button for='name' onClick='addConditionElement("+numberC+")'> addCondition </button>"+
-    "<button for='name' onClick='delOne("+numberC+", "+listCond[numberC]+")'> delete Condition </button><br>"+
+    "<button for='name' onClick='delOne("+numberC+", "+listCond[x]+")'> delete Condition </button><br>"+
     "<label for='name'>-------------------------------------------------------</label><br>";
-    listCond[numberC] = 1;
+    if(listCond[x] != NaN) {
+        listCond[x] += 1;
+    } else {
+        listCond[x] = 1;
+    }
+    
     numberC += 1;
 }
 
 function addConditionElement(x) {
     listCond[x] += 1;
-    console.log(listCond);
     d = document.getElementById("Condition"+x);
     d.innerHTML += "<div class='con"+x+"'>"+
     "<label for='name'> name :</label><br>"+
@@ -137,8 +141,7 @@ function addListener(){
     var acc = document.getElementsByClassName("accordion");
     var i;
 
-    for (i = 0; i < acc.length; i++) {
-        console.log(acc[i]);
+    for (i = 0; i < acc.length; i++) {;
         acc[i].addEventListener("click", function() {
             this.classList.toggle("active");
             var panel = this.nextElementSibling;
@@ -156,21 +159,28 @@ function addRuleListener() {
     var i;
 
     for (i = 0; i < acc.length; i++) {
-        console.log(acc[i]);
+        console.log(i);
+        var number;
+        console.log(listCond);
+        if(listCond[i] != undefined && listAct[i] != undefined) {
+            number = listCond[i] + listAct[i]
+        } else if(listCond[i] != undefined) {
+            number = listCond[i];
+        } else if(listAct[i] != undefined) {
+            number = listAct[i];
+        } else {
+            number = 1;
+        }
+        
         acc[i].addEventListener("click", function() {
             this.classList.toggle("active");
             var panel = this.nextElementSibling;
             if (panel.style.maxHeight) {
                 panel.style.maxHeight = null;
             } else {
-                panel.style.maxHeight = panel.scrollHeight + "px";
+                console.log(number);
+                panel.style.maxHeight = (panel.scrollHeight*3) + "px";
             } 
         });
     }
 }
-
-$(document).ready(function() {
-    $("#button").click(function(){
-        $("#div1").load("demo_test.txt");
-    });
-});
