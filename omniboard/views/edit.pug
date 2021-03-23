@@ -18,7 +18,7 @@ body(onload='init()')
           include rule.pug
       #d1
         p  File :
-        input.menu(type='button' value='Save')
+        input.menu(type='button' value='Save' onclick='downloadJson()')
         input#img.inputfile(type='file' name='img' accept='image/*' onchange='previewImage()')
         label.menu(for='img') Load
         p#preview no file selected

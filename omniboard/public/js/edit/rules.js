@@ -7,6 +7,11 @@ var listAct = []; //list the number of action in the action block with the index
 //num of the action block
 
 function addRule() {
+=======
+var type;
+var name;
+
+function addCondition() {
     d = document.getElementById('rule');
     d.innerHTML += "<button class='accordionR' id='accordionR"+numberR+"'>"+  'Rule' +numberR+"</button>" +
     "<div class='panel' id='Rule"+numberR+"'>"+
