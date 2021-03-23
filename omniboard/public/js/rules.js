@@ -1,3 +1,6 @@
+/**
+ * This class is used to animate the cards on the "rule" page.
+ */
 var $cell = $('.card');
 
 //open and close card when clicked on card
