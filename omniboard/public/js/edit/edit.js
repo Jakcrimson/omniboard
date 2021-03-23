@@ -15,8 +15,8 @@ var nameImage; // name of the image fetched when called
 var itemId; // id concatenated to the item's name to distinguish 2 items beonging to the same type
 
 /**
- * This fuction is used to initate the board and the frames.
- * It adds the listeners to the components and sets up the parent nodes.
+ * This function is used to initiate the board and the frames on the right and left side of the editing page.
+ * It adds the listeners to the components and sets up the parent nodes (the information panels and the rule panels)
  */
 function init() {
     //setting up the localStorage for the list containing the elements
@@ -51,7 +51,7 @@ function init() {
 }
 
 /**
- * Funtion used to display the rules and update the data in the rules.
+ * Function used to display the rules and update the data in the rules.
  * It displays HTML beacons sets up a global structure for the infoPanel.
  * It update the name of the dragged element.
  */
