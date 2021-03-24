@@ -5,62 +5,60 @@ var listCond = []; //list the number of condition in the condition block with th
 //num of the condition block
 var listAct = []; //list the number of action in the action block with the index is the
 //num of the action block
-<<<<<<< HEAD
-=======
 var blockList = {
 
     '0': {
-            'type': 'logical_block',
-            'name': '2nd_bonus',
-            'conditions': [{
-                    'name': 'condName',
-                    'input': 'score',
-                    'operation': 'greater',
-                    'value': '2000'
-                }, {
-                    "name": "lane a is down",
-                    "input": "lane_a",
-                    "operation": "state",
-                    "value": "down"
-                },
-                {
-                    "name": "lane b is down",
-                    "input": "lane_b",
-                    "operation": "state",
-                    "value": "down"
-                },
-                {
-                    "name": "lane c is down",
-                    "input": "lane_c",
-                    "operation": "state",
-                    "value": "down"
-                }
-            ],
-            'actions': [{
-                    "name": "play bonus sound",
-                    "type": "sound",
-                    "operation": null,
-                    "value": "bonus.mp3"
-                },
-                {
-                    "name": "increase score by 1000",
-                    "type": "variable",
-                    "operation": "increase",
-                    "value": 1000
-                },
-                {
-                    "name": "flash right lamps",
-                    "type": "action_block",
-                    "operation": null,
-                    "value": "flash_lamps_right"
-                },
-                {
-                    "name": "flash left lamps",
-                    "type": "action_block",
-                    "operation": null,
-                    "value": "flash_lamps_left"
-                }
-            ]
+        'type': 'logical_block',
+        'name': '2nd_bonus',
+        'conditions': [{
+                'name': 'condName',
+                'input': 'score',
+                'operation': 'greater',
+                'value': '2000'
+            }, {
+                "name": "lane a is down",
+                "input": "lane_a",
+                "operation": "state",
+                "value": "down"
+            },
+            {
+                "name": "lane b is down",
+                "input": "lane_b",
+                "operation": "state",
+                "value": "down"
+            },
+            {
+                "name": "lane c is down",
+                "input": "lane_c",
+                "operation": "state",
+                "value": "down"
+            }
+        ],
+        'actions': [{
+                "name": "play bonus sound",
+                "type": "sound",
+                "operation": null,
+                "value": "bonus.mp3"
+            },
+            {
+                "name": "increase score by 1000",
+                "type": "variable",
+                "operation": "increase",
+                "value": 1000
+            },
+            {
+                "name": "flash right lamps",
+                "type": "action_block",
+                "operation": null,
+                "value": "flash_lamps_right"
+            },
+            {
+                "name": "flash left lamps",
+                "type": "action_block",
+                "operation": null,
+                "value": "flash_lamps_left"
+            }
+        ]
     }
 
 };
@@ -79,7 +77,6 @@ function getInput(x) {
     }
     window.localStorage.setItem("blockList", JSON.stringify(blockList));
 }
->>>>>>> 9fcd96deead21c2f1332380716c6ffc1a2f35e55
 
 function addRule() {
     d = document.getElementById('rule');
@@ -98,18 +95,18 @@ function addRule() {
 }
 
 function getInputFromCond(x, nbRule) {
-    var name = document.getElementById(nbRule+'name'+x)
-    var input = document.getElementById(nbRule+'inputLoop'+x)
-    var operation = document.getElementById(nbRule+'operationLoop'+x)
-    var value = document.getElementById(nbRule+'value'+x)
+    var name = document.getElementById(nbRule + 'name' + x)
+    var input = document.getElementById(nbRule + 'inputLoop' + x)
+    var operation = document.getElementById(nbRule + 'operationLoop' + x)
+    var value = document.getElementById(nbRule + 'value' + x)
 
-    if(input.value == "other") {
-        input = document.getElementById(nbRule+'inputText'+x)
+    if (input.value == "other") {
+        input = document.getElementById(nbRule + 'inputText' + x)
     }
 
     var blockList = JSON.parse(window.localStorage.getItem("blockList"))
     console.log(blockList[nbRule])
-    
+
     blockList[nbRule].conditions[x] = {
         'name': name.value,
         'input': input.value,
@@ -119,11 +116,11 @@ function getInputFromCond(x, nbRule) {
     window.localStorage.setItem("blockList", JSON.stringify(blockList));
 }
 
-function updateInput(x, nbRule){
-    if(document.getElementById(nbRule+'inputLoop'+x).value == "other") {
-        document.getElementById(nbRule+'inputText'+x).disabled = false
+function updateInput(x, nbRule) {
+    if (document.getElementById(nbRule + 'inputLoop' + x).value == "other") {
+        document.getElementById(nbRule + 'inputText' + x).disabled = false
     } else {
-        document.getElementById(nbRule+'inputText'+x).disabled = true
+        document.getElementById(nbRule + 'inputText' + x).disabled = true
     }
 }
 
@@ -135,7 +132,7 @@ function addCondition(x) {
         listCond[x] = 1;
     }
     d = document.getElementById('Rule' + x);
-    d.innerHTML += "<button class='accordion' id='accordionC" + numberC + "' onclick=getInputFromCond(" + numberC + "," + x + ")>" + 'Condition' + numberC + "</button>" +
+    d.innerHTML += "<button class='accordion' id='accordionC" + numberC + "' onclick=getInputFromCond(" + numberC + "," + x + ");addListener()>" + 'Condition' + numberC + "</button>" +
         "<div class='panel' id='Condition" + numberC + "'>" +
         "<button for='name' onClick='del(" + numberC + ")'> delete </button><br>" +
         "<div class='con" + numberC + "'>" +
@@ -329,7 +326,7 @@ function addRuleListener() {
             if (panel.style.maxHeight) {
                 panel.style.maxHeight = null;
             } else {
-                panel.style.maxHeight = (panel.scrollHeight * (number + 2)) + "px";
+                panel.style.maxHeight = 100 + "%";
             }
             this.removeEventListener('click', arguments.callee, false); //becaus the listener is create when the rule is create and when
             //the rule is shown
