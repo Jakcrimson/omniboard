@@ -11,7 +11,7 @@
   transition: 0.4s;
 }
 
-.active, .accordion:hover {
+.view, .accordion:hover {
   background-color: #ccc;
 }
 
@@ -23,7 +23,7 @@
   margin-left: 5px;
 }
 
-.active:after {
+.view:after, .accordion:hover{
   content: "\2212";
 }
 
@@ -36,8 +36,8 @@
 }
 
 .accordionR {
-  background-color: rgb(238, 238, 238);
-  color: #444;
+  background-color: rgb(135, 159, 224);
+  color: rgb(255, 255, 255);
   cursor: pointer;
   padding: 18px;
   width: 100%;
@@ -49,23 +49,22 @@
 }
 .accordionR:after {
   content: '\002B';
-  color: #777;
+  color: rgb(255, 255, 255);
   font-weight: bold;
   float: right;
   margin-left: 5px;
 }
-
-.active, .accordionR:hover {
-  background-color: #ccc;
-}
-
 .active:after, .accordionR:hover {
   content: "\2212";
 }
+
 .panel1 {
   padding: 0 18px;
   background-color: white;
   max-height: 0;
   overflow: hidden;
   transition: max-height 0.2s ease-out;
+}
+.accordionR:hover, .active {
+  background-color: rgb(85, 110, 179);
 }

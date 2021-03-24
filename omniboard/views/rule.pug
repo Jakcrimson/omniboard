@@ -1,3 +1,47 @@
+<<<<<<< HEAD
+//- View for the rule panel on the "editing" page
+//- Using PUG for simplified beacon syntax and easier manipulation and accessiblity from the .js scripts.
+//- Further inner html is brought by dynamic field completion by the user when using the application.
+doctype html
+head
+  meta(charset="utf-8")
+  meta(name="viewport", content="width=device-width, initial-scale=1, shrink-to-fit=no")
+  title #{title} | Edit
+  link(rel="stylesheet" href="/style/edit.css")
+  script(type='text/javascript' src='/js/edit/rules.js')
+  
+body
+  #rule 
+
+    h1 Rule 
+     form
+      label(for='name')  Choose Element :
+      br
+      label(for='type')  type :
+      br
+      input(type='text' name='search' placeholder='Enter the type of the rule')
+      br
+      label(for='name')  name :
+      br
+      input(type='text' name='search' placeholder='Enter the name of the rule')
+      br
+      label(for='name')  Choose Type for the loop :
+      br
+      input.elem(type='button' value='new conditions' onclick='addCondition()')
+      input.elem(type='button' value='new actions' onclick='addAction()')
+    //- <label for="name"> name :</label><br>
+    //- <select id="name" name="name">script:element()</select><br>
+    //- <label for="name"> input :</label><br>
+    //- <input type="text" name="search"/><br>
+    //- <label for="name"> operation :</label><br>
+    //- <select id="loop" name="loop">
+    //-     <option value=1>less_than</option>
+    //-     <option value=2 >equals </option>
+    //-     <option value=3 >not_equals </option>
+    //-     <option value=4>greater_than</option></select><br>
+    //- <label for="name"> value :</label><br>
+    //- <input type="text" name="search"/><br>
+=======
 doctype html
 head
   meta(charset="utf-8")
@@ -8,13 +52,6 @@ head
   script(type='text/javascript' src='/js/edit/rules.js')
   script(type='text/javascript' src='/js/edit/rules.js')
   script(src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js")
-  script(type='text/javascript').
-    $(document).ready(function(){
-      $(".test").click(function(){
-        console.log("test");
-        $(".test").load(location.href + " .test");
-      });
-    });
   
 body
   #rule 
@@ -22,15 +59,4 @@ body
      form
       input.elem(type='button' class="test" value='new Rule' onclick='addRule()')
       br
-      //- label(for='type')  type :
-      //- br
-      //- input(type='text' name='search' placeholder='Enter the type of the rule')
-      //- br
-      //- label(for='name')  name :
-      //- br
-      //- input(type='text' name='search' placeholder='Enter the name of the rule')
-      //- br
-      //- label(for='name')  Choose Type for the loop :
-      //- br
-      //- input.elem(type='button' value='new conditions' onclick='addCondition(); addListener()')
-      //- input.elem(type='button' value='new actions' onclick='addAction(); addListener()')
+>>>>>>> 2201500417bc8493f61f8c25bf85d1c2d3b5ea85
