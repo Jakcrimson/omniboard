@@ -5,6 +5,81 @@ var listCond = []; //list the number of condition in the condition block with th
 //num of the condition block
 var listAct = []; //list the number of action in the action block with the index is the
 //num of the action block
+<<<<<<< HEAD
+=======
+var blockList = {
+
+    '0': {
+            'type': 'logical_block',
+            'name': '2nd_bonus',
+            'conditions': [{
+                    'name': 'condName',
+                    'input': 'score',
+                    'operation': 'greater',
+                    'value': '2000'
+                }, {
+                    "name": "lane a is down",
+                    "input": "lane_a",
+                    "operation": "state",
+                    "value": "down"
+                },
+                {
+                    "name": "lane b is down",
+                    "input": "lane_b",
+                    "operation": "state",
+                    "value": "down"
+                },
+                {
+                    "name": "lane c is down",
+                    "input": "lane_c",
+                    "operation": "state",
+                    "value": "down"
+                }
+            ],
+            'actions': [{
+                    "name": "play bonus sound",
+                    "type": "sound",
+                    "operation": null,
+                    "value": "bonus.mp3"
+                },
+                {
+                    "name": "increase score by 1000",
+                    "type": "variable",
+                    "operation": "increase",
+                    "value": 1000
+                },
+                {
+                    "name": "flash right lamps",
+                    "type": "action_block",
+                    "operation": null,
+                    "value": "flash_lamps_right"
+                },
+                {
+                    "name": "flash left lamps",
+                    "type": "action_block",
+                    "operation": null,
+                    "value": "flash_lamps_left"
+                }
+            ]
+    }
+
+};
+window.localStorage.setItem("blockList", JSON.stringify(blockList));
+
+
+function getInput(x) {
+    var type = document.getElementById('type' + x)
+    var name = document.getElementById('name' + x)
+
+    var blockList = JSON.parse(window.localStorage.getItem("blockList"))
+    blockList[x] = {
+        'name': name.value,
+        'type': type.value,
+        'conditions': []
+    }
+    window.localStorage.setItem("blockList", JSON.stringify(blockList));
+}
+>>>>>>> 9fcd96deead21c2f1332380716c6ffc1a2f35e55
 
 function addRule() {
     d = document.getElementById('rule');
@@ -22,6 +97,37 @@ function addRule() {
     addRuleListener();
 }
 
+function getInputFromCond(x, nbRule) {
+    var name = document.getElementById(nbRule+'name'+x)
+    var input = document.getElementById(nbRule+'inputLoop'+x)
+    var operation = document.getElementById(nbRule+'operationLoop'+x)
+    var value = document.getElementById(nbRule+'value'+x)
+
+    if(input.value == "other") {
+        input = document.getElementById(nbRule+'inputText'+x)
+    }
+
+    var blockList = JSON.parse(window.localStorage.getItem("blockList"))
+    console.log(blockList[nbRule])
+    
+    blockList[nbRule].conditions[x] = {
+        'name': name.value,
+        'input': input.value,
+        'operation': operation.value,
+        'value': value.value
+    }
+    window.localStorage.setItem("blockList", JSON.stringify(blockList));
+}
+
+function updateInput(x, nbRule){
+    if(document.getElementById(nbRule+'inputLoop'+x).value == "other") {
+        document.getElementById(nbRule+'inputText'+x).disabled = false
+    } else {
+        document.getElementById(nbRule+'inputText'+x).disabled = true
+    }
+}
+
+
 function addCondition(x) {
     if (listCond[x] != undefined) {
         listCond[x] += 1;
@@ -29,29 +135,30 @@ function addCondition(x) {
         listCond[x] = 1;
     }
     d = document.getElementById('Rule' + x);
-    d.innerHTML += "<button class='accordion' id='accordionC" + x + "" + listCond[x] + "' onclick='addListener()'>" + 'Condition' + x + "." + listCond[x] + "</button>" +
-        "<div class='panel' id='Condition" + x + "'>" +
-        "<button for='name' onClick='del(" + x + ")'> delete </button><br>" +
-        "<div class='con" + x + "'>" +
+    d.innerHTML += "<button class='accordion' id='accordionC" + numberC + "' onclick=getInputFromCond(" + numberC + "," + x + ")>" + 'Condition' + numberC + "</button>" +
+        "<div class='panel' id='Condition" + numberC + "'>" +
+        "<button for='name' onClick='del(" + numberC + ")'> delete </button><br>" +
+        "<div class='con" + numberC + "'>" +
         "<label for='name'> name :</label><br>" +
-        "<select id='name' name='name'>script:element()</select><br>" +
+        "<input id='" + x + "name" + numberC + "' type='text' name='search' placeholder='Enter the name of the condition' /><br />" +
         "<label for='name'> input :</label><br>" +
-        "<select id='loop1' name='loop1'>" +
-        "<option value=1>input</option>" +
-        "<option value=2 >conditional_block</option>" +
-        "<option value=3 >variable</option>" +
-        "<option value=4>formula</option></select><br>" +
-        "<input type='text' name='search'/><br>" +
+        "<select id='" + x + "inputLoop" + numberC + "' name='loop1' onclick=updateInput(" + numberC + "," + x + ")>" +
+        "<option value=input>input</option>" +
+        "<option value=conditional_block>conditional_block</option>" +
+        "<option value=variable>variable</option>" +
+        "<option value=formula>formula</option>" +
+        "<option value=other>other (enter below)</option></select><br>" +
+        "<input type='text' disabled=true id='" + x + "inputText" + numberC + "' name='search'/><br>" +
         "<label for='name'> operation :</label><br>" +
-        "<select id='loop2' name='loop2'>" +
-        "<option value=1>less_than</option>" +
-        "<option value=2 >equals </option>" +
-        "<option value=3 >not_equals </option>" +
-        "<option value=4>greater_than</option></select><br>" +
+        "<select id='" + x + "operationLoop" + numberC + "' name='loop2'>" +
+        "<option value=less_than>less_than</option>" +
+        "<option value=equals>equals </option>" +
+        "<option value=not_equals>not_equals </option>" +
+        "<option value=greater_than>greater_than</option></select><br>" +
         "<label for='name'> value :</label><br>" +
-        "<input type='text' name='search'/><br>" +
-        "<button for='name' onClick='addConditionElement(" + x + ")'> addCondition </button>" +
-        "<button for='name' onClick='delOne(" + x + ", " + listCond[x] + ")'> delete Condition </button><br>" +
+        "<input type='text' id='" + x + "value" + numberC + "' name='search'/><br>" +
+        "<button for='name' onClick='addConditionElement(" + numberC + ")'> addCondition </button>" +
+        "<button for='name' onClick='delOne(" + numberC + ", " + listCond[x] + ")'> delete Condition </button><br>" +
         "<label for='name'>-------------------------------------------------------</label><br>";
     numberC += 1;
     addListener();
