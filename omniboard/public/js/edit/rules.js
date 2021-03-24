@@ -5,15 +5,99 @@ var listCond = []; //list the number of condition in the condition block with th
 //num of the condition block
 var listAct = []; //list the number of action in the action block with the index is the
 //num of the action block
+<<<<<<< HEAD
+var blockList = {
+
+    '0': {
+        'rule': {
+            'type': 'logical_block',
+            'name': '2nd_bonus',
+            'conditions': [{
+                    'name': 'condName',
+                    'input': 'score',
+                    'operation': 'greater',
+                    'value': '2000'
+                }, {
+                    "name": "lane a is down",
+                    "input": "lane_a",
+                    "operation": "state",
+                    "value": "down"
+                },
+                {
+                    "name": "lane b is down",
+                    "input": "lane_b",
+                    "operation": "state",
+                    "value": "down"
+                },
+                {
+                    "name": "lane c is down",
+                    "input": "lane_c",
+                    "operation": "state",
+                    "value": "down"
+                }
+            ],
+            'actions': [{
+                    "name": "play bonus sound",
+                    "type": "sound",
+                    "operation": null,
+                    "value": "bonus.mp3"
+                },
+                {
+                    "name": "increase score by 1000",
+                    "type": "variable",
+                    "operation": "increase",
+                    "value": 1000
+                },
+                {
+                    "name": "flash right lamps",
+                    "type": "action_block",
+                    "operation": null,
+                    "value": "flash_lamps_right"
+                },
+                {
+                    "name": "flash left lamps",
+                    "type": "action_block",
+                    "operation": null,
+                    "value": "flash_lamps_left"
+                }
+            ]
+        }
+    }
+
+};
+window.localStorage.setItem("blockList", JSON.stringify(blockList));
+
+
+function getInput(x) {
+    var type = document.getElementById('type' + x)
+    var name = document.getElementById('name' + x)
+
+    if (d.value != undefined) {
+        var blockList = JSON.parse(window.localStorage.getItem("blockList"))
+        blockList[x] = {
+            'rule': {
+                'name': name.value,
+                'type': type.value
+            }
+        }
+        window.localStorage.setItem("blockList", JSON.stringify(blockList));
+    }
+}
+
+function addRule() {
+    d = document.getElementById('rule');
+    d.innerHTML += "<button class='accordionR' id='accordionR" + numberR + "' onclick=getInput(" + numberR + ")>" + 'Rule' + numberR + "</button>" +
+=======
 
 function addRule() {
     d = document.getElementById('rule');
     d.innerHTML += "<button class='accordionR' id='accordionR" + numberR + "' onclick='addRuleListener()'>" + 'Rule' + numberR + "</button>" +
+>>>>>>> origin/main
         "<div class='panel1' id='Rule" + numberR + "'>" +
         "<label for='type'> type :<br />" +
-        "<input type='text' name='search' placeholder='Enter the type of the rule' /><br />" +
+        "<input id='type" + numberR + "' type='text' name='search' placeholder='Enter the type of the rule' /><br />" +
         "<label for='name'> name :</label><br />" +
-        "<input type='text' name='search' placeholder='Enter the name of the rule' /><br />" +
+        "<input id='name" + numberR + "' type='text' name='search' placeholder='Enter the name of the rule' /><br />" +
         "<label for='name'> Choose Type for the loop :</label><br />" +
         "<input class='elem' type='button' value='new conditions' onclick='addCondition(" + numberR + ")' />" +
         "<input class='elem' type='button' value='new actions' onclick='addAction(" + numberR + ")' />" +
