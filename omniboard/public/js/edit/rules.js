@@ -5,6 +5,8 @@ var listCond = []; //list the number of condition in the condition block with th
 //num of the condition block
 var listAct = []; //list the number of action in the action block with the index is the
 //num of the action block
+<<<<<<< HEAD
+=======
 var blockList = {
 
     '0': {
@@ -77,6 +79,7 @@ function getInput(x) {
     }
     window.localStorage.setItem("blockList", JSON.stringify(blockList));
 }
+>>>>>>> 9fcd96deead21c2f1332380716c6ffc1a2f35e55
 
 function addRule() {
     d = document.getElementById('rule');
