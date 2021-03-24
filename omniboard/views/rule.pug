@@ -1,3 +1,4 @@
+<<<<<<< HEAD
 //- View for the rule panel on the "editing" page
 //- Using PUG for simplified beacon syntax and easier manipulation and accessiblity from the .js scripts.
 //- Further inner html is brought by dynamic field completion by the user when using the application.
@@ -40,3 +41,22 @@ body
     //-     <option value=4>greater_than</option></select><br>
     //- <label for="name"> value :</label><br>
     //- <input type="text" name="search"/><br>
+=======
+doctype html
+head
+  meta(charset="utf-8")
+  meta(name="viewport", content="width=device-width, initial-scale=1, shrink-to-fit=no")
+  title #{title} | Edit
+  link(rel="stylesheet" href="/style/edit.css")
+  link(rel="icon" href="/images/icon.png")
+  script(type='text/javascript' src='/js/edit/rules.js')
+  script(type='text/javascript' src='/js/edit/rules.js')
+  script(src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js")
+  
+body
+  #rule 
+    h1 Rule 
+     form
+      input.elem(type='button' class="test" value='new Rule' onclick='addRule()')
+      br
+>>>>>>> 2201500417bc8493f61f8c25bf85d1c2d3b5ea85
