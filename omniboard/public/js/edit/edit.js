@@ -289,6 +289,16 @@ function submitImg() {
     }
 }
 
+function submitJSON() {
+    var json;
+    var reader = FileReader();
+    reader.onload = function(e) {
+        console.log("JSON is loaded");
+        json = JSON.parse(e.target.result);
+        console.log(JSON.stringify(json));
+    }
+}
+
 /**
  * This function is use to update the name of the image when the file is uploaded.
  */

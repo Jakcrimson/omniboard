@@ -135,6 +135,7 @@ input[type="checkbox"] {
     width: 200px;
     height: 98%;
     border: 1px solid blue;
+    border-radius: 20px;
 }
 
 #d2 {
@@ -142,6 +143,7 @@ input[type="checkbox"] {
     left: 220px;
     height: 98%;
     border: 1px solid red;
+    border-radius: 20px;
 }
 
 #d3 {
@@ -149,6 +151,7 @@ input[type="checkbox"] {
     left: 220px;
     height: 98%;
     border: 1px solid pink;
+    border-radius: 20px;
 }
 
 #d1>p {
