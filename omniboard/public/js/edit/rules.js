@@ -92,6 +92,7 @@ function addRule() {
         "</label>";
     numberR += 1;
     addRuleListener();
+    console.log(document.getElementsByClassName("accordion"))
 }
 
 function getInputFromCond(x, nbRule) {
@@ -132,7 +133,8 @@ function addCondition(x) {
         listCond[x] = 1;
     }
     d = document.getElementById('Rule' + x);
-    d.innerHTML += "<button class='accordion' id='accordionC" + numberC + "' onclick=getInputFromCond(" + numberC + "," + x + ")>" + 'Condition' + numberC + "</button>" +
+    var l = document.createElement("conditions"+x);
+    l.innerHTML += "<button class='accordion' id='accordionC" + numberC + "' onclick=getInputFromCond(" + numberC + "," + x + ");addListener()>" + 'Condition' + numberC + "</button>" +
         "<div class='panel' id='Condition" + numberC + "'>" +
         "<button for='name' onClick='del(" + numberC + ")'> delete </button><br>" +
         "<div class='con" + numberC + "'>" +
@@ -157,38 +159,37 @@ function addCondition(x) {
         "<button for='name' onClick='addConditionElement(" + numberC + ")'> addCondition </button>" +
         "<button for='name' onClick='delOne(" + numberC + ", " + listCond[x] + ")'> delete Condition </button><br>" +
         "<label for='name'>-------------------------------------------------------</label><br>";
+    d.appendChild(l);
     numberC += 1;
     addListener();
-}
-
-function test() {
-    console.log("test");
 }
 
 function addConditionElement(x) {
     listCond[x] += 1;
     d = document.getElementById("Condition" + x);
-    d.innerHTML += "<div class='con" + x + "'>" +
-        "<label for='name'> name :</label><br>" +
-        "<select id='name' name='name'>script:element()</select><br>" +
-        "<label for='name'> input :</label><br>" +
-        "<select id='loop1' name='loop1'>" +
-        "<option value=1>input</option>" +
-        "<option value=2 >conditional_block</option>" +
-        "<option value=3 >variable</option>" +
-        "<option value=4>formula</option></select><br>" +
-        "<input type='text' name='search'/><br>" +
-        "<label for='name'> operation :</label><br>" +
-        "<select id='loop2' name='loop2'>" +
-        "<option value=1>less_than</option>" +
-        "<option value=2 >equals </option>" +
-        "<option value=3 >not_equals </option>" +
-        "<option value=4>greater_than</option></select><br>" +
-        "<label for='name'> value :</label><br>" +
-        "<input type='text' name='search'/><br>" +
-        "<button for='name' onClick='addConditionElement(" + x + ")'> addCondition </button>" +
-        "<button for='name' onClick='delOne(" + x + ", " + listCond[x] + ")'> delete Condition </button><br>" +
-        "<label for='name'>-------------------------------------------------------</label><br>";
+    var l = document.createElement("conditions"+x);
+    l.innerHTML += "<div class='con" + x + "'>" +
+    "<label for='name'> name :</label><br>" +
+    "<input id='" + x + "name" + numberC + "' type='text' name='search' placeholder='Enter the name of the condition' /><br />" +
+    "<label for='name'> input :</label><br>" +
+    "<select id='" + x + "inputLoop" + numberC + "' name='loop1' onclick=updateInput(" + numberC + "," + x + ")>" +
+    "<option value=input>input</option>" +
+    "<option value=conditional_block>conditional_block</option>" +
+    "<option value=variable>variable</option>" +
+    "<option value=formula>formula</option>" +
+    "<option value=other>other (enter below)</option></select><br>" +
+    "<input type='text' disabled=true id='" + x + "inputText" + numberC + "' name='search'/><br>" +
+    "<label for='name'> operation :</label><br>" +
+    "<select id='" + x + "operationLoop" + numberC + "' name='loop2'>" +
+    "<option value=less_than>less_than</option>" +
+    "<option value=equals>equals </option>" +
+    "<option value=not_equals>not_equals </option>" +
+    "<option value=greater_than>greater_than</option></select><br>" +
+    "<label for='name'> value :</label><br>" +
+    "<input type='text' id='" + x + "value" + numberC + "' name='search'/><br>" +
+    "<button for='name' onClick='addConditionElement(" + numberC + ")'> addCondition </button>" +
+    "<button for='name' onClick='delOne(" + numberC + ", " + listCond[x] + ")'> delete Condition </button><br>" +
+    "<label for='name'>-------------------------------------------------------</label><br>";
 }
 
 function addAction(x) {
@@ -297,7 +298,7 @@ function addListener() {
                 console.log("enter");
                 panel.style.maxHeight = null;
             } else {
-                panel.style.maxHeight = panel.scrollHeight + "px";
+                panel.style.maxHeight = 100 + "%"
             }
         });
     }
@@ -326,7 +327,7 @@ function addRuleListener() {
             if (panel.style.maxHeight) {
                 panel.style.maxHeight = null;
             } else {
-                panel.style.maxHeight = (panel.scrollHeight * (number + 2)) + "px";
+                panel.style.maxHeight = 100 + "%"
             }
             this.removeEventListener('click', arguments.callee, false); //becaus the listener is create when the rule is create and when
             //the rule is shown
