@@ -68,8 +68,8 @@ window.localStorage.setItem("blockList", JSON.stringify(blockList));
 
 
 function getInput(x) {
-    var type = document.getElementById('type'+x)
-    var name = document.getElementById('name'+x)
+    var type = document.getElementById('type' + x)
+    var name = document.getElementById('name' + x)
 
     if (d.value != undefined) {
         var blockList = JSON.parse(window.localStorage.getItem("blockList"))
@@ -79,6 +79,7 @@ function getInput(x) {
                 'type': type.value
             }
         }
+        window.localStorage.setItem("blockList", JSON.stringify(blockList));
     }
 }
 
