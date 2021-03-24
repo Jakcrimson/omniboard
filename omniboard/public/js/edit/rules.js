@@ -225,7 +225,7 @@ function addRuleListener() {
                 panel.style.maxHeight = (panel.scrollHeight * (number + 2)) + "px";
             }
             this.removeEventListener('click', arguments.callee, false); //becaus the listener is create when the rule is create and when
-            //the rule is show
+            //the rule is shown
         });
     }
 }
