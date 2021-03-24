@@ -121,7 +121,7 @@ function addItem(name) {
  */
 function downloadJson() {
     if (confirm('You will download a save on your computer')) {
-        var dataStr = "data:text/json;charset=utf-8," + encodeURIComponent(window.localStorage.getItem("listElement"));
+        var dataStr = "data:text/json;charset=utf-8," + encodeURIComponent(window.localStorage.getItem("blockList"));
         var downloadAnchorNode = document.createElement('a');
         downloadAnchorNode.setAttribute("href", dataStr);
         downloadAnchorNode.setAttribute("download", "rules.json");

@@ -7,7 +7,7 @@ var listAct = []; //list the number of action in the action block with the index
 //num of the action block
 var blockList = {
 
-    '0': {
+    rules:[{
             'type': 'logical_block',
             'name': '2nd_bonus',
             'conditions': [{
@@ -59,7 +59,7 @@ var blockList = {
                     "value": "flash_lamps_left"
                 }
             ]
-    }
+    }]
 
 };
 window.localStorage.setItem("blockList", JSON.stringify(blockList));
@@ -70,17 +70,19 @@ function getInput(x) {
     var name = document.getElementById('name' + x)
 
     var blockList = JSON.parse(window.localStorage.getItem("blockList"))
-    blockList[x] = {
-        'name': name.value,
-        'type': type.value,
-        'conditions': []
+    if(blockList.rules[x] == undefined) {
+        blockList.rules.push({'name':name.value,'type':type.value,'conditions':[]})
+    } else {
+        blockList.rules[x].name = name.value
+        blockList.rules[x].type = type.value
     }
+    
     window.localStorage.setItem("blockList", JSON.stringify(blockList));
 }
 
 function addRule() {
     d = document.getElementById('rule');
-    d.innerHTML += "<button class='accordionR' id='accordionR" + numberR + "' onclick='addRuleListener()'>" + 'Rule' + numberR + "</button>" +
+    d.innerHTML += "<button class='accordionR' id='accordionR" + numberR + "' onclick='addRuleListener();getInput(" + numberR + ")'>" + 'Rule' + numberR + "</button>" +
         "<div class='panel1' id='Rule" + numberR + "'>" +
         "<label for='type'> type :<br />" +
         "<input id='type" + numberR + "' type='text' name='search' placeholder='Enter the type of the rule' /><br />" +
@@ -108,7 +110,7 @@ function getInputFromCond(x, nbRule) {
     var blockList = JSON.parse(window.localStorage.getItem("blockList"))
     console.log(blockList[nbRule])
     
-    blockList[nbRule].conditions[x] = {
+    blockList.rules[nbRule].conditions[x] = {
         'name': name.value,
         'input': input.value,
         'operation': operation.value,
