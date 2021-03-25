@@ -322,6 +322,7 @@ function importFile() {
         fileContent = JSON.parse(reader.result);
         console.log(fileContent);
         rulesJSON = fileContent;
+        //vérifier la structure du JSON (si c'est un tableau de conditions etc.)
 
     };
     reader.readAsText(importedFile);
