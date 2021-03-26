@@ -13,7 +13,7 @@ if(blockList == undefined){
                 'type': 'logical_block',
                 'name': '2nd_bonus',
                 'conditions': [{
-                        'name': 'condName',
+                        'name': 'condName1',
                         'input': 'score',
                         'operation': 'greater',
                         'value': '2000'
@@ -68,20 +68,19 @@ if(blockList == undefined){
 }
 
 function initRules(){
-    
     console.log('initiation des rules . . . ')
     for(var i = 0; i<blockList.rules.length; i++){
         addRule()
         document.getElementById('type' + i).setAttribute('value', blockList.rules[i].type)
         document.getElementById('name' + i).setAttribute('value', blockList.rules[i].name)
 
-
-        for(var j = 1; j<=blockList.rules[i].conditions.length; j++){
+        for(var j = 0; j<blockList.rules[i].conditions.length; j++){
             addCondition(i)
-            document.getElementById(i+'name'+j).setAttribute('value', blockList.rules[i].conditions[j-1].name)
-            document.getElementById(i+'inputLoop'+j).setAttribute('value', blockList.rules[i].conditions[j-1].input)
-            document.getElementById(i+'operationLoop'+j).setAttribute('value', blockList.rules[i].conditions[j-1].operation)
-            document.getElementById(i+'value'+j).setAttribute('value', blockList.rules[i].conditions[j-1].value)
+            var condition = blockList.rules[i].conditions[j]
+            document.getElementById(i+'name'+j).setAttribute('value', condition.name)
+            document.getElementById(i+'inputLoop'+j).options[condition.input].setAttribute('selected', true)
+            document.getElementById(i+'operationLoop'+j).options[condition.operation].setAttribute('selected', true)
+            document.getElementById(i+'value'+j).setAttribute('value', condition.value)
         }
     }
     
@@ -127,7 +126,7 @@ function getInputFromCond(x, nbRule) {
         input = document.getElementById(nbRule+'inputText'+x)
     }
 
-    console.log(blockList[nbRule])
+    console.log(blockList.rules[nbRule])
     
     blockList.rules[nbRule].conditions[x] = {
         'name': name.value,
@@ -151,11 +150,11 @@ function addCondition(x) {
     if (listCond[x] != undefined) {
         listCond[x] += 1;
     } else {
-        listCond[x] = 1;
+        listCond[x] = 0;
     }
     d = document.getElementById('Rule' + x);
     var l = document.createElement("conditions"+x);
-    l.innerHTML += "<button class='accordion' id='accordionC" + listCond[x] + "' onclick=getInputFromCond(" + listCond[x] + "," + x + ");addListener()>" + 'Condition' + listCond[x] + "</button>" +
+    l.innerHTML += "<button class='accordion' id='accordionC" + listCond[x] + "' onclick=getInputFromCond(" + listCond[x] + "," + x + ");addListener()>" + 'Condition' + (listCond[x]+1) + "</button>" +
         "<div class='panel' id='Condition" + listCond[x] + "'>" +
         "<button for='name' onClick='del(" + listCond[x] + ")'> delete </button><br>" +
         "<div class='con" + listCond[x] + "'>" +
@@ -163,18 +162,18 @@ function addCondition(x) {
         "<input id='" + x + "name" + listCond[x] + "' type='text' name='search' placeholder='Enter the name of the condition' /><br />" +
         "<label for='name'> input :</label><br>" +
         "<select id='" + x + "inputLoop" + listCond[x] + "' name='loop1' onclick=updateInput(" + listCond[x] + "," + x + ")>" +
-        "<option value=input>input</option>" +
-        "<option value=conditional_block>conditional_block</option>" +
-        "<option value=variable>variable</option>" +
-        "<option value=formula>formula</option>" +
-        "<option value=other>other (enter below)</option></select><br>" +
+        "<option name=input value=input>input</option>" +
+        "<option name=conditional_block value=conditional_block>conditional_block</option>" +
+        "<option name=variable value=variable>variable</option>" +
+        "<option name=formula value=formula>formula</option></select><br>" +
         "<input type='text' disabled=true id='" + x + "inputText" + listCond[x] + "' name='search'/><br>" +
         "<label for='name'> operation :</label><br>" +
         "<select id='" + x + "operationLoop" + listCond[x] + "' name='loop2'>" +
-        "<option value=less_than>less_than</option>" +
-        "<option value=equals>equals </option>" +
-        "<option value=not_equals>not_equals </option>" +
-        "<option value=greater_than>greater_than</option></select><br>" +
+        "<option name=less_than value=less_than>less_than</option>" +
+        "<option name=equals value=equals>equals </option>" +
+        "<option name=not_equals value=not_equals>not_equals </option>" +
+        "<option name=greater_than value=greater_than>greater_than</option>" +
+        "<option name=value_changed value=value_changed>value_changed</option></select><br>" +
         "<label for='name'> value :</label><br>" +
         "<input type='text' id='" + x + "value" + listCond[x] + "' name='search'/><br>" +
         "<button for='name' onClick='addConditionElement(" + listCond[x] + ")'> addCondition </button>" +
