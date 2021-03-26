@@ -80,7 +80,7 @@ function getInput(x) {
 
 function addRule() {
     d = document.getElementById('rule');
-    d.innerHTML += "<button class='accordionR' id='accordionR" + numberR + "' onclick='addRuleListener()'>" + 'Rule' + numberR + "</button>" +
+    d.innerHTML += "<button class='accordionR' id='accordionR" + numberR + "' onclick='addRuleListener("+numberR+")'>" + 'Rule' + numberR + "</button>" +
         "<div class='panel1' id='Rule" + numberR + "'>" +
         "<label for='type'> type :<br />" +
         "<input id='type" + numberR + "' type='text' name='search' placeholder='Enter the type of the rule' /><br />" +
@@ -92,7 +92,6 @@ function addRule() {
         "</label>";
     numberR += 1;
     addRuleListener();
-    console.log(document.getElementsByClassName("accordion"))
 }
 
 function getInputFromCond(x, nbRule) {
@@ -134,13 +133,13 @@ function addCondition(x) {
     }
     d = document.getElementById('Rule' + x);
     var l = document.createElement("conditions" + x);
-    l.innerHTML += "<button class='accordion' id='accordionC" + numberC + "' onclick=getInputFromCond(" + numberC + "," + x + ");addListener()>" + 'Condition' + numberC + "</button>" +
+    l.innerHTML += "<button class='accordion' id='accordionC" + numberC + "" + listCond[x] + "' onclick=getInputFromCond(" + numberC + "," + x + ");addListener()>" + 'Condition' + numberC + "</button>" +
         "<div class='panel' id='Condition" + numberC + "'>" +
-        "<button for='name' onClick='del(" + numberC + ")'> delete </button><br>" +
+        "<button for='name' onClick='del(" + x + ", " + listCond[x]+")'> delete </button><br>" +
         "<div class='con" + numberC + "'>" +
         "<label for='name'> name :</label><br>" +
         "<input id='" + x + "name" + numberC + "' type='text' name='search' placeholder='Enter the name of the condition' /><br />" +
-        "<label for='name'> input :</label><br>" +
+        "<label for='action'> input :</label><br>" +
         "<select id='" + x + "inputLoop" + numberC + "' name='loop1' onclick=updateInput(" + numberC + "," + x + ")>" +
         "<option value=input>input</option>" +
         "<option value=conditional_block>conditional_block</option>" +
@@ -165,6 +164,7 @@ function addCondition(x) {
 }
 
 function addConditionElement(x) {
+    console.log("neter")
     listCond[x] += 1;
     d = document.getElementById("Condition" + x);
     var l = document.createElement("conditions" + x);
@@ -190,6 +190,7 @@ function addConditionElement(x) {
         "<button for='name' onClick='addConditionElement(" + numberC + ")'> addCondition </button>" +
         "<button for='name' onClick='delOne(" + numberC + ", " + listCond[x] + ")'> delete Condition </button><br>" +
         "<label for='name'>-------------------------------------------------------</label><br>";
+    d.appendChild(l);
 }
 
 function addAction(x) {
@@ -199,30 +200,50 @@ function addAction(x) {
         listAct[x] = 1;
     }
     d = document.getElementById('Rule' + x);
-    d.innerHTML += "<button class='accordion' id='accordionA" + x + "" + listAct[x] + "' onclick='addListener()'>" + 'Action' + x + "." + listAct[x] + "</button>" +
+    var l = document.createElement("conditions" + x);
+    l.innerHTML += "<button class='accordion' id='accordionA" + x + "" + listAct[x] + "' onclick='addListener()'>" + 'Action' + x + "." + listAct[x] + "</button>" +
         "<div class='panel' id='Action" + x + "'>" +
-        "<button for='name' onClick='del(" + x + ")'> delete </button><br>" +
+        "<button for='name' onClick='del(" + x + ", " + listAct[x]+")'> delete </button><br>" +
         "<div class='act" + x + "'>" +
         "<label for='name'> name :</label><br>" +
-        "<select id='name' name='name'>script:element()</select><br>" +
-        "<label for='name'> input :</label><br>" +
-        "<select id='loop1' name='loop1'>" +
-        "<option value=1>input</option>" +
-        "<option value=2 >conditional_block</option>" +
-        "<option value=3 >variable</option>" +
-        "<option value=4>formula</option></select><br>" +
-        "<input type='text' name='search'/><br>" +
-        "<label for='name'> operation :</label><br>" +
-        "<select id='loop2' name='loop2'>" +
-        "<option value=1>less_than</option>" +
-        "<option value=2 >equals </option>" +
-        "<option value=3 >not_equals </option>" +
-        "<option value=4>greater_than</option></select><br>" +
-        "<label for='name'> value :</label><br>" +
-        "<input type='text' name='search'/><br>" +
+        "<input type='text' id='" + x + "inputText" + numberA + "' name='search'/><br>" +
+        "<label for='action'> action :</label><br>" +
+        "<select id='" + x + "inputLoop" + x + "' name='loop1' onclick=updateInput(" + numberA + "," + x + ")>" +
+        "<option value=action_block_name >action_block_name </option>" +
+        "<option value=play >play </option>" +
+        "<option value=flash >flash </option>" +
+        "<option value=increase >increase </option>" +
+        "<option value=decrease >decrease</option>" +
+        "<option value=multiply >multiply </option>" +
+        "<option value=divide >divide </option>" +
+        "<option value=set >set </option>" +
+        "<option value=up >up </option>" +
+        "<option value=down >down </option>" +
+        "<option value=reset >reset </option></select><br>" +
+        "<select disabled=true id='" + x + "inputLoop" + x + "' name='loop1' onclick=updateInput(" + numberA + "," + x + ")>" +
+        "<option value=choose>choose action block </option></select><br>" +
+        "<input type='text' disabled=true id='" + x + "inputText" + numberA + "' name='search'/><br>" +
+        "<label for='output'> output :</label><br>" +
+        "<input type='text' id='" + x + "inputText" + numberA + "' name='search'/><br>" +
+        "<label for='value'> value :</label><br>" +
+        "<select id='" + x + "operationLoop" + numberA + "' name='loop2'>" +
+        "<option value='value'> value </option>" +
+        "<option value=file_name >file_name </option>" +
+        "<option value=true >true </option>" +
+        "<option value=false >false </option>" +
+        "<option value=up >up </option>" +
+        "<option value=down >down </option>" +
+        "<option value=on >on </option>" +
+        "<option value=off >off </option>" +
+        "<option value=variable> variable </option>" +
+        "<option value=formula> formula </option></select><br>" +
+        "<input type='text' id='" + x + "inputText" + numberA + "' name='search'/><br>" +
+        "<label for='param'> param :</label><br>" +
+        "<input type='text' id='" + x + "inputText" + numberA + "' name='search'/><br>" +
         "<button for='name' onClick='addActionElement(" + x + ")'> addAction </button>" +
         "<button for='name' onClick='delOne(" + x + ", " + listAct[x] + ")'> delete Action </button><br>" +
         "<label for='name'>-------------------------------------------------------</label><br>";
+    d.appendChild(l);
     numberA += 1;
     addListener();
 }
@@ -230,7 +251,8 @@ function addAction(x) {
 function addActionElement(x) {
     listAct[x] += 1;
     d = document.getElementById("Action" + x);
-    d.innerHTML += "<div class='act" + x + "'>" +
+    var l = document.createElement("conditions" + x);
+    l.innerHTML += "<div class='act" + x + "'>" +
         "<label for='name'> name :</label><br>" +
         "<select id='name' name='name'>script:element()</select><br>" +
         "<label for='name'> input :</label><br>" +
@@ -251,15 +273,16 @@ function addActionElement(x) {
         "<button for='name' onClick='addActElement(" + x + ")'> addAct </button>" +
         "<button for='name' onClick='delOne(" + x + ", " + listAct[x] + ")'> delete Action </button><br>" +
         "<label for='name'>-------------------------------------------------------</label><br>";
+    d.appendChild(l);
 }
 
-function del(x) {
+function del(x, y) {
     if (document.getElementById('Action' + x) != null) {
         document.getElementById('Action' + x).remove();
-        document.getElementById('accordionA' + x).remove();
+        document.getElementById('accordionA' + x +"" + y).remove();
     } else if (document.getElementById('Condition' + x) != null) {
         document.getElementById('Condition' + x).remove();
-        document.getElementById('accordionC' + x).remove();
+        document.getElementById('accordionC' + x +"" +y).remove();
     }
 }
 
@@ -304,23 +327,19 @@ function addListener() {
     }
 }
 
-function addRuleListener() {
-    console.log("call");
+function addRuleListener(x) {
     var acc = document.getElementsByClassName("accordionR");
     var i;
 
     for (i = 0; i < acc.length; i++) {
-        var number;
-        if (listCond[i] != undefined && listAct[i] != undefined) {
-            number = listCond[i] + listAct[i]
-        } else if (listCond[i] != undefined) {
-            number = listCond[i];
-        } else if (listAct[i] != undefined) {
-            number = listAct[i];
-        } else {
-            number = 1;
-        }
-        console.log(acc[0]);
+        // if(i != x && acc[i] != undefined) {
+        //     if(acc[i].classList.contains("active")) {
+        //         console.log("enter");
+        //         acc[i].classList.toggle("active");
+        //         var panel = acc[i].nextElementSibling;
+        //         panel.style.maxHeight = null;
+        //     }
+        // }
         acc[i].addEventListener("click", function() {
             this.classList.toggle("active");
             var panel = this.nextElementSibling;
@@ -329,7 +348,7 @@ function addRuleListener() {
             } else {
                 panel.style.maxHeight = 100 + "%"
             }
-            this.removeEventListener('click', arguments.callee, false); //becaus the listener is create when the rule is create and when
+            this.removeEventListener('click', arguments.callee, false); //because the listener is create when the rule is create and when
             //the rule is shown
         });
     }
