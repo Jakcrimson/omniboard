@@ -6,59 +6,59 @@ var listCond = []; //list the number of condition in the condition block with th
 var listAct = []; //list the number of action in the action block with the index is the
 //num of the action block
 var blockList = {
-
-    rules:[{
-            'type': 'logical_block',
-            'name': '2nd_bonus',
-            'conditions': [{
-                    'name': 'condName',
-                    'input': 'score',
-                    'operation': 'greater',
-                    'value': '2000'
-                }, {
-                    "name": "lane a is down",
-                    "input": "lane_a",
-                    "operation": "state",
-                    "value": "down"
-                },
-                {
-                    "name": "lane b is down",
-                    "input": "lane_b",
-                    "operation": "state",
-                    "value": "down"
-                },
-                {
-                    "name": "lane c is down",
-                    "input": "lane_c",
-                    "operation": "state",
-                    "value": "down"
-                }
-            ],
-            'actions': [{
-                    "name": "play bonus sound",
-                    "type": "sound",
-                    "operation": null,
-                    "value": "bonus.mp3"
-                },
-                {
-                    "name": "increase score by 1000",
-                    "type": "variable",
-                    "operation": "increase",
-                    "value": 1000
-                },
-                {
-                    "name": "flash right lamps",
-                    "type": "action_block",
-                    "operation": null,
-                    "value": "flash_lamps_right"
-                },
-                {
-                    "name": "flash left lamps",
-                    "type": "action_block",
-                    "operation": null,
-                    "value": "flash_lamps_left"
-                }
-            ]
+    //dropdown des conditionals bloc -> accès aux autres bloc conditionnels déja définis avant
+    rules: [{
+        'type': 'logical_block',
+        'name': '2nd_bonus',
+        'conditions': [{
+                'name': 'condName',
+                'input': 'score',
+                'operation': 'greater',
+                'value': '2000'
+            }, {
+                "name": "lane a is down",
+                "input": "lane_a",
+                "operation": "state",
+                "value": "down"
+            },
+            {
+                "name": "lane b is down",
+                "input": "lane_b",
+                "operation": "state",
+                "value": "down"
+            },
+            {
+                "name": "lane c is down",
+                "input": "lane_c",
+                "operation": "state",
+                "value": "down"
+            }
+        ],
+        'actions': [{ //une action va appeler plusieurs autres actions qui sont deja définies
+                "name": "play bonus sound",
+                "type": "sound",
+                "operation": null,
+                "value": "bonus.mp3"
+            },
+            {
+                "name": "increase score by 1000",
+                "type": "variable",
+                "operation": "increase",
+                "value": 1000
+            },
+            {
+                "name": "flash right lamps",
+                "type": "action_block",
+                "operation": null,
+                "value": "flash_lamps_right"
+            },
+            {
+                "name": "flash left lamps",
+                "type": "action_block",
+                "operation": null,
+                "value": "flash_lamps_left"
+            }
+        ]
     }]
 
 };
@@ -70,13 +70,13 @@ function getInput(x) {
     var name = document.getElementById('name' + x)
 
     var blockList = JSON.parse(window.localStorage.getItem("blockList"))
-    if(blockList.rules[x] == undefined) {
-        blockList.rules.push({'name':name.value,'type':type.value,'conditions':[]})
+    if (blockList.rules[x] == undefined) {
+        blockList.rules.push({ 'name': name.value, 'type': type.value, 'conditions': [] })
     } else {
         blockList.rules[x].name = name.value
         blockList.rules[x].type = type.value
     }
-    
+
     window.localStorage.setItem("blockList", JSON.stringify(blockList));
 }
 
@@ -98,18 +98,18 @@ function addRule() {
 }
 
 function getInputFromCond(x, nbRule) {
-    var name = document.getElementById(nbRule+'name'+x)
-    var input = document.getElementById(nbRule+'inputLoop'+x)
-    var operation = document.getElementById(nbRule+'operationLoop'+x)
-    var value = document.getElementById(nbRule+'value'+x)
+    var name = document.getElementById(nbRule + 'name' + x)
+    var input = document.getElementById(nbRule + 'inputLoop' + x)
+    var operation = document.getElementById(nbRule + 'operationLoop' + x)
+    var value = document.getElementById(nbRule + 'value' + x)
 
-    if(input.value == "other") {
-        input = document.getElementById(nbRule+'inputText'+x)
+    if (input.value == "other") {
+        input = document.getElementById(nbRule + 'inputText' + x)
     }
 
     var blockList = JSON.parse(window.localStorage.getItem("blockList"))
     console.log(blockList[nbRule])
-    
+
     blockList.rules[nbRule].conditions[x] = {
         'name': name.value,
         'input': input.value,
@@ -119,11 +119,11 @@ function getInputFromCond(x, nbRule) {
     window.localStorage.setItem("blockList", JSON.stringify(blockList));
 }
 
-function updateInput(x, nbRule){
-    if(document.getElementById(nbRule+'inputLoop'+x).value == "other") {
-        document.getElementById(nbRule+'inputText'+x).disabled = false
+function updateInput(x, nbRule) {
+    if (document.getElementById(nbRule + 'inputLoop' + x).value == "other") {
+        document.getElementById(nbRule + 'inputText' + x).disabled = false
     } else {
-        document.getElementById(nbRule+'inputText'+x).disabled = true
+        document.getElementById(nbRule + 'inputText' + x).disabled = true
     }
 }
 
@@ -135,7 +135,7 @@ function addCondition(x) {
         listCond[x] = 1;
     }
     d = document.getElementById('Rule' + x);
-    var l = document.createElement("conditions"+x);
+    var l = document.createElement("conditions" + x);
     l.innerHTML += "<button class='accordion' id='accordionC" + numberC + "' onclick=getInputFromCond(" + numberC + "," + x + ");addListener()>" + 'Condition' + numberC + "</button>" +
         "<div class='panel' id='Condition" + numberC + "'>" +
         "<button for='name' onClick='del(" + numberC + ")'> delete </button><br>" +
@@ -169,29 +169,29 @@ function addCondition(x) {
 function addConditionElement(x) {
     listCond[x] += 1;
     d = document.getElementById("Condition" + x);
-    var l = document.createElement("conditions"+x);
+    var l = document.createElement("conditions" + x);
     l.innerHTML += "<div class='con" + x + "'>" +
-    "<label for='name'> name :</label><br>" +
-    "<input id='" + x + "name" + numberC + "' type='text' name='search' placeholder='Enter the name of the condition' /><br />" +
-    "<label for='name'> input :</label><br>" +
-    "<select id='" + x + "inputLoop" + numberC + "' name='loop1' onclick=updateInput(" + numberC + "," + x + ")>" +
-    "<option value=input>input</option>" +
-    "<option value=conditional_block>conditional_block</option>" +
-    "<option value=variable>variable</option>" +
-    "<option value=formula>formula</option>" +
-    "<option value=other>other (enter below)</option></select><br>" +
-    "<input type='text' disabled=true id='" + x + "inputText" + numberC + "' name='search'/><br>" +
-    "<label for='name'> operation :</label><br>" +
-    "<select id='" + x + "operationLoop" + numberC + "' name='loop2'>" +
-    "<option value=less_than>less_than</option>" +
-    "<option value=equals>equals </option>" +
-    "<option value=not_equals>not_equals </option>" +
-    "<option value=greater_than>greater_than</option></select><br>" +
-    "<label for='name'> value :</label><br>" +
-    "<input type='text' id='" + x + "value" + numberC + "' name='search'/><br>" +
-    "<button for='name' onClick='addConditionElement(" + numberC + ")'> addCondition </button>" +
-    "<button for='name' onClick='delOne(" + numberC + ", " + listCond[x] + ")'> delete Condition </button><br>" +
-    "<label for='name'>-------------------------------------------------------</label><br>";
+        "<label for='name'> name :</label><br>" +
+        "<input id='" + x + "name" + numberC + "' type='text' name='search' placeholder='Enter the name of the condition' /><br />" +
+        "<label for='name'> input :</label><br>" +
+        "<select id='" + x + "inputLoop" + numberC + "' name='loop1' onclick=updateInput(" + numberC + "," + x + ")>" +
+        "<option value=input>input</option>" +
+        "<option value=conditional_block>conditional_block</option>" +
+        "<option value=variable>variable</option>" +
+        "<option value=formula>formula</option>" +
+        "<option value=other>other (enter below)</option></select><br>" +
+        "<input type='text' disabled=true id='" + x + "inputText" + numberC + "' name='search'/><br>" +
+        "<label for='name'> operation :</label><br>" +
+        "<select id='" + x + "operationLoop" + numberC + "' name='loop2'>" +
+        "<option value=less_than>less_than</option>" +
+        "<option value=equals>equals </option>" +
+        "<option value=not_equals>not_equals </option>" +
+        "<option value=greater_than>greater_than</option></select><br>" +
+        "<label for='name'> value :</label><br>" +
+        "<input type='text' id='" + x + "value" + numberC + "' name='search'/><br>" +
+        "<button for='name' onClick='addConditionElement(" + numberC + ")'> addCondition </button>" +
+        "<button for='name' onClick='delOne(" + numberC + ", " + listCond[x] + ")'> delete Condition </button><br>" +
+        "<label for='name'>-------------------------------------------------------</label><br>";
 }
 
 function addAction(x) {
