@@ -37,28 +37,32 @@ if (blockList == undefined) {
                 }
             ],
             'actions': [{
+                    "name": "reset ball",
+                    "action": "reset",
+                    "output": "variable | output",
+                    "value": "true | false | on | etc.",
+                    "param": "value | variable | formula"
+                },
+                {
+                    "name": "bumper light flash",
+                    "action": "flash",
+                    "output": "variable | output",
+                    "value": "true | false | on | etc.",
+                    "param": "value | variable | formula"
+                },
+                {
+                    "name": "multiply score",
+                    "action": "multiply",
+                    "output": "variable | output",
+                    "value": "true | false | on | etc.",
+                    "param": "value | variable | formula"
+                },
+                {
                     "name": "play bonus sound",
-                    "type": "sound",
-                    "operation": null,
-                    "value": "bonus.mp3"
-                },
-                {
-                    "name": "increase score by 1000",
-                    "type": "variable",
-                    "operation": "increase",
-                    "value": 1000
-                },
-                {
-                    "name": "flash right lamps",
-                    "type": "action_block",
-                    "operation": null,
-                    "value": "flash_lamps_right"
-                },
-                {
-                    "name": "flash left lamps",
-                    "type": "action_block",
-                    "operation": null,
-                    "value": "flash_lamps_left"
+                    "action": "play",
+                    "output": "variable | output",
+                    "value": "true | false | on | etc.",
+                    "param": "value | variable | formula"
                 }
             ]
         }]
