@@ -5,76 +5,97 @@ var listCond = []; //list the number of condition in the condition block with th
 //num of the condition block
 var listAct = []; //list the number of action in the action block with the index is the
 //num of the action block
-var blockList = {
-    //dropdown des conditionals bloc -> accès aux autres bloc conditionnels déja définis avant
-    rules: [{
-        'type': 'logical_block',
-        'name': '2nd_bonus',
-        'conditions': [{
-                'name': 'condName',
-                'input': 'score',
-                'operation': 'greater',
-                'value': '2000'
-            }, {
-                "name": "lane a is down",
-                "input": "lane_a",
-                "operation": "state",
-                "value": "down"
-            },
-            {
-                "name": "lane b is down",
-                "input": "lane_b",
-                "operation": "state",
-                "value": "down"
-            },
-            {
-                "name": "lane c is down",
-                "input": "lane_c",
-                "operation": "state",
-                "value": "down"
-            }
-        ],
-        'actions': [{ //une action va appeler plusieurs autres actions qui sont deja définies
-                "name": "play bonus sound",
-                "type": "sound",
-                "operation": null,
-                "value": "bonus.mp3"
-            },
-            {
-                "name": "increase score by 1000",
-                "type": "variable",
-                "operation": "increase",
-                "value": 1000
-            },
-            {
-                "name": "flash right lamps",
-                "type": "action_block",
-                "operation": null,
-                "value": "flash_lamps_right"
-            },
-            {
-                "name": "flash left lamps",
-                "type": "action_block",
-                "operation": null,
-                "value": "flash_lamps_left"
-            }
-        ]
-    }]
+var blockList = JSON.parse(window.localStorage.getItem("blockList"))
 
-};
-window.localStorage.setItem("blockList", JSON.stringify(blockList));
+if (blockList == undefined) {
+    blockList = {
+        rules: [{
+            'type': 'logical_block',
+            'name': '2nd_bonus',
+            'conditions': [{
+                    'name': 'condName',
+                    'input': 'score',
+                    'operation': 'greater',
+                    'value': '2000'
+                }, {
+                    "name": "lane a is down",
+                    "input": "lane_a",
+                    "operation": "state",
+                    "value": "down"
+                },
+                {
+                    "name": "lane b is down",
+                    "input": "lane_b",
+                    "operation": "state",
+                    "value": "down"
+                },
+                {
+                    "name": "lane c is down",
+                    "input": "lane_c",
+                    "operation": "state",
+                    "value": "down"
+                }
+            ],
+            'actions': [{
+                    "name": "play bonus sound",
+                    "type": "sound",
+                    "operation": null,
+                    "value": "bonus.mp3"
+                },
+                {
+                    "name": "increase score by 1000",
+                    "type": "variable",
+                    "operation": "increase",
+                    "value": 1000
+                },
+                {
+                    "name": "flash right lamps",
+                    "type": "action_block",
+                    "operation": null,
+                    "value": "flash_lamps_right"
+                },
+                {
+                    "name": "flash left lamps",
+                    "type": "action_block",
+                    "operation": null,
+                    "value": "flash_lamps_left"
+                }
+            ]
+        }]
 
+    };
+    window.localStorage.setItem("blockList", JSON.stringify(blockList));
+}
+
+function initRules() {
+
+    console.log('initiation des rules . . . ')
+    for (var i = 0; i < blockList.rules.length; i++) {
+        addRule()
+        document.getElementById('type' + i).setAttribute('value', blockList.rules[i].type)
+        document.getElementById('name' + i).setAttribute('value', blockList.rules[i].name)
+
+
+        for (var j = 1; j <= blockList.rules[i].conditions.length; j++) {
+            addCondition(i)
+            document.getElementById(i + 'name' + j).setAttribute('value', blockList.rules[i].conditions[j - 1].name)
+            document.getElementById(i + 'inputLoop' + j).setAttribute('value', blockList.rules[i].conditions[j - 1].input)
+            document.getElementById(i + 'operationLoop' + j).setAttribute('value', blockList.rules[i].conditions[j - 1].operation)
+            document.getElementById(i + 'value' + j).setAttribute('value', blockList.rules[i].conditions[j - 1].value)
+        }
+    }
+
+}
 
 function getInput(x) {
-    var type = document.getElementById('type' + x)
-    var name = document.getElementById('name' + x)
+    var type = document.getElementById('type' + x).value
+    var name = document.getElementById('name' + x).value
 
-    var blockList = JSON.parse(window.localStorage.getItem("blockList"))
     if (blockList.rules[x] == undefined) {
-        blockList.rules.push({ 'name': name.value, 'type': type.value, 'conditions': [] })
+        blockList.rules.push({ 'name': name, 'type': type, 'conditions': [] })
     } else {
-        blockList.rules[x].name = name.value
-        blockList.rules[x].type = type.value
+        blockList.rules[x].name = name
+        blockList.rules[x].type = type
     }
 
     window.localStorage.setItem("blockList", JSON.stringify(blockList));
@@ -82,7 +103,7 @@ function getInput(x) {
 
 function addRule() {
     d = document.getElementById('rule');
-    d.innerHTML += "<button class='accordionR' id='accordionR" + numberR + "' onclick='addRuleListener();getInput(" + numberR + ")'>" + 'Rule' + numberR + "</button>" +
+    d.innerHTML += "<button class='accordionR' id='accordionR" + numberR + "' onclick='addRuleListener();getInput(" + numberR + ")'>" + 'Rule' + (numberR + 1) + "</button>" +
         "<div class='panel1' id='Rule" + numberR + "'>" +
         "<label for='type'> type :<br />" +
         "<input id='type" + numberR + "' type='text' name='search' placeholder='Enter the type of the rule' /><br />" +
@@ -94,7 +115,6 @@ function addRule() {
         "</label>";
     numberR += 1;
     addRuleListener();
-    console.log(document.getElementsByClassName("accordion"))
 }
 
 function getInputFromCond(x, nbRule) {
@@ -107,7 +127,6 @@ function getInputFromCond(x, nbRule) {
         input = document.getElementById(nbRule + 'inputText' + x)
     }
 
-    var blockList = JSON.parse(window.localStorage.getItem("blockList"))
     console.log(blockList[nbRule])
 
     blockList.rules[nbRule].conditions[x] = {
@@ -136,30 +155,30 @@ function addCondition(x) {
     }
     d = document.getElementById('Rule' + x);
     var l = document.createElement("conditions" + x);
-    l.innerHTML += "<button class='accordion' id='accordionC" + numberC + "' onclick=getInputFromCond(" + numberC + "," + x + ");addListener()>" + 'Condition' + numberC + "</button>" +
-        "<div class='panel' id='Condition" + numberC + "'>" +
-        "<button for='name' onClick='del(" + numberC + ")'> delete </button><br>" +
-        "<div class='con" + numberC + "'>" +
+    l.innerHTML += "<button class='accordion' id='accordionC" + listCond[x] + "' onclick=getInputFromCond(" + listCond[x] + "," + x + ");addListener()>" + 'Condition' + listCond[x] + "</button>" +
+        "<div class='panel' id='Condition" + listCond[x] + "'>" +
+        "<button for='name' onClick='del(" + listCond[x] + ")'> delete </button><br>" +
+        "<div class='con" + listCond[x] + "'>" +
         "<label for='name'> name :</label><br>" +
-        "<input id='" + x + "name" + numberC + "' type='text' name='search' placeholder='Enter the name of the condition' /><br />" +
+        "<input id='" + x + "name" + listCond[x] + "' type='text' name='search' placeholder='Enter the name of the condition' /><br />" +
         "<label for='name'> input :</label><br>" +
-        "<select id='" + x + "inputLoop" + numberC + "' name='loop1' onclick=updateInput(" + numberC + "," + x + ")>" +
+        "<select id='" + x + "inputLoop" + listCond[x] + "' name='loop1' onclick=updateInput(" + listCond[x] + "," + x + ")>" +
         "<option value=input>input</option>" +
         "<option value=conditional_block>conditional_block</option>" +
         "<option value=variable>variable</option>" +
         "<option value=formula>formula</option>" +
         "<option value=other>other (enter below)</option></select><br>" +
-        "<input type='text' disabled=true id='" + x + "inputText" + numberC + "' name='search'/><br>" +
+        "<input type='text' disabled=true id='" + x + "inputText" + listCond[x] + "' name='search'/><br>" +
         "<label for='name'> operation :</label><br>" +
-        "<select id='" + x + "operationLoop" + numberC + "' name='loop2'>" +
+        "<select id='" + x + "operationLoop" + listCond[x] + "' name='loop2'>" +
         "<option value=less_than>less_than</option>" +
         "<option value=equals>equals </option>" +
         "<option value=not_equals>not_equals </option>" +
         "<option value=greater_than>greater_than</option></select><br>" +
         "<label for='name'> value :</label><br>" +
-        "<input type='text' id='" + x + "value" + numberC + "' name='search'/><br>" +
-        "<button for='name' onClick='addConditionElement(" + numberC + ")'> addCondition </button>" +
-        "<button for='name' onClick='delOne(" + numberC + ", " + listCond[x] + ")'> delete Condition </button><br>" +
+        "<input type='text' id='" + x + "value" + listCond[x] + "' name='search'/><br>" +
+        "<button for='name' onClick='addConditionElement(" + listCond[x] + ")'> addCondition </button>" +
+        "<button for='name' onClick='delOne(" + listCond[x] + ", " + listCond[x] + ")'> delete Condition </button><br>" +
         "<label for='name'>-------------------------------------------------------</label><br>";
     d.appendChild(l);
     numberC += 1;
@@ -307,22 +326,11 @@ function addListener() {
 }
 
 function addRuleListener() {
-    console.log("call");
+    //console.log("call");
     var acc = document.getElementsByClassName("accordionR");
     var i;
 
     for (i = 0; i < acc.length; i++) {
-        var number;
-        if (listCond[i] != undefined && listAct[i] != undefined) {
-            number = listCond[i] + listAct[i]
-        } else if (listCond[i] != undefined) {
-            number = listCond[i];
-        } else if (listAct[i] != undefined) {
-            number = listAct[i];
-        } else {
-            number = 1;
-        }
-        console.log(acc[0]);
         acc[i].addEventListener("click", function() {
             this.classList.toggle("active");
             var panel = this.nextElementSibling;
@@ -331,7 +339,7 @@ function addRuleListener() {
             } else {
                 panel.style.maxHeight = 100 + "%"
             }
-            this.removeEventListener('click', arguments.callee, false); //becaus the listener is create when the rule is create and when
+            this.removeEventListener('click', arguments.callee, false); //because the listener is create when the rule is create and when
             //the rule is shown
         });
     }

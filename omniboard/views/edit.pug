@@ -8,7 +8,7 @@ head
   script(type='text/javascript' src='/js/edit/edit.js')
   script(src='https://kit.fontawesome.com/a076d05399.js', type='text/javascript')
   
-body(onload='init()')
+body(onload='init();initRules()')
   div#main
       #infoDraggable.draggable(style='display: inline-block; vertical-align: middle; padding: 5px; top: 20px; left: 20px;')
           #infoDraggableHandle.handle Info
