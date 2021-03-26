@@ -68,21 +68,20 @@ if(blockList == undefined){
 }
 
 function initRules(){
-    var type, name
+    
     console.log('initiation des rules . . . ')
     for(var i = 0; i<blockList.rules.length; i++){
         addRule()
-        type = document.getElementById('type' + i)
-        name = document.getElementById('name' + i)
+        document.getElementById('type' + i).setAttribute('value', blockList.rules[i].type)
+        document.getElementById('name' + i).setAttribute('value', blockList.rules[i].name)
 
-        name.value = blockList.rules[i].name
-        type.value = blockList.rules[i].type
 
-        console.log(blockList.rules[i])
-        console.log(name.value + " fuck " + type.value)
-
-        for(var j = 0; j<blockList.rules[i].conditions.length; j++){
-
+        for(var j = 1; j<=blockList.rules[i].conditions.length; j++){
+            addCondition(i)
+            document.getElementById(i+'name'+j).setAttribute('value', blockList.rules[i].conditions[j-1].name)
+            document.getElementById(i+'inputLoop'+j).setAttribute('value', blockList.rules[i].conditions[j-1].input)
+            document.getElementById(i+'operationLoop'+j).setAttribute('value', blockList.rules[i].conditions[j-1].operation)
+            document.getElementById(i+'value'+j).setAttribute('value', blockList.rules[i].conditions[j-1].value)
         }
     }
     
@@ -91,7 +90,7 @@ function initRules(){
 function getInput(x) {
     var type = document.getElementById('type' + x).value
     var name = document.getElementById('name' + x).value
-console.log(type + " # " + name)
+
     if(blockList.rules[x] == undefined) {
         blockList.rules.push({'name':name,'type':type,'conditions':[]})
     } else {
@@ -116,7 +115,6 @@ function addRule() {
         "</label>";
     numberR += 1;
     addRuleListener();
-    console.log(document.getElementsByClassName("accordion"))
 }
 
 function getInputFromCond(x, nbRule) {
