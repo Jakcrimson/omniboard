@@ -1,5 +1,5 @@
 var numberC = []; //number of condition block
-var numberA = 0; //number of action block
+var numberA = []; //number of action block
 var numberR = 0; //number of rule
 var listCond = [
         []
@@ -13,75 +13,22 @@ var blockList = JSON.parse(window.localStorage.getItem("blockList"))
 
 if (blockList == undefined) {
     blockList = {
-<<<<<<< HEAD
         rules: [{
             'type': 'logical_block',
             'name': '2nd_bonus',
-            'conditions': [{
+            'conditions': [
+                [{
                     'name': 'condName1',
-                    'input': 'score',
-                    'operation': 'greater',
-                    'value': '2000'
+                    'input': 'conditional_block',
+                    'operation': 'not_equals',
+                    'value': 'condition1'
                 }, {
                     "name": "lane a is down",
-                    "input": "lane_a",
-                    "operation": "state",
-                    "value": "down"
-                },
-                {
-                    "name": "lane b is down",
-                    "input": "lane_b",
-                    "operation": "state",
-                    "value": "down"
-                },
-                {
-                    "name": "lane c is down",
-                    "input": "lane_c",
-                    "operation": "state",
-                    "value": "down"
-                }
-            ],
-            'actions': [{
-                    "name": "play bonus sound",
-                    "type": "sound",
-                    "operation": null,
-                    "value": "bonus.mp3"
-                },
-                {
-                    "name": "increase score by 1000",
-                    "type": "variable",
-                    "operation": "increase",
-                    "value": 1000
-                },
-                {
-                    "name": "flash right lamps",
-                    "type": "action_block",
-                    "operation": null,
-                    "value": "flash_lamps_right"
-                },
-                {
-                    "name": "flash left lamps",
-                    "type": "action_block",
-                    "operation": null,
-                    "value": "flash_lamps_left"
-                }
-            ]
-=======
-        rules:[{
-                'type': 'logical_block',
-                'name': '2nd_bonus',
-                'conditions': [[{
-                        'name': 'condName1',
-                        'input': 'conditional_block',
-                        'operation': 'not_equals',
-                        'value': 'condition1'
-                    }, {
-                        "name": "lane a is down",
-                        "input": "variable",
-                        "operation": "value_changed",
-                        "value": "51"
-                    }],[
-                    {
+                    "input": "variable",
+                    "operation": "value_changed",
+                    "value": "51"
+                }],
+                [{
                         "name": "lane b is down",
                         "input": "input",
                         "operation": "equals",
@@ -93,8 +40,10 @@ if (blockList == undefined) {
                         "operation": "less_than",
                         "value": "down"
                     }
-                ]],
-                'actions': [{
+                ]
+            ],
+            'actions': [
+                [{
                         "name": "play bonus sound",
                         "type": "sound",
                         "operation": null,
@@ -105,8 +54,9 @@ if (blockList == undefined) {
                         "type": "variable",
                         "operation": "increase",
                         "value": 1000
-                    },
-                    {
+                    }
+                ],
+                [{
                         "name": "flash right lamps",
                         "type": "action_block",
                         "operation": null,
@@ -119,7 +69,7 @@ if (blockList == undefined) {
                         "value": "flash_lamps_left"
                     }
                 ]
->>>>>>> b702a23ea4a17a2bc1f2fc507ca1413b467023ce
+            ]
         }]
 
     };
@@ -127,7 +77,7 @@ if (blockList == undefined) {
 }
 
 function initRules() {
-    console.log('initiation des rules . . . ')
+    console.log('initializing the rules . . . ')
     for (var i = 0; i < blockList.rules.length; i++) {
         addRule()
         document.getElementById('type' + i).setAttribute('value', blockList.rules[i].type)
@@ -136,31 +86,23 @@ function initRules() {
 
         for (var j = 0; j < blockList.rules[i].conditions.length; j++) {
             addCondition(i)
-<<<<<<< HEAD
-            var condition = blockList.rules[i].conditions[j]
+            var condition = blockList.rules[i].conditions[j][0]
             document.getElementById(i + 'name' + j).setAttribute('value', condition.name)
             document.getElementById(i + 'inputLoop' + j).options[condition.input].setAttribute('selected', true)
             document.getElementById(i + 'operationLoop' + j).options[condition.operation].setAttribute('selected', true)
             document.getElementById(i + 'value' + j).setAttribute('value', condition.value)
-=======
-            var condition = blockList.rules[i].conditions[j][0]
-            document.getElementById(i+'name'+j).setAttribute('value', condition.name)
-            document.getElementById(i+'inputLoop'+j).options[condition.input].setAttribute('selected', true)
-            document.getElementById(i+'operationLoop'+j).options[condition.operation].setAttribute('selected', true)
-            document.getElementById(i+'value'+j).setAttribute('value', condition.value)
 
-            document.getElementById('accordionC' + i + numberC[i]).innerHTML = document.getElementById(i+'name'+j).value
+            document.getElementById('accordionC' + i + numberC[i]).innerHTML = document.getElementById(i + 'name' + j).value
 
-            for(var k = 1; k<blockList.rules[i].conditions[j].length; k++){
-                addConditionElement(i,j)
+            for (var k = 1; k < blockList.rules[i].conditions[j].length; k++) {
+                addConditionElement(i, j)
                 var condition = blockList.rules[i].conditions[j][k]
-                document.getElementById(i+'name'+j+k).setAttribute('value', condition.name)
-                document.getElementById(i+'inputLoop'+j+k).options[condition.input].setAttribute('selected', true)
-                console.log(document.getElementById(i+'operationLoop'+j+k).options)
-                document.getElementById(i+'operationLoop'+j+k).options[condition.operation].setAttribute('selected', true)
-                document.getElementById(i+'value'+j+k).setAttribute('value', condition.value)
+                document.getElementById(i + 'name' + j + k).setAttribute('value', condition.name)
+                document.getElementById(i + 'inputLoop' + j + k).options[condition.input].setAttribute('selected', true)
+                console.log(document.getElementById(i + 'operationLoop' + j + k).options)
+                document.getElementById(i + 'operationLoop' + j + k).options[condition.operation].setAttribute('selected', true)
+                document.getElementById(i + 'value' + j + k).setAttribute('value', condition.value)
             }
->>>>>>> b702a23ea4a17a2bc1f2fc507ca1413b467023ce
         }
     }
 
@@ -180,7 +122,7 @@ function getInput(x) {
     window.localStorage.setItem("blockList", JSON.stringify(blockList));
 }
 
-function updateNameRule(rule){
+function updateNameRule(rule) {
     document.getElementById('accordionR' + rule).innerHTML = document.getElementById('name' + rule).value
 }
 
@@ -209,7 +151,7 @@ function deleteRule(x) {
 }
 
 function getInputFromCond(cond, rule) {
-    
+
     var name = document.getElementById(rule + 'name' + cond)
     var input = document.getElementById(rule + 'inputLoop' + cond)
     var operation = document.getElementById(rule + 'operationLoop' + cond)
@@ -219,20 +161,14 @@ function getInputFromCond(cond, rule) {
         input = document.getElementById(rule + 'inputText' + cond)
     }
 
-<<<<<<< HEAD
-    console.log(blockList.rules[nbRule])
-
-    blockList.rules[nbRule].conditions[x] = {
-=======
-    blockList.rules[rule].conditions[cond][0] = {
->>>>>>> b702a23ea4a17a2bc1f2fc507ca1413b467023ce
+    blockList.rules[rule].conditions[cond][1] = {
         'name': name.value,
         'input': input.value,
         'operation': operation.value,
         'value': value.value
     }
 
-    for(i=0;i<listCond[rule][cond];i++){
+    for (i = 1; i < listCond[rule][cond]; i++) {
         name = document.getElementById(rule + 'name' + cond + i)
         input = document.getElementById(rule + 'inputLoop' + cond + i)
         operation = document.getElementById(rule + 'operationLoop' + cond + i)
@@ -263,11 +199,36 @@ function updateInput(x, nbRule) {
     }
 }
 
-function updateNameCond(rule,cond){
-    document.getElementById('accordionC' + rule + cond).innerHTML = document.getElementById(rule+'name'+cond).value
+function updateChooseAction(x, nbRule) {
+    console.log("x : " + x);
+    console.log("nbRule : " + nbRule);
+    if (document.getElementById(nbRule + 'inputLoop').value == "action_block_name") {
+        document.getElementById(nbRule + 'inputLoop1').disabled = false;
+        document.getElementById(nbRule + 'actionText').disabled = false;
+    } else {
+        document.getElementById(nbRule + 'inputLoop1').disabled = true;
+        document.getElementById(nbRule + 'actionText').disabled = true;
+    }
+}
+
+function updateValueAction(x, nbRule) {
+    if (document.getElementById(nbRule + 'operationLoop').value == "file_name" ||
+        document.getElementById(nbRule + 'operationLoop').value == "value" ||
+        document.getElementById(nbRule + 'operationLoop').value == "variable" ||
+        document.getElementById(nbRule + 'operationLoop').value == "formula") {
+
+        document.getElementById(nbRule + 'inputText').disabled = false;
+    } else {
+        document.getElementById(nbRule + 'inputText').disabled = true;
+    }
+}
+
+function updateNameCond(rule, cond) {
+    document.getElementById('accordionC' + rule + cond).innerHTML = document.getElementById(rule + 'name' + cond).value
 }
 
 function addCondition(x) {
+    console.log("IN ADDCONDITION")
     listCond[x] = new Array()
     if (numberC[x] != undefined) {
         numberC[x] += 1;
@@ -280,15 +241,9 @@ function addCondition(x) {
 
     d = document.getElementById('Rule' + x);
     var l = document.createElement("conditions" + x);
-<<<<<<< HEAD
-    l.innerHTML += "<button class='accordion' id='accordionC" + x + "" + 1 + "' onclick=getInputFromCond(" + numberC + "," + x + ");addListener()>" + 'Condition' + x + "." + (numberC + 1) + "</button>" +
-        "<div class='panel' id='Condition" + x + "'>" +
-        "<button for='name' onClick='del(" + x + ", " + 1 + ")'> delete </button><br>" +
-=======
-    l.innerHTML += "<button class='accordion' id='accordionC" + x + "" + numberC[x] + "' onclick=getInputFromCond(" + numberC[x] + "," + x + ");addListener()>" + 'Condition' + x + "." + (numberC[x]+1) + "</button>" +
+    l.innerHTML += "<button class='accordion' id='accordionC" + x + "" + numberC[x] + "' onclick=getInputFromCond(" + numberC[x] + "," + x + ");addListener()>" + 'Condition' + x + "." + (numberC[x] + 1) + "</button>" +
         "<div class='panel' id='Condition" + x + numberC[x] + "'>" +
-        "<button for='name' onClick='del(" + x + ", " + 1+")'> delete </button><br>" +
->>>>>>> b702a23ea4a17a2bc1f2fc507ca1413b467023ce
+        "<button for='name' onClick='del(" + x + ", " + 1 + ")'> delete </button><br>" +
         "<div class='con" + x + "'>" +
         "<label for='name'> name :</label><br>" +
         "<input id='" + x + "name" + numberC[x] + "' type='text' name='search' placeholder='Enter the name of the condition' onchange='updateNameCond(" + x + "," + numberC[x] + ")'/><br />" +
@@ -316,15 +271,9 @@ function addCondition(x) {
     addListener();
 }
 
-<<<<<<< HEAD
-function addConditionElement(x) {
-    listCond[x][numberC - 1] += 1;
-    d = document.getElementById("Condition" + x);
-=======
 function addConditionElement(x, cond) {
     d = document.getElementById("Condition" + x + cond);
-    console.log(d,x,cond)
->>>>>>> b702a23ea4a17a2bc1f2fc507ca1413b467023ce
+    console.log(d, x, cond)
     var l = document.createElement("conditions" + x);
     l.innerHTML += "<div class='con" + x + "'>" +
         "<label for='name'> name :</label><br>" +
@@ -346,11 +295,7 @@ function addConditionElement(x, cond) {
         "<label for='name'> value :</label><br>" +
         "<input type='text' id='" + x + "value" + cond + listCond[x][cond] + "' name='search'/><br>" +
         "<button for='name' onClick='addConditionElement(" + x + ")'> add Condition </button>" +
-<<<<<<< HEAD
-        "<button for='name' onClick='delOneCond(" + x + ", " + listCond[x][numberC - 1] + ")'> delete Condition </button><br>" +
-=======
         "<button for='name' onClick='delOneCond(" + x + ", " + listCond[x][cond] + ")'> delete Condition </button><br>" +
->>>>>>> b702a23ea4a17a2bc1f2fc507ca1413b467023ce
         "<label for='name'>-------------------------------------------------------</label><br>";
     d.appendChild(l);
     listCond[x][cond] += 1;
@@ -372,6 +317,7 @@ function delOneCond(x, y) {
 }
 
 function addAction(x) {
+    console.log("IN ADDACTION")
     listAct[x] = new Array();
     if (listAct[x][numberA] != undefined) {
         listAct[x][numberA] += 1;
@@ -380,15 +326,15 @@ function addAction(x) {
     }
     console.log(listAct[x][numberA]);
     d = document.getElementById('Rule' + x);
-    var l = document.createElement("conditions" + x);
-    l.innerHTML += "<button class='accordion' id='accordionA" + x + "" + 1 + "' onclick='addListener()'>" + 'Action' + x + "." + (numberA + 1) + "</button>" +
+    var l = document.createElement("actions" + x);
+    l.innerHTML += "<button class='accordion' id='accordionA" + x + "" + numberA[x] + "' onclick='addListener()'>" + 'Action' + x + "." + (numberA + 1) + "</button>" +
         "<div class='panel' id='Action" + x + "'>" +
         "<button for='name' onClick='del(" + x + ", " + listAct[x][numberA] + ")'> delete </button><br>" +
         "<div class='act" + x + "'>" +
         "<label for='name'> name :</label><br>" +
         "<input type='text' id='" + x + "nameText" + numberA + "' name='search'/><br>" +
         "<label for='action'> action :</label><br>" +
-        "<select id='" + x + "inputLoop" + numberA + "' name='loop1' onclick=updateInput(" + numberA + "," + x + ")>" +
+        "<select id='" + x + "inputLoop" + numberA + "' name='loop1' onclick=updateChooseAction(" + numberA[x] + "," + x + ")>" +
         "<option value=action_block_name >action_block_name </option>" +
         "<option value=play >play </option>" +
         "<option value=flash >flash </option>" +
@@ -400,13 +346,13 @@ function addAction(x) {
         "<option value=up >up </option>" +
         "<option value=down >down </option>" +
         "<option value=reset >reset </option></select><br>" +
-        "<select disabled=true id='" + x + "inputLoop" + x + "' name='loop1' onclick=updateInput(" + numberA + "," + x + ")>" +
+        "<select disabled=true id='" + x + "inputLoop" + x + "' name='loop1'>" +
         "<option value=choose>choose action block </option></select><br>" +
-        "<input type='text' disabled=true id='" + x + "actionText" + numberA + "' name='search'/><br>" +
+        "<input type='text' disabled=false id='" + x + "actionText" + numberA + "' name='search'/><br>" +
         "<label for='output'> output :</label><br>" +
         "<input type='text' id='" + x + "outputText" + numberA + "' name='search'/><br>" +
         "<label for='value'> value :</label><br>" +
-        "<select id='" + x + "operationLoop" + numberA + "' name='loop2'>" +
+        "<select id='" + x + "operationLoop" + numberA + "' name='loop2' onclick=updateValueAction(" + numberA[x] + "," + x + ")>" +
         "<option value='value'> value </option>" +
         "<option value=file_name >file_name </option>" +
         "<option value=true >true </option>" +
@@ -421,7 +367,7 @@ function addAction(x) {
         "<label for='param'> param :</label><br>" +
         "<input type='text' id='" + x + "paramText" + numberA + "' name='search'/><br>" +
         "<button for='name' onClick='addActionElement(" + x + ")'> addAction </button>" +
-        "<button for='name' onClick='delOneAct(" + x + ", " + listAct[x][numberA] + ")'> delete Action </button><br>" +
+        "<button for='name' onClick='delOneAct(" + x + ", " + listAct[x][numberA[x]] + ")'> delete Action </button><br>" +
         "<label for='name'>-------------------------------------------------------</label><br>";
     d.appendChild(l);
     numberA += 1;
@@ -431,7 +377,7 @@ function addAction(x) {
 function addActionElement(x) {
     listAct[x][numberA] += 1;
     d = document.getElementById("Action" + x);
-    var l = document.createElement("conditions" + x);
+    var l = document.createElement("actions" + x);
     l.innerHTML += "<div class='act" + x + "'>" +
         "<label for='name'> name :</label><br>" +
         "<input type='text' id='" + x + "inputText" + numberA + "' name='search'/><br>" +
