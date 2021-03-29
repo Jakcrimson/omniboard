@@ -1,4 +1,4 @@
-var numberC = 0; //number of condition block
+var numberC = []; //number of condition block
 var numberA = 0; //number of action block
 var numberR = 0; //number of rule
 var listCond = [[]] //list the number of condition in the condition block with the index is the
@@ -157,69 +157,73 @@ function updateInput(x, nbRule) {
 
 function addCondition(x) {
     listCond[x] = new Array()
-    if (listCond[x][numberC] != undefined) {
-        listCond[x][numberC] += 1;
+    if (numberC[x] != undefined) {
+        numberC[x] += 1;
     } else {
-        listCond[x][numberC] = 1;
+        numberC[x] = 0;
     }
+    if (listCond[x][numberC[x]] != undefined) {
+        listCond[x][numberC[x]] += 1;
+    } else {
+        listCond[x][numberC[x]] = 1;
+    }
+
     d = document.getElementById('Rule' + x);
     var l = document.createElement("conditions" + x);
-    l.innerHTML += "<button class='accordion' id='accordionC" + x + "" + 1 + "' onclick=getInputFromCond(" + numberC + "," + x + ");addListener()>" + 'Condition' + x + "." + (numberC+1) + "</button>" +
+    l.innerHTML += "<button class='accordion' id='accordionC" + x + "" + 1 + "' onclick=getInputFromCond(" + numberC + "," + x + ");addListener()>" + 'Condition' + x + "." + (numberC[x]+1) + "</button>" +
         "<div class='panel' id='Condition" + x + "'>" +
         "<button for='name' onClick='del(" + x + ", " + 1+")'> delete </button><br>" +
         "<div class='con" + x + "'>" +
         "<label for='name'> name :</label><br>" +
-        "<input id='" + x + "name" + numberC + "' type='text' name='search' placeholder='Enter the name of the condition' /><br />" +
+        "<input id='" + x + "name" + numberC[x] + "' type='text' name='search' placeholder='Enter the name of the condition' /><br />" +
         "<label for='action'> input :</label><br>" +
-        "<select id='" + x + "inputLoop" + numberC + "' name='loop1' onclick=updateInput(" + numberC + "," + x + ")>" +
-        "<option value=input>input</option>" +
-        "<option value=conditional_block>conditional_block</option>" +
-        "<option value=variable>variable</option>" +
-        "<option value=formula>formula</option>" +
-        "<option value=other>other (enter below)</option></select><br>" +
-        "<input type='text' disabled=true id='" + x + "inputText" + numberC + "' name='search'/><br>" +
+        "<select id='" + x + "inputLoop" + numberC[x] + "' name='loop1' onclick=updateInput(" + numberC[x] + "," + x + ")>" +
+        "<option name=input value=input>input</option>" +
+        "<option name=conditional_block value=conditional_block>conditional_block</option>" +
+        "<option name=variable value=variable>variable</option>" +
+        "<option name=formula value=formula>formula</option></select><br>" +
+        "<input type='text' disabled=true id='" + x + "inputText" + numberC[x] + "' name='search'/><br>" +
         "<label for='name'> operation :</label><br>" +
-        "<select id='" + x + "operationLoop" + listCond[x] + "' name='loop2'>" +
+        "<select id='" + x + "operationLoop" + numberC[x] + "' name='loop2'>" +
         "<option name=less_than value=less_than>less_than</option>" +
         "<option name=equals value=equals>equals </option>" +
         "<option name=not_equals value=not_equals>not_equals </option>" +
         "<option name=greater_than value=greater_than>greater_than</option>" +
         "<option name=value_changed value=value_changed>value_changed</option></select><br>" +
         "<label for='name'> value :</label><br>" +
-        "<input type='text' id='" + x + "value" + numberC + "' name='search'/><br>" +
+        "<input type='text' id='" + x + "value" + numberC[x] + "' name='search'/><br>" +
         "<button for='name' onClick='addConditionElement(" + x + ")'> addCondition </button>" +
-        "<button for='name' onClick='delOneCond(" + x + ", " + listCond[x][numberC] + ")'> delete Condition </button><br>" +
+        "<button for='name' onClick='delOneCond(" + x + ", " + listCond[x][numberC[x]] + ")'> delete Condition </button><br>" +
         "<label for='name'>-------------------------------------------------------</label><br>";
     d.appendChild(l);
-    numberC += 1;
     addListener();
 }
 
 function addConditionElement(x) {
-    listCond[x][numberC-1] += 1;
+    listCond[x][numberC[x]-1] += 1;
     d = document.getElementById("Condition" + x);
     var l = document.createElement("conditions" + x);
     l.innerHTML += "<div class='con" + x + "'>" +
         "<label for='name'> name :</label><br>" +
-        "<input id='" + x + "name" + numberC + "' type='text' name='search' placeholder='Enter the name of the condition' /><br />" +
+        "<input id='" + x + "name" + numberC[x] + "' type='text' name='search' placeholder='Enter the name of the condition' /><br />" +
         "<label for='name'> input :</label><br>" +
-        "<select id='" + x + "inputLoop" + numberC + "' name='loop1' onclick=updateInput(" + numberC + "," + x + ")>" +
+        "<select id='" + x + "inputLoop" + numberC[x] + "' name='loop1' onclick=updateInput(" + numberC[x] + "," + x + ")>" +
         "<option value=input>input</option>" +
         "<option value=conditional_block>conditional_block</option>" +
         "<option value=variable>variable</option>" +
         "<option value=formula>formula</option>" +
         "<option value=other>other (enter below)</option></select><br>" +
-        "<input type='text' disabled=true id='" + x + "inputText" + numberC + "' name='search'/><br>" +
+        "<input type='text' disabled=true id='" + x + "inputText" + numberC[x] + "' name='search'/><br>" +
         "<label for='name'> operation :</label><br>" +
-        "<select id='" + x + "operationLoop" + numberC + "' name='loop2'>" +
+        "<select id='" + x + "operationLoop" + numberC[x] + "' name='loop2'>" +
         "<option value=less_than>less_than</option>" +
         "<option value=equals>equals </option>" +
         "<option value=not_equals>not_equals </option>" +
         "<option value=greater_than>greater_than</option></select><br>" +
         "<label for='name'> value :</label><br>" +
-        "<input type='text' id='" + x + "value" + numberC + "' name='search'/><br>" +
+        "<input type='text' id='" + x + "value" + numberC[x] + "' name='search'/><br>" +
         "<button for='name' onClick='addConditionElement(" + x + ")'> add Condition </button>" +
-        "<button for='name' onClick='delOneCond(" + x + ", " + listCond[x][numberC-1] + ")'> delete Condition </button><br>" +
+        "<button for='name' onClick='delOneCond(" + x + ", " + listCond[x][numberC[x]-1] + ")'> delete Condition </button><br>" +
         "<label for='name'>-------------------------------------------------------</label><br>";
     d.appendChild(l);
 }
