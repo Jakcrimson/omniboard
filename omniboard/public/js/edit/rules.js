@@ -14,25 +14,25 @@ if(blockList == undefined){
                 'name': '2nd_bonus',
                 'conditions': [{
                         'name': 'condName1',
-                        'input': 'score',
-                        'operation': 'greater',
-                        'value': '2000'
+                        'input': 'conditional_block',
+                        'operation': 'not_equals',
+                        'value': 'condition1'
                     }, {
                         "name": "lane a is down",
-                        "input": "lane_a",
-                        "operation": "state",
-                        "value": "down"
+                        "input": "variable",
+                        "operation": "value_changed",
+                        "value": "51"
                     },
                     {
                         "name": "lane b is down",
-                        "input": "lane_b",
-                        "operation": "state",
+                        "input": "input",
+                        "operation": "equals",
                         "value": "down"
                     },
                     {
                         "name": "lane c is down",
-                        "input": "lane_c",
-                        "operation": "state",
+                        "input": "formula",
+                        "operation": "less_than",
                         "value": "down"
                     }
                 ],
@@ -73,6 +73,7 @@ function initRules(){
         addRule()
         document.getElementById('type' + i).setAttribute('value', blockList.rules[i].type)
         document.getElementById('name' + i).setAttribute('value', blockList.rules[i].name)
+        document.getElementById('accordionR' + i).innerHTML = document.getElementById('name' + i).value
 
         for(var j = 0; j<blockList.rules[i].conditions.length; j++){
             addCondition(i)
@@ -81,6 +82,8 @@ function initRules(){
             document.getElementById(i+'inputLoop'+j).options[condition.input].setAttribute('selected', true)
             document.getElementById(i+'operationLoop'+j).options[condition.operation].setAttribute('selected', true)
             document.getElementById(i+'value'+j).setAttribute('value', condition.value)
+
+            document.getElementById('accordionC' + i + numberC[i]).innerHTML = document.getElementById(i+'name'+j).value
         }
     }
     
@@ -100,6 +103,10 @@ function getInput(x) {
     window.localStorage.setItem("blockList", JSON.stringify(blockList));
 }
 
+function updateNameRule(rule){
+    document.getElementById('accordionR' + rule).innerHTML = document.getElementById('name' + rule).value
+}
+
 function addRule() {
     console.log(listCond);
     d = document.getElementById('rule');
@@ -109,7 +116,7 @@ function addRule() {
         "<label for='type'> type :<br />" +
         "<input id='type" + numberR + "' type='text' name='search' placeholder='Enter the type of the rule' /><br />" +
         "<label for='name'> name :</label><br />" +
-        "<input id='name" + numberR + "' type='text' name='search' placeholder='Enter the name of the rule' /><br />" +
+        "<input id='name" + numberR + "' type='text' name='search' placeholder='Enter the name of the rule' onchange='updateNameRule(" + numberR + ")'/><br />" +
         "<label for='name'> Choose Type for the loop :</label><br />" +
         "<input class='elem' type='button' value='new conditions' onclick='addCondition(" + numberR + ")' />" +
         "<input class='elem' type='button' value='new actions' onclick='addAction(" + numberR + ")' />" +
@@ -154,6 +161,9 @@ function updateInput(x, nbRule) {
     }
 }
 
+function updateNameCond(rule,cond){
+    document.getElementById('accordionC' + rule + cond).innerHTML = document.getElementById(rule+'name'+cond).value
+}
 
 function addCondition(x) {
     listCond[x] = new Array()
@@ -170,12 +180,12 @@ function addCondition(x) {
 
     d = document.getElementById('Rule' + x);
     var l = document.createElement("conditions" + x);
-    l.innerHTML += "<button class='accordion' id='accordionC" + x + "" + 1 + "' onclick=getInputFromCond(" + numberC + "," + x + ");addListener()>" + 'Condition' + x + "." + (numberC[x]+1) + "</button>" +
+    l.innerHTML += "<button class='accordion' id='accordionC" + x + "" + numberC[x] + "' onclick=getInputFromCond(" + numberC[x] + "," + x + ");addListener()>" + 'Condition' + x + "." + (numberC[x]+1) + "</button>" +
         "<div class='panel' id='Condition" + x + "'>" +
         "<button for='name' onClick='del(" + x + ", " + 1+")'> delete </button><br>" +
         "<div class='con" + x + "'>" +
         "<label for='name'> name :</label><br>" +
-        "<input id='" + x + "name" + numberC[x] + "' type='text' name='search' placeholder='Enter the name of the condition' /><br />" +
+        "<input id='" + x + "name" + numberC[x] + "' type='text' name='search' placeholder='Enter the name of the condition' onchange='updateNameCond(" + x + "," + numberC[x] + ")'/><br />" +
         "<label for='action'> input :</label><br>" +
         "<select id='" + x + "inputLoop" + numberC[x] + "' name='loop1' onclick=updateInput(" + numberC[x] + "," + x + ")>" +
         "<option name=input value=input>input</option>" +
@@ -234,7 +244,7 @@ function delOneCond(x, y) {
     if (size == 1) {
         if (document.getElementById('Condition' + x) != null) {
             document.getElementById('Condition' + x).remove();
-            document.getElementById('accordionC' + x + "" + 1).remove();
+            document.getElementById('accordionC' + x + "" + numberC[x]).remove();
         }
     } else {
         if (document.getElementsByClassName('con' + x)[y-1] != null) {
