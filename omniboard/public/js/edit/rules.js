@@ -9,6 +9,7 @@ var blockList = JSON.parse(window.localStorage.getItem("blockList"))
 
 if(blockList == undefined){
     blockList = {
+        image: '/images/pinball_top_view.jpg',
         rules:[{
                 'type': 'logical_block',
                 'name': '2nd_bonus',
@@ -67,7 +68,10 @@ if(blockList == undefined){
     window.localStorage.setItem("blockList", JSON.stringify(blockList));
 }
 
-function initRules(){
+function initJson(){
+
+    document.getElementById('image').src = blockList.image
+
     console.log('initiation des rules . . . ')
     for(var i = 0; i<blockList.rules.length; i++){
         addRule()
@@ -152,6 +156,10 @@ function getInputFromCond(cond, rule) {
         input = document.getElementById(rule + 'inputText' + cond)
     }
 
+    if(blockList.rules[rule].conditions[cond] == undefined) {
+        blockList.rules[rule].conditions[cond] = []
+    }
+
     blockList.rules[rule].conditions[cond][0] = {
         'name': name.value,
         'input': input.value,
@@ -159,7 +167,7 @@ function getInputFromCond(cond, rule) {
         'value': value.value
     }
 
-    for(i=0;i<listCond[rule][cond];i++){
+    for(i=1;i<listCond[rule][cond];i++){
         name = document.getElementById(rule + 'name' + cond + i)
         input = document.getElementById(rule + 'inputLoop' + cond + i)
         operation = document.getElementById(rule + 'operationLoop' + cond + i)
@@ -452,5 +460,5 @@ function addRuleListener(x) {
 }
 
 function importRules() {
-
+    
 }
