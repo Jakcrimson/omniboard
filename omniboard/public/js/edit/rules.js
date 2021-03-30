@@ -470,6 +470,7 @@ function addAction(x) {
         "<input type='text' id='" + x + "nameText" + numberA[x] + "' name='search'/><br>" +
         "<label for='action'> action :</label><br>" +
         "<select id='" + x + "selectAction" + numberA[x] + "' name='loop1' onclick=updateChooseAction(" + numberA[x] + "," + x + ")>" +
+        //ajouter un dropdown pour les conditions praril avec condition_block_name
         "<option name=action_block_name value=action_block_name >action_block_name </option>" +
         "<option name=play value=play >play </option>" +
         "<option name=flash value=flash >flash </option>" +
@@ -616,8 +617,4 @@ function addRuleListener(x) {
             //the rule is shown
         });
     }
-}
-
-function importRules() {
-
 }
