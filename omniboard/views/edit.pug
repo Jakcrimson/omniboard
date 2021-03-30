@@ -22,7 +22,7 @@ body(onload='init();initRules()')
         input.menu(type='button' value='Save' onclick='downloadJson()')
         input#img.inputfile(type='file' name='img' accept='image/*' onchange='submitImg()')
         label.menu(for='img') Load background
-        input#rules.inputfile(type='file' name='rules' accept='x-json/*' onchange='importFile()')
+        input#rules.inputfile(type='file' name='rules' accept='x-json/*' onchange='getRulesFromFile()')
         label.menu(for='rules') Import rules
         input.menu(type='button' value='Submit' onclick='submitImg()')
         input.menu(type='button' value='Quit')
