@@ -95,7 +95,7 @@
     color: #4158d0;
 }
 
-input[type="checkbox"] {
+#root>input[type="checkbox"] {
     display: none;
 }
 
@@ -216,7 +216,6 @@ input[type="checkbox"] {
     background-color: white;
     color: black;
     text-align: center;
-    align: center;
     width: 150px;
     height: 25px;
     margin-top: 10px;
@@ -237,7 +236,6 @@ input[type="checkbox"] {
     height: 25px;
     cursor: pointer;
     text-align: center;
-    align: center;
     border: 2px solid rgb(175, 75, 200);
     background-color: white;
     border-radius: 8px;
@@ -252,4 +250,23 @@ input[type="checkbox"] {
     overflow: hidden;
     position: absolute;
     z-index: -1;
+}
+
+#checkboxLabel{
+    width: 150px;
+    height: 25px;
+    cursor: pointer;
+    text-align: center;
+    margin-left: auto;
+    margin-right: auto;
+    display:initial;
+    margin-top: 10px;
+    overflow: hidden;
+    position: absolute;
+}
+
+#checkboxBg{
+    margin-left: 85px;
+    overflow: hidden;
+    display:initial;
 }

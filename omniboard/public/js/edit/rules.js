@@ -12,23 +12,22 @@ var listAct = [
 var blockList = JSON.parse(window.localStorage.getItem("blockList"))
 
 if (blockList == undefined) {
-    blockList = {
-        rules: [{
-            'type': 'logical_block',
-            'name': '2nd_bonus',
-            'conditions': [
-                [{
-                    'name': 'condName1',
-                    'input': 'conditional_block',
-                    'operation': 'not_equals',
-                    'value': 'condition1'
-                }, {
-                    "name": "lane a is down",
-                    "input": "variable",
-                    "operation": "value_changed",
-                    "value": "51"
-                }],
-                [{
+    blockList = {        
+        rules:[{
+                'type': 'logical_block',
+                'name': '2nd_bonus',
+                'conditions': [[{
+                        'name': 'condName1',
+                        'input': 'conditional_block',
+                        'operation': 'not_equals',
+                        'value': 'condition1'
+                    }, {
+                        "name": "lane a is down",
+                        "input": "variable",
+                        "operation": "value_changed",
+                        "value": "51"
+                    }],[
+                    {
                         "name": "lane b is down",
                         "input": "input",
                         "operation": "equals",
@@ -74,15 +73,18 @@ if (blockList == undefined) {
                 //     }
                 // ]
             ]
-        }]
-
+        }],
+        image: '/images/pinball_top_view.jpg'
     };
     window.localStorage.setItem("blockList", JSON.stringify(blockList));
 }
 
-function initRules() {
-    console.log('initializing the rules . . . ')
-    for (var i = 0; i < blockList.rules.length; i++) {
+function initJson(){
+
+    if(blockList.image!=null) document.getElementById('image').src = blockList.image
+
+    console.log('initiation des rules . . . ')
+    for(var i = 0; i<blockList.rules.length; i++){
         addRule()
         document.getElementById('type' + i).setAttribute('value', blockList.rules[i].type)
         document.getElementById('name' + i).setAttribute('value', blockList.rules[i].name)
@@ -590,5 +592,5 @@ function addRuleListener(x) {
 }
 
 function importRules() {
-
+    
 }

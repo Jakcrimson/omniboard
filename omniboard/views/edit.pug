@@ -8,7 +8,7 @@ head
   script(type='text/javascript' src='/js/edit/edit.js')
   script(src='https://kit.fontawesome.com/a076d05399.js', type='text/javascript')
   
-body(onload='init();initRules()')
+body(onload='init();initJson()')
   div#main
       #infoDraggable.draggable(style='display: inline-block; vertical-align: middle; padding: 5px; top: 20px; left: 20px;')
           #infoDraggableHandle.handle Info
@@ -19,13 +19,13 @@ body(onload='init();initRules()')
           include rule.pug
       #d1
         p  File :
-        input.menu(type='button' value='Save' onclick='downloadJson()')
         input#img.inputfile(type='file' name='img' accept='image/*' onchange='submitImg()')
         label.menu(for='img') Load background
-        input#rules.inputfile(type='file' name='rules' accept='x-json/*' onchange='getRulesFromFile()')
-        label.menu(for='rules') Import rules
-        input.menu(type='button' value='Submit' onclick='submitImg()')
-        input.menu(type='button' value='Quit')
+        input#importRules.inputfile(type='file' name='rules' accept='json/*' onchange='importFile()')
+        label.menu(for='importRules') Import rules
+        label#checkboxLabel(for='checkboxBg') export image
+        input.menu#checkboxBg(type='checkbox')
+        input.menu(type='button' value='Export rules' onclick='downloadJson()')
         p  Rules : 
         input.menu(type='button' value='Add')
         input.menu(type='button' value='Edit')

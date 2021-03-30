@@ -14,6 +14,8 @@ var dragItem; // currently dragged item
 var nameImage; // name of the image fetched when called
 var itemId; // id concatenated to the item's name to distinguish 2 items beonging to the same type
 var rulesJSON; // var containing the rules, it is to be exported and saved in the local storage during the editing.
+var img; //current image in the use
+
 /**
  * This function is used to initiate the board and the frames on the right and left side of the editing page.
  * It adds the listeners to the components and sets up the parent nodes (the information panels and the rule panels)
@@ -120,16 +122,31 @@ function addItem(name) {
  * Download the rules file 
  */
 function downloadJson() {
-    if (confirm('You will download a save on your computer')) {
-        var dataStr = "data:text/json;charset=utf-8," + encodeURIComponent(window.localStorage.getItem("blockList"));
-        var downloadAnchorNode = document.createElement('a');
-        downloadAnchorNode.setAttribute("href", dataStr);
-        downloadAnchorNode.setAttribute("download", "rules.json");
-        document.body.appendChild(downloadAnchorNode);
-        downloadAnchorNode.click();
-        downloadAnchorNode.remove();
+    if(document.getElementById('checkboxBg').checked){
+        if (confirm('You will download a save on your computer with an image')) {
+            var dataStr = "data:text/json;charset=utf-8," + encodeURIComponent(window.localStorage.getItem("blockList"));
+            var downloadAnchorNode = document.createElement('a');
+            downloadAnchorNode.setAttribute("href", dataStr);
+            downloadAnchorNode.setAttribute("download", "rules.json");
+            document.body.appendChild(downloadAnchorNode);
+            downloadAnchorNode.click();
+            downloadAnchorNode.remove();
+        }
+    } else {
+        if (confirm('You will download a save on your computer')) {
+            var blocklist = JSON.parse(window.localStorage.getItem("blockList"))
+            blocklist.image = null
+            var dataStr = "data:text/json;charset=utf-8," + encodeURIComponent(JSON.stringify(blocklist));
+            var downloadAnchorNode = document.createElement('a');
+            downloadAnchorNode.setAttribute("href", dataStr);
+            downloadAnchorNode.setAttribute("download", "rules.json");
+            document.body.appendChild(downloadAnchorNode);
+            downloadAnchorNode.click();
+            downloadAnchorNode.remove();
+        }
     }
 }
+
 
 /**
  * This function is used to display informations.
@@ -281,12 +298,20 @@ function submitImg() {
         reader.onload = function(e) {
             document.getElementById('image').src = e.target.result;
             fichierSelectionne.onload = resize;
+            img = e.target.result
+
+            blocklist = JSON.parse(window.localStorage.getItem("blockList"))
+            blockList.image = e.target.result
+            window.localStorage.setItem("blockList", JSON.stringify(blockList));
         }
 
         reader.readAsDataURL(document.getElementById('img').files[0]);
 
     }
+    
+    
 }
+
 
 /**
  * This function is use to update the name of the image when the file is uploaded.
@@ -315,15 +340,16 @@ function hidePanels() {
 }
 
 function importFile() {
-    var importedFile = document.getElementById('rules').files[0];
-    var fileContent = null;
-    var reader = new FileReader();
-    reader.onload = function() {
-        fileContent = JSON.parse(reader.result);
-        console.log(fileContent);
-        rulesJSON = fileContent;
-        //vérifier la structure du JSON (si c'est un tableau de conditions etc.)
+    if (document.getElementById('importRules').files && document.getElementById('importRules').files[0]) {
+        var reader = new FileReader();
 
-    };
-    reader.readAsText(importedFile);
+        reader.onload = function(e) {
+            blockList = JSON.parse(e.target.result)
+            window.localStorage.setItem("blockList", JSON.stringify(blockList));
+            initJson()
+        }
+
+        reader.readAsText(document.getElementById('importRules').files[0]);
+
+    }
 }
