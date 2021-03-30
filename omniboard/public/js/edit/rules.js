@@ -245,30 +245,52 @@ function updateInput(x, nbRule) {
     }
 }
 
-function updateChooseAction(x, nbRule) {
-    console.log("x : " + x);
-    console.log("nbRule : " + nbRule);
-    if (document.getElementById(nbRule + 'selectAction' + x).value == "action_block_name") {
-        document.getElementById(nbRule + 'actionBlock' + x).disabled = false;
-        document.getElementById(nbRule + 'actionText' + x).disabled = false;
+function updateChooseAction(x, nbRule, y) {
+    if(y != undefined) {
+        if (document.getElementById(nbRule + 'selectAction' + x + y).value == "action_block_name") {
+            document.getElementById(nbRule + 'actionBlock' + x + y).disabled = false;
+            document.getElementById(nbRule + 'actionText' + x + y).disabled = false;
+        } else {
+            document.getElementById(nbRule + 'actionBlock' + x + y).disabled = true;
+            document.getElementById(nbRule + 'actionText' + x + y).disabled = true;
+        }
     } else {
-        document.getElementById(nbRule + 'actionBlock' + x).disabled = true;
-        document.getElementById(nbRule + 'actionText' + x).disabled = true;
+        if (document.getElementById(nbRule + 'selectAction' + x).value == "action_block_name") {
+            document.getElementById(nbRule + 'actionBlock' + x).disabled = false;
+            document.getElementById(nbRule + 'actionText' + x).disabled = false;
+        } else {
+            document.getElementById(nbRule + 'actionBlock' + x).disabled = true;
+            document.getElementById(nbRule + 'actionText' + x).disabled = true;
+        }
     }
 }
 
-function updateValueAction(x, nbRule) {
-    console.log("x : " + x);
-    console.log("nbRule : " + nbRule);
-    if (document.getElementById(nbRule + 'selectValue' + x).value == "file_name" ||
-        document.getElementById(nbRule + 'selectValue' + x).value == "value" ||
-        document.getElementById(nbRule + 'selectValue' + x).value == "variable" ||
-        document.getElementById(nbRule + 'selectValue' + x).value == "formula") {
+function updateValueAction(x, nbRule, y) {
+    if(y != undefined) {
+        if (document.getElementById(nbRule + 'selectValue' + x + y).value == "file_name" ||
+            document.getElementById(nbRule + 'selectValue' + x + y).value == "value" ||
+            document.getElementById(nbRule + 'selectValue' + x + y).value == "variable" ||
+            document.getElementById(nbRule + 'selectValue' + x + y).value == "formula") {
 
-        document.getElementById(nbRule + 'inputValue' + x).disabled = false;
+            document.getElementById(nbRule + 'inputValue' + x + y).disabled = false;
+        } else {
+            document.getElementById(nbRule + 'inputValue' + x + y).disabled = true;
+        }
     } else {
-        document.getElementById(nbRule + 'inputValue' + x).disabled = true;
+        if (document.getElementById(nbRule + 'selectValue' + x).value == "file_name" ||
+            document.getElementById(nbRule + 'selectValue' + x).value == "value" ||
+            document.getElementById(nbRule + 'selectValue' + x).value == "variable" ||
+            document.getElementById(nbRule + 'selectValue' + x).value == "formula") {
+
+            document.getElementById(nbRule + 'inputValue' + x).disabled = false;
+        } else {
+            document.getElementById(nbRule + 'inputValue' + x).disabled = true;
+        }
     }
+    
+}
+function updateNameAct(rule, act) {
+    document.getElementById('accordionA' + rule + act).innerHTML = document.getElementById(rule + 'nameText' + act).value
 }
 
 function updateNameCond(rule, cond) {
@@ -440,7 +462,7 @@ function addAction(x) {
         "<button for='name' onClick='del(" + x + ", " + listAct[x][numberA[x]] + ")'> delete </button><br>" +
         "<div class='act" + x + "'>" +
         "<label for='name'> name :</label><br>" +
-        "<input type='text' id='" + x + "nameText" + numberA[x] + "' name='search'/><br>" +
+        "<input type='text' id='" + x + "nameText" + numberA[x] + "' name='search' onchange='updateNameAct(" + x + "," + numberA[x] + ")'/><br>" +
         "<label for='action'> action :</label><br>" +
         "<select id='" + x + "selectAction" + numberA[x] + "' name='loop1' onclick=updateChooseAction(" + numberA[x] + "," + x + ")>" +
         "<option name=action_block_name value=action_block_name >action_block_name </option>" +
@@ -488,7 +510,7 @@ function addActionElement(x, act) {
         "<label for='name'> name :</label><br>" +
         "<input type='text' id='" + x + "nameText" + act + "" + listAct[x][act] + "' name='search'/><br>" +
         "<label for='action'> action :</label><br>" +
-        "<select id='" + x + "selectAction" + act + "" + listAct[x][act] + "' name='loop1' onclick=updateChooseAction(" + act + "" + listAct[x][act] + "," + x + ")>" +
+        "<select id='" + x + "selectAction" + act + "" + listAct[x][act] + "' name='loop1' onclick=updateChooseAction(" + act + "," + x + "," + listAct[x][act] + ")>" +
         "<option name=action_block_name value=action_block_name >action_block_name </option>" +
         "<option name=play value=play >play </option>" +
         "<option name=flash value=flash >flash </option>" +
@@ -506,7 +528,7 @@ function addActionElement(x, act) {
         "<label for='output'> output :</label><br>" +
         "<input type='text' id='" + x + "outputText" + act + "" + listAct[x][act] + "' name='search'/><br>" +
         "<label for='value'> value :</label><br>" +
-        "<select id='" + x + "selectValue" + act + "" + listAct[x][act] + "' name='loop2' onclick=updateValueAction(" + act + "" + listAct[x][act] + "," + x + ")>" +
+        "<select id='" + x + "selectValue" + act + "" + listAct[x][act] + "' name='loop2' onclick=updateValueAction(" + act + "," + x + "," + listAct[x][act] + ")>" +
         "<option name=value value='value'> value </option>" +
         "<option name=file_name value=file_name >file_name </option>" +
         "<option name=true value=true >true </option>" +
