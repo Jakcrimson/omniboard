@@ -273,27 +273,23 @@ function updateInput(x, nbRule) {
 }
 
 function updateChooseAction(x, nbRule, y) {
-    if(y != undefined) {
+    if (y != undefined) {
         if (document.getElementById(nbRule + 'selectAction' + x + y).value == "action_block_name") {
             document.getElementById(nbRule + 'actionBlock' + x + y).disabled = false;
-            document.getElementById(nbRule + 'actionText' + x + y).disabled = false;
         } else {
             document.getElementById(nbRule + 'actionBlock' + x + y).disabled = true;
-            document.getElementById(nbRule + 'actionText' + x + y).disabled = true;
         }
     } else {
         if (document.getElementById(nbRule + 'selectAction' + x).value == "action_block_name") {
             document.getElementById(nbRule + 'actionBlock' + x).disabled = false;
-            document.getElementById(nbRule + 'actionText' + x).disabled = false;
         } else {
             document.getElementById(nbRule + 'actionBlock' + x).disabled = true;
-            document.getElementById(nbRule + 'actionText' + x).disabled = true;
         }
     }
 }
 
 function updateValueAction(x, nbRule, y) {
-    if(y != undefined) {
+    if (y != undefined) {
         if (document.getElementById(nbRule + 'selectValue' + x + y).value == "file_name" ||
             document.getElementById(nbRule + 'selectValue' + x + y).value == "value" ||
             document.getElementById(nbRule + 'selectValue' + x + y).value == "variable" ||
@@ -314,8 +310,20 @@ function updateValueAction(x, nbRule, y) {
             document.getElementById(nbRule + 'inputValue' + x).disabled = true;
         }
     }
-    
+
 }
+
+function updateInputCondition(x, nbRule, y) {
+    if (y != undefined) {
+        if (document.getElementById(nbRule + 'inputLoop' + x + y).value == "conditionnal_block") {
+            document.getElementById(nbRule + 'inputText' + x + y).disabled = true;
+        } else {
+            document.getElementById(nbRule + 'inputText' + x + y).disabled = false;
+            document.getElementById(nbRule + 'conditionBlock' + x + y).disabled = true;
+        }
+    }
+}
+
 function updateNameAct(rule, act) {
     document.getElementById('accordionA' + rule + act).innerHTML = document.getElementById(rule + 'nameText' + act).value
 }
@@ -345,11 +353,13 @@ function addCondition(x) {
         "<label for='name'> name :</label><br>" +
         "<input id='" + x + "name" + numberC[x] + "' type='text' name='search' placeholder='Enter the name of the condition' onchange='updateNameCond(" + x + "," + numberC[x] + ")'/><br />" +
         "<label for='action'> input :</label><br>" +
-        "<select id='" + x + "inputLoop" + numberC[x] + "' name='loop1' onclick=updateInput(" + numberC[x] + "," + x + ")>" +
+        "<select id='" + x + "inputLoop" + numberC[x] + "' name='loop1' onclick=updateInput(" + numberC[x] + "," + x + ");updateInputCondition(" + cond + "," + x + "," + listCond[x][act] + ")>" +
         "<option name=input value=input>input</option>" +
         "<option name=conditional_block value=conditional_block>conditional_block</option>" +
         "<option name=variable value=variable>variable</option>" +
         "<option name=formula value=formula>formula</option></select><br>" +
+        "<select id='" + x + "conditionBlock" + numberC[x] + "' name='loop1'>" +
+        "<option value=choose>choose action block </option></select><br>" +
         "<input type='text' disabled=true id='" + x + "inputText" + numberC[x] + "' name='search'/><br>" +
         "<label for='name'> operation :</label><br>" +
         "<select id='" + x + "operationLoop" + numberC[x] + "' name='loop2'>" +
@@ -492,7 +502,6 @@ function addAction(x) {
         "<input type='text' id='" + x + "nameText" + numberA[x] + "' name='search' onchange='updateNameAct(" + x + "," + numberA[x] + ")'/><br>" +
         "<label for='action'> action :</label><br>" +
         "<select id='" + x + "selectAction" + numberA[x] + "' name='loop1' onclick=updateChooseAction(" + numberA[x] + "," + x + ")>" +
-        //ajouter un dropdown pour les conditions praril avec condition_block_name
         "<option name=action_block_name value=action_block_name >action_block_name </option>" +
         "<option name=play value=play >play </option>" +
         "<option name=flash value=flash >flash </option>" +
@@ -506,7 +515,6 @@ function addAction(x) {
         "<option name=reset value=reset >reset </option></select><br>" +
         "<select id='" + x + "actionBlock" + numberA[x] + "' name='loop1'>" +
         "<option value=choose>choose action block </option></select><br>" +
-        "<input type='text' id='" + x + "actionText" + numberA[x] + "' name='search'/><br>" +
         "<label for='output'> output :</label><br>" +
         "<input type='text' id='" + x + "outputText" + numberA[x] + "' name='search'/><br>" +
         "<label for='value'> value :</label><br>" +
@@ -552,7 +560,6 @@ function addActionElement(x, act) {
         "<option name=reset value=reset >reset </option></select><br>" +
         "<select disabled=true id='" + x + "actionBlock" + act + "" + listAct[x][act] + "' name='loop1'>" +
         "<option value=choose>choose action block </option></select><br>" +
-        "<input type='text' disabled=true id='" + x + "actionText" + act + "" + listAct[x][act] + "' name='search'/><br>" +
         "<label for='output'> output :</label><br>" +
         "<input type='text' id='" + x + "outputText" + act + "" + listAct[x][act] + "' name='search'/><br>" +
         "<label for='value'> value :</label><br>" +
