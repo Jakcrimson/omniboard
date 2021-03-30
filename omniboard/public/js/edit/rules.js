@@ -264,14 +264,6 @@ function getInputFromCond(cond, rule) {
     window.localStorage.setItem("blockList", JSON.stringify(blockList));
 }
 
-function updateInput(x, nbRule) {
-    if (document.getElementById(nbRule + 'inputLoop' + x).value == "other") {
-        document.getElementById(nbRule + 'inputText' + x).disabled = false
-    } else {
-        document.getElementById(nbRule + 'inputText' + x).disabled = true
-    }
-}
-
 function updateChooseAction(x, nbRule, y) {
     if (y != undefined) {
         if (document.getElementById(nbRule + 'selectAction' + x + y).value == "action_block_name") {
@@ -315,12 +307,22 @@ function updateValueAction(x, nbRule, y) {
 
 function updateInputCondition(x, nbRule, y) {
     if (y != undefined) {
-        if (document.getElementById(nbRule + 'inputLoop' + x + y).value == "conditionnal_block") {
+        if (document.getElementById(nbRule + 'inputLoop' + x + y).value == "conditional_block") {
             document.getElementById(nbRule + 'inputText' + x + y).disabled = true;
+            document.getElementById(nbRule + 'conditionBlock' + x + y).disabled = false;
         } else {
             document.getElementById(nbRule + 'inputText' + x + y).disabled = false;
             document.getElementById(nbRule + 'conditionBlock' + x + y).disabled = true;
         }
+    } else {
+        if (document.getElementById(nbRule + 'inputLoop' + x).value == "conditional_block") {
+            document.getElementById(nbRule + 'inputText' + x).disabled = true;
+            document.getElementById(nbRule + 'conditionBlock' + x).disabled = false;
+        } else {
+            document.getElementById(nbRule + 'inputText' + x).disabled = false;
+            document.getElementById(nbRule + 'conditionBlock' + x).disabled = true;
+        }
+
     }
 }
 
@@ -353,12 +355,12 @@ function addCondition(x) {
         "<label for='name'> name :</label><br>" +
         "<input id='" + x + "name" + numberC[x] + "' type='text' name='search' placeholder='Enter the name of the condition' onchange='updateNameCond(" + x + "," + numberC[x] + ")'/><br />" +
         "<label for='action'> input :</label><br>" +
-        "<select id='" + x + "inputLoop" + numberC[x] + "' name='loop1' onclick=updateInput(" + numberC[x] + "," + x + ");updateInputCondition(" + cond + "," + x + "," + listCond[x][act] + ")>" +
+        "<select id='" + x + "inputLoop" + numberC[x] + "' name='loop1' onclick=updateInputCondition(" + numberC[x] + "," + x + ")>" +
         "<option name=input value=input>input</option>" +
         "<option name=conditional_block value=conditional_block>conditional_block</option>" +
         "<option name=variable value=variable>variable</option>" +
         "<option name=formula value=formula>formula</option></select><br>" +
-        "<select id='" + x + "conditionBlock" + numberC[x] + "' name='loop1'>" +
+        "<select id='" + x + "conditionBlock" + numberC[x] + "' name='loop1' disabled=true>" +
         "<option value=choose>choose action block </option></select><br>" +
         "<input type='text' disabled=true id='" + x + "inputText" + numberC[x] + "' name='search'/><br>" +
         "<label for='name'> operation :</label><br>" +
@@ -385,11 +387,13 @@ function addConditionElement(x, cond) {
         "<label for='name'> name :</label><br>" +
         "<input id='" + x + "name" + cond + listCond[x][cond] + "' type='text' name='search' placeholder='Enter the name of the condition' /><br />" +
         "<label for='name'> input :</label><br>" +
-        "<select id='" + x + "inputLoop" + cond + listCond[x][cond] + "' name='loop1' onclick=updateInput(" + cond + "," + x + ")>" +
+        "<select id='" + x + "inputLoop" + cond + listCond[x][cond] + "' name='loop1' onclick=updateInputCondition(" + cond + "," + x + "," + listCond[x][cond] + ")>" +
         "<option name=input value=input>input</option>" +
         "<option name=conditional_block value=conditional_block>conditional_block</option>" +
         "<option name=variable value=variable>variable</option>" +
         "<option name=formula value=formula>formula</option></select><br>" +
+        "<select id='" + x + "conditionBlock" + cond + listCond[x][cond] + "' name='loop1' disabled=true>" +
+        "<option value=choose>choose action block </option></select><br>" +
         "<input type='text' disabled=true id='" + x + "inputText" + cond + listCond[x][cond] + "' name='search'/><br>" +
         "<label for='name'> operation :</label><br>" +
         "<select id='" + x + "operationLoop" + cond + listCond[x][cond] + "' name='loop2'>" +
