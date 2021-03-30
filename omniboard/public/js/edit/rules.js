@@ -12,22 +12,23 @@ var listAct = [
 var blockList = JSON.parse(window.localStorage.getItem("blockList"))
 
 if (blockList == undefined) {
-    blockList = {        
-        rules:[{
-                'type': 'logical_block',
-                'name': '2nd_bonus',
-                'conditions': [[{
-                        'name': 'condName1',
-                        'input': 'conditional_block',
-                        'operation': 'not_equals',
-                        'value': 'condition1'
-                    }, {
-                        "name": "lane a is down",
-                        "input": "variable",
-                        "operation": "value_changed",
-                        "value": "51"
-                    }],[
-                    {
+    blockList = {
+        rules: [{
+            'type': 'logical_block',
+            'name': '2nd_bonus',
+            'conditions': [
+                [{
+                    'name': 'condName1',
+                    'input': 'conditional_block',
+                    'operation': 'not_equals',
+                    'value': 'condition1'
+                }, {
+                    "name": "lane a is down",
+                    "input": "variable",
+                    "operation": "value_changed",
+                    "value": "51"
+                }],
+                [{
                         "name": "lane b is down",
                         "input": "input",
                         "operation": "equals",
@@ -75,12 +76,11 @@ if (blockList == undefined) {
     window.localStorage.setItem("blockList", JSON.stringify(blockList));
 }
 
-function initJson(){
-
-    if(blockList.image!=null) document.getElementById('image').src = blockList.image
+function initJson() {
+    if (blockList.image != null) document.getElementById('image').src = blockList.image
 
     console.log('initiation des rules . . . ')
-    for(var i = 0; i<blockList.rules.length; i++){
+    for (var i = 0; i < blockList.rules.length; i++) {
         addRule()
         document.getElementById('type' + i).setAttribute('value', blockList.rules[i].type)
         document.getElementById('name' + i).setAttribute('value', blockList.rules[i].name)
@@ -107,7 +107,6 @@ function initJson(){
             }
         }
     }
-
 }
 
 function getInput(x) {
@@ -145,6 +144,34 @@ function addRule() {
     addRuleListener();
 }
 
+function getActionName() {
+    var actionNames = [];
+    var cmpt = 0;
+    for (let i = 0; i < blockList.rules.length; i++) {
+        for (let j = 0; j < blockList.rules[i].actions.length; j++) {
+            for (let k = 0; k < blockList.rules[i].actions[j].length; k++) {
+                actionNames[cmpt] = blockList.rules[i].actions[j][k].name;
+                cmpt++;
+            }
+        }
+    }
+    return actionNames;
+}
+
+function getConditionNames() {
+    var conditionNames = [];
+    var cmpt = 0;
+    for (let i = 0; i < blockList.rules.length; i++) {
+        for (let j = 0; j < blockList.rules[i].conditions.length; j++) {
+            for (let k = 0; k < blockList.rules[i].conditions[j].length; k++) {
+                conditionNames[cmpt] = blockList.rules[i].conditions[j][k].name;
+                cmpt++;
+            }
+        }
+    }
+    return conditionNames;
+}
+
 function deleteRule(x) {
     if (document.getElementsByClassName("accordionR" + x) != undefined) {
         document.getElementById("Rule" + x).remove();
@@ -163,7 +190,7 @@ function getInputFromCond(cond, rule) {
         input = document.getElementById(rule + 'inputText' + cond)
     }
 
-    if(blockList.rules[rule].conditions[cond] == undefined) {
+    if (blockList.rules[rule].conditions[cond] == undefined) {
         blockList.rules[rule].conditions[cond] = []
     }
 
@@ -493,5 +520,5 @@ function addRuleListener(x) {
 }
 
 function importRules() {
-    
+
 }
