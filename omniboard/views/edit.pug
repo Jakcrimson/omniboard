@@ -25,11 +25,7 @@ body(onload='init();initJson()')
         input#importRules.inputfile(type='file' name='rules' accept='json/*' onchange='importFile()')
         label.menu(for='importRules') Import rules
         input.menu(type='button' value='Submit')
-        input.menu(type='button' value='Quit')
-        p  Rules : 
-        input.menu(type='button' value='Add')
-        input.menu(type='button' value='Edit')
-        input.menu(type='button' value='Delete' name='delete')
+        input.menu(type='button' value='Quit' href='/')
         p  Elements : 
         //#item
         input.elem(type='button' value='Add Bumper' onclick='addItem("b")')
