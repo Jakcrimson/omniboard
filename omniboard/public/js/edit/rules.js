@@ -39,36 +39,36 @@ if (blockList == undefined) {
                         "operation": "less_than",
                         "value": "down"
                     }
-                ]
-            ],
-            'actions': [
-                [{
-                        "name": "play bonus sound",
-                        "type": "sound",
-                        "operation": null,
-                        "value": "bonus.mp3"
-                    },
-                    {
-                        "name": "increase score by 1000",
-                        "type": "variable",
-                        "operation": "increase",
-                        "value": 1000
-                    }
+                    ]
                 ],
-                [{
-                        "name": "flash right lamps",
-                        "type": "action_block",
-                        "operation": null,
-                        "value": "flash_lamps_right"
-                    },
-                    {
-                        "name": "flash left lamps",
-                        "type": "action_block",
-                        "operation": null,
-                        "value": "flash_lamps_left"
-                    }
+                'actions': [
+                    [{
+                            "name": "play bonus sound",
+                            "type": "sound",
+                            "operation": null,
+                            "value": "bonus.mp3"
+                        },
+                        {
+                            "name": "increase score by 1000",
+                            "type": "variable",
+                            "operation": "increase",
+                            "value": 1000
+                        }
+                    ],
+                    [{
+                            "name": "flash right lamps",
+                            "type": "action_block",
+                            "operation": null,
+                            "value": "flash_lamps_right"
+                        },
+                        {
+                            "name": "flash left lamps",
+                            "type": "action_block",
+                            "operation": null,
+                            "value": "flash_lamps_left"
+                        }
+                    ]
                 ]
-            ]
         }],
         image: '/images/pinball_top_view.jpg'
     };
@@ -107,7 +107,6 @@ function initJson(){
             }
         }
     }
-
 }
 
 function getInput(x) {
@@ -130,7 +129,8 @@ function updateNameRule(rule) {
 
 function addRule() {
     d = document.getElementById('rule');
-    d.innerHTML += "<button class='accordionR' id='accordionR" + numberR + "' onclick='addRuleListener(" + numberR + ");getInput(" + numberR + ")'>" + 'Rule' + (numberR + 1) + "</button>" +
+    var l = document.createElement("rules" + numberR);
+    d.innerHTML += "<button class='accordionR' id='accordionR" + numberR + "' onclick='getInput(" + numberR + ")'>" + 'Rule' + (numberR + 1) + "</button>" +
         "<div class='panel1' id='Rule" + numberR + "'>" +
         "<button for='Delete' onClick='deleteRule(" + numberR + ")'> delete Rule</button><br>" +
         "<label for='type'> type :<br />" +
@@ -141,8 +141,9 @@ function addRule() {
         "<input class='elem' type='button' value='new conditions' onclick='addCondition(" + numberR + ")' />" +
         "<input class='elem' type='button' value='new actions' onclick='addAction(" + numberR + ")' />" +
         "</label>";
+    d.appendChild(l)
+    addRuleListener('accordionR');
     numberR += 1;
-    addRuleListener();
 }
 
 function deleteRule(x) {
@@ -247,7 +248,7 @@ function addCondition(x) {
 
     d = document.getElementById('Rule' + x);
     var l = document.createElement("conditions" + x);
-    l.innerHTML += "<button class='accordion' id='accordionC" + x + "" + numberC[x] + "' onclick=getInputFromCond(" + numberC[x] + "," + x + ");addListener()>" + 'Condition' + x + "." + (numberC[x] + 1) + "</button>" +
+    l.innerHTML += "<button class='accordion' id='accordionC" + x + "" + numberC[x] + "' onclick=getInputFromCond(" + numberC[x] + "," + x + ")>" + 'Condition' + x + "." + (numberC[x] + 1) + "</button>" +
         "<div class='panel' id='Condition" + x + numberC[x] + "'>" +
         "<button for='name' onClick='del(" + x + ", " + 1 + ")'> delete </button><br>" +
         "<div class='con" + x + "'>" +
@@ -273,8 +274,7 @@ function addCondition(x) {
         "<button for='name' onClick='delOneCond(" + x + ", " + listCond[x][numberC[x]] + ")'> delete Condition </button><br>" +
         "<label for='name'>-------------------------------------------------------</label><br>";
     d.appendChild(l);
-    console.log(numberC[x])
-    addListener();
+    addListener('accordionC' + x + "" + numberC[x]);
 }
 
 function addConditionElement(x, cond) {
@@ -333,7 +333,7 @@ function addAction(x) {
     console.log(listAct[x][numberA]);
     d = document.getElementById('Rule' + x);
     var l = document.createElement("actions" + x);
-    l.innerHTML += "<button class='accordion' id='accordionA" + x + "" + numberA[x] + "' onclick='addListener()'>" + 'Action' + x + "." + (numberA + 1) + "</button>" +
+    l.innerHTML += "<button class='accordion' id='accordionA" + x + "" + numberA[x] + "' onclick=>" + 'Action' + x + "." + (numberA + 1) + "</button>" +
         "<div class='panel' id='Action" + x + "'>" +
         "<button for='name' onClick='del(" + x + ", " + listAct[x][numberA] + ")'> delete </button><br>" +
         "<div class='act" + x + "'>" +
@@ -376,8 +376,8 @@ function addAction(x) {
         "<button for='name' onClick='delOneAct(" + x + ", " + listAct[x][numberA[x]] + ")'> delete Action </button><br>" +
         "<label for='name'>-------------------------------------------------------</label><br>";
     d.appendChild(l);
+    addListener('accordionA' + x + "" + numberA[x]);
     numberA += 1;
-    addListener();
 }
 
 function addActionElement(x) {
@@ -454,14 +454,9 @@ function del(x, y) {
 /**
  * Add EventListener in the list of rule for hide and show the rule element
  */
-function addListener() {
-    var acc = document.getElementsByClassName("accordion");
-    var i;
-
-    for (i = 0; i < acc.length; i++) {
-        acc[i].addEventListener("click", function() {
-            this.classList.toggle("view");
-            this.removeEventListener('click', arguments.callee, false);
+function addListener(id) {
+    document.getElementById(id).addEventListener("click", function() {
+            //this.classList.toggle("active");
             var panel = this.nextElementSibling;
             if (panel.style.maxHeight) {
                 console.log("enter");
@@ -469,16 +464,14 @@ function addListener() {
             } else {
                 panel.style.maxHeight = 100 + "%"
             }
+            console.log(document.getElementById(id))
         });
-    }
+        
 }
 
-function addRuleListener(x) {
-    var acc = document.getElementsByClassName("accordionR");
-    var i;
-
-    for (i = 0; i < acc.length; i++) {
-        acc[i].addEventListener("click", function() {
+function addRuleListener(id) {
+    for(let i=0;i<=numberR; i++){
+        document.getElementById(id + i).addEventListener("click", function() {
             this.classList.toggle("active");
             var panel = this.nextElementSibling;
             if (panel.style.maxHeight) {
@@ -486,10 +479,10 @@ function addRuleListener(x) {
             } else {
                 panel.style.maxHeight = 100 + "%"
             }
-            this.removeEventListener('click', arguments.callee, false); //because the listener is create when the rule is create and when
-            //the rule is shown
         });
     }
+    
+    
 }
 
 function importRules() {
