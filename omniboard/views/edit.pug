@@ -19,13 +19,17 @@ body(onload='init();initJson()')
           include rule.pug
       #d1
         p  File :
-        input.menu(type='button' value='Save' onclick='downloadJson()')
         input#img.inputfile(type='file' name='img' accept='image/*' onchange='submitImg()')
         label.menu(for='img') Load background
         input#importRules.inputfile(type='file' name='rules' accept='json/*' onchange='importFile()')
         label.menu(for='importRules') Import rules
-        input.menu(type='button' value='Submit')
-        input.menu(type='button' value='Quit' href='/')
+        label#checkboxLabel(for='checkboxBg') export image
+        input.menu#checkboxBg(type='checkbox')
+        input.menu(type='button' value='Export rules' onclick='downloadJson()')
+        p  Rules : 
+        input.menu(type='button' value='Add')
+        input.menu(type='button' value='Edit')
+        input.menu(type='button' value='Delete' name='delete')
         p  Elements : 
         //#item
         input.elem(type='button' value='Add Bumper' onclick='addItem("b")')

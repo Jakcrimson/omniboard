@@ -12,8 +12,7 @@ var listAct = [
 var blockList = JSON.parse(window.localStorage.getItem("blockList"))
 
 if (blockList == undefined) {
-    blockList = {
-        image: '/images/pinball_top_view.jpg',
+    blockList = {        
         rules:[{
                 'type': 'logical_block',
                 'name': '2nd_bonus',
@@ -70,15 +69,15 @@ if (blockList == undefined) {
                     }
                 ]
             ]
-        }]
-
+        }],
+        image: '/images/pinball_top_view.jpg'
     };
     window.localStorage.setItem("blockList", JSON.stringify(blockList));
 }
 
 function initJson(){
 
-    document.getElementById('image').src = blockList.image
+    if(blockList.image!=null) document.getElementById('image').src = blockList.image
 
     console.log('initiation des rules . . . ')
     for(var i = 0; i<blockList.rules.length; i++){

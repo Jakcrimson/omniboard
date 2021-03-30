@@ -122,14 +122,28 @@ function addItem(name) {
  * Download the rules file 
  */
 function downloadJson() {
-    if (confirm('You will download a save on your computer')) {
-        var dataStr = "data:text/json;charset=utf-8," + encodeURIComponent(window.localStorage.getItem("blockList"));
-        var downloadAnchorNode = document.createElement('a');
-        downloadAnchorNode.setAttribute("href", dataStr);
-        downloadAnchorNode.setAttribute("download", "rules.json");
-        document.body.appendChild(downloadAnchorNode);
-        downloadAnchorNode.click();
-        downloadAnchorNode.remove();
+    if(document.getElementById('checkboxBg').checked){
+        if (confirm('You will download a save on your computer with an image')) {
+            var dataStr = "data:text/json;charset=utf-8," + encodeURIComponent(window.localStorage.getItem("blockList"));
+            var downloadAnchorNode = document.createElement('a');
+            downloadAnchorNode.setAttribute("href", dataStr);
+            downloadAnchorNode.setAttribute("download", "rules.json");
+            document.body.appendChild(downloadAnchorNode);
+            downloadAnchorNode.click();
+            downloadAnchorNode.remove();
+        }
+    } else {
+        if (confirm('You will download a save on your computer')) {
+            var blocklist = JSON.parse(window.localStorage.getItem("blockList"))
+            blocklist.image = null
+            var dataStr = "data:text/json;charset=utf-8," + encodeURIComponent(JSON.stringify(blocklist));
+            var downloadAnchorNode = document.createElement('a');
+            downloadAnchorNode.setAttribute("href", dataStr);
+            downloadAnchorNode.setAttribute("download", "rules.json");
+            document.body.appendChild(downloadAnchorNode);
+            downloadAnchorNode.click();
+            downloadAnchorNode.remove();
+        }
     }
 }
 
