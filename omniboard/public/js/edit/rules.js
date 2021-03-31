@@ -155,7 +155,7 @@ function getInput(x) {
     var name = document.getElementById('name' + x).value
 
     if (blockList.rules[x] == undefined) {
-        blockList.rules.push({ 'name': name, 'type': type, 'conditions': [] })
+        blockList.rules.push({ 'name': name, 'type': type, 'conditions': [], 'actions': [] })
     } else {
         blockList.rules[x].name = name
         blockList.rules[x].type = type
@@ -378,7 +378,7 @@ function addCondition(x) {
         "<button for='name' onClick='delOneCond(" + x + ", " + listCond[x][numberC[x]] + ")'> delete Condition </button><br>" +
         "<label for='name'>-------------------------------------------------------</label><br>";
     d.appendChild(l);
-    addListener('accordionC' + x + "" + numberC[x]);
+    addListener("accordionC" + x + "" + numberC[x]);
 }
 
 function addConditionElement(x, cond) {
@@ -547,7 +547,7 @@ function addAction(x) {
 }
 
 function addActionElement(x, act) {
-    d = document.getElementById("Action" + x + act);
+    d = document.getElementById("Action" + x);
     var l = document.createElement("actions" + x);
     l.innerHTML += "<div class='act" + x + "'>" +
         "<label for='name'> name :</label><br>" +
@@ -620,7 +620,7 @@ function del(x, y) {
  */
 function addListener(id) {
     document.getElementById(id).addEventListener("click", function() {
-        //this.classList.toggle("active");
+        this.classList.toggle("active");
         var panel = this.nextElementSibling;
         if (panel.style.maxHeight) {
             panel.style.maxHeight = null;
@@ -629,7 +629,39 @@ function addListener(id) {
         }
         console.log(document.getElementById(id))
     });
+    for (let i = 0; i < numberR; i++) {
+        console.log(numberC[i])
+        for (let j=0; j<numberC[i].length; j++){
+            document.getElementById('accordionC' + i + numberC[j]).addEventListener("click", function() {
+                this.classList.toggle("active");
+                var panel = this.nextElementSibling;
+                if (panel.style.maxHeight) {
+                    panel.style.maxHeight = null;
+                } else {
+                    panel.style.maxHeight = 100 + "%"
+                }
+            });
+        }
+        
+    }
+}
 
+function addCondListener(rule) {
+    for (let i = 0; i < numberR; i++) {
+        console.log(numberC[i])
+        for (let j=0; j<numberC[i].length; j++){
+            document.getElementById(accordionC + i + numberC[j]).addEventListener("click", function() {
+                this.classList.toggle("active");
+                var panel = this.nextElementSibling;
+                if (panel.style.maxHeight) {
+                    panel.style.maxHeight = null;
+                } else {
+                    panel.style.maxHeight = 100 + "%"
+                }
+            });
+        }
+        
+    }
 }
 
 function addRuleListener(id) {
@@ -644,10 +676,4 @@ function addRuleListener(id) {
             }
         });
     }
-
-
-}
-
-function importRules() {
-
 }
