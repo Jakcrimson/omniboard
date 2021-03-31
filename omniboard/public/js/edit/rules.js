@@ -189,7 +189,7 @@ function addRule() {
     numberR += 1;
 }
 
-function getActionName() {
+function getActionNames() {
     var cmpt = 0;
     for (let i = 0; i < blockList.rules.length; i++) {
         for (let j = 0; j < blockList.rules[i].actions.length; j++) {
@@ -198,13 +198,12 @@ function getActionName() {
                 cmpt++;
             }
         }
+        var ret = "";
+        for (let i = 0; i < conditionNames.length; i++) {
+            ret += "<option value=" + actionNames[i] + " name=" + actionNames[i] + ">" + actionNames[i] + "</option>";
+        }
+        return ret;
     }
-    var ret = "";
-    for (let i = 0; i < conditionNames.length; i++) {
-        ret += "<option value=" + actionNames[i] + " name=" + actionNames[i] + ">" + actionNames[i] + "</option>";
-    }
-    console.log(conditionNames);
-    return ret;
 }
 
 function getConditionNames() {
@@ -216,14 +215,14 @@ function getConditionNames() {
                 cmpt++;
             }
         }
-    }
-    var ret = "";
-    for (let i = 0; i < conditionNames.length; i++) {
-        ret += "<option value=" + conditionNames[i] + " name=" + conditionNames[i] + ">" + conditionNames[i] + "</option>";
-    }
-    console.log(conditionNames);
-    return ret;
+        var ret = "";
+        for (let i = 0; i < conditionNames.length; i++) {
+            ret += "<option value=" + conditionNames[i] + " name=" + conditionNames[i] + ">" + conditionNames[i] + "</option>";
+        }
+        console.log(conditionNames);
+        return ret;
 
+    }
 }
 
 function updateConditionNames(x, nbRule, y) {
@@ -441,7 +440,7 @@ function addCondition(x) {
         "<option name=conditional_block value=conditional_block>conditional_block</option>" +
         "<option name=variable value=variable>variable</option>" +
         "<option name=formula value=formula>formula</option></select><br>" +
-        "<select id='" + x + "conditionBlock" + numberC[x] + "' onclick= updateConditionNames(" + x + "," + numberC[x] + ") name='loop1' disabled=true>" +
+        "<select id='" + x + "conditionBlock" + numberC[x] + "' onclick= updateConditionNames(" + x + "," + numberC[x] + ") name='loop1' disabled=false>" +
         getConditionNames() + "</select><br>" +
         "<input type='text' disabled=true id='" + x + "inputText" + numberC[x] + "' name='search'/><br>" +
         "<label for='name'> operation :</label><br>" +
