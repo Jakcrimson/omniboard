@@ -83,6 +83,7 @@ if (blockList == undefined) {
                 ]
             ]
         }],
+        elements: [],
         image: '/images/pinball_top_view.jpg'
     };
     window.localStorage.setItem("blockList", JSON.stringify(blockList));
@@ -125,7 +126,10 @@ function initJson() {
         }
         if(blockList.rules[i].actions != undefined) {
             for (let j = 0; j < blockList.rules[i].actions.length; j++) {
+                
                 addAction(i)
+                console.log(blockList.rules[i].actions[j][0].action)
+                console.log(document.getElementById(i + 'selectAction' + j).options[blockList.rules[i].actions[j][0].action])
                 var action = blockList.rules[i].actions[j][0]
                 if (action != undefined) {
                     document.getElementById(i + 'nameText' + j).setAttribute('value', action.name)
@@ -158,6 +162,11 @@ function initJson() {
                 }
             }
         }
+    }
+    //initialisation des éléments
+    for (let i = 0; i < blockList.elements.length; i++) {
+        addItem(blockList.elements[i].name, blockList.elements[i].x, blockList.elements[i].y)
+        console.log('ALLO')
     }
 }
 
@@ -333,7 +342,6 @@ function deleteRule(x) {
 }
 
 function getInputFromCond(cond, rule) {
-
     var name = document.getElementById(rule + 'name' + cond)
     var input = document.getElementById(rule + 'inputLoop' + cond)
     var operation = document.getElementById(rule + 'operationLoop' + cond)
@@ -463,7 +471,7 @@ function addCondition(x) {
 
     d = document.getElementById('Rule' + x);
     var l = document.createElement("conditions" + x);
-    l.innerHTML += "<button class='accordion' id='accordionC" + x + "" + numberC[x] + "' onclick='getInputFromCond(" + numberC[x] + "," + x + ")'>" + 'Condition' + x + "." + (numberC[x] + 1) + "</button>" +
+    l.innerHTML += "<button class='accordion' id='accordionC" + x + "" + numberC[x] + "' onclick=getInputFromCond(" + numberC[x] + "," + x + ")>" + 'Condition' + x + "." + (numberC[x] + 1) + "</button>" +
         "<div class='panel' id='Condition" + x + numberC[x] + "'>" +
         "<button for='name' onClick='del(" + numberC[x] + ", " + x + "," + 1 + ")'> delete </button><br>" +
         "<div class='"+ x + "con" + numberC[x] + "'>" +
@@ -551,7 +559,6 @@ function delOneCond(x, nbRule, y) {
 }
 
 function getInputFromAct(cond, rule) {
-
     var name = document.getElementById(rule + 'nameText' + cond)
     var action = document.getElementById(rule + 'selectAction' + cond)
     var output = document.getElementById(rule + 'outputText' + cond)
@@ -646,7 +653,7 @@ function addAction(x) {
         "<option name=down value=down >down </option>" +
         "<option name=reset value=reset >reset </option></select><br>" +
         "<select id='" + x + "actionBlock" + numberA[x] + "' onclick= updateActionNames(" + x + "," + numberA[x] + ") name='loop1'>" +
-        "<option value=choose>choose action block </option></select><br>" +
+        "<option value=play>choose action block </option></select><br>" +
         "<label for='output'> output :</label><br>" +
         "<input type='text' id='" + x + "outputText" + numberA[x] + "' name='search'/><br>" +
         "<label for='value'> value :</label><br>" +
@@ -692,7 +699,7 @@ function addActionElement(x, act) {
         "<option name=down value=down >down </option>" +
         "<option name=reset value=reset >reset </option></select><br>" +
         "<select disabled=true id='" + x + "actionBlock" + act + "" + listAct[x][act] + "' onclick= updateActionNames(" + act + "," + x + "," + listAct[x][act] + ") name='loop1'>" +
-        "<option value=choose>choose action block </option></select><br>" +
+        "<option value=play>choose action block </option></select><br>" +
         "<label for='output'> output :</label><br>" +
         "<input type='text' id='" + x + "outputText" + act + "" + listAct[x][act] + "' name='search'/><br>" +
         "<label for='value'> value :</label><br>" +
@@ -829,6 +836,7 @@ function addListener() {
                             } else {
                                 panel.style.maxHeight = 100 + "%"
                             }
+                            getInputFromCond(i,id)
                         };
                     }
                 }
@@ -845,6 +853,7 @@ function addListener() {
                             } else {
                                 panel.style.maxHeight = 100 + "%"
                             }
+                            getInputFromAct(i,id)
                         };
                     }
                 }
