@@ -184,7 +184,7 @@ function updateNameRule(rule) {
 function addRule() {
     d = document.getElementById('rule');
     var l = document.createElement("rules" + numberR);
-    d.innerHTML += "<button class='accordionR' id='accordionR" + numberR + "' onclick='getInput(" + numberR + ")'>" + 'Rule' + (numberR + 1) + "</button>" +
+    d.innerHTML += "<button class='accordionR' id='accordionR" + numberR + "' onclick='addListener("+numberR+");getInput(" + numberR + ")'>" + 'Rule' + (numberR + 1) + "</button>" +
         "<div class='panel1' id='Rule" + numberR + "'>" +
         "<button for='Delete' onClick='deleteRule(" + numberR + ")'> delete Rule</button><br>" +
         "<label for='type'> type :<br />" +
@@ -197,6 +197,7 @@ function addRule() {
         "</label>";
     d.appendChild(l)
     addRuleListener('accordionR');
+    addListener();
     numberR += 1;
 }
 
@@ -219,9 +220,15 @@ function getActionNames() {
 function getConditionNames() {
     var cmpt = 0;
     for (let i = 0; i < blockList.rules.length; i++) {
-        for (let j = 0; j < blockList.rules[i].conditions.length; j++) {
-                conditionNames[cmpt] = blockList.rules[i].conditions[j][0].name;
-                cmpt++;
+        if(blockList.rules[i].conditions != undefined) {
+            for (let j = 0; j < blockList.rules[i].conditions.length; j++) {
+                for (let k = 0; k < blockList.rules[i].conditions[j].length; k++) {
+                    conditionNames[cmpt] = blockList.rules[i].conditions[j][k].name;
+                    cmpt++;
+                }
+            }
+        } else {
+            conditionNames[cmpt] = "void";
         }
     }
     var ret = "";
@@ -335,7 +342,9 @@ function getInputFromCond(cond, rule) {
     if (input.value == "other") {
         input = document.getElementById(rule + 'inputText' + cond)
     }
-
+    if(blockList.rules[rule] == undefined) {
+        blockList.rules[rule] = []
+    }
     if (blockList.rules[rule].conditions == undefined) {
         blockList.rules[rule].conditions = []
     }
@@ -454,7 +463,7 @@ function addCondition(x) {
 
     d = document.getElementById('Rule' + x);
     var l = document.createElement("conditions" + x);
-    l.innerHTML += "<button class='accordion' id='accordionC" + x + "" + numberC[x] + "' onclick=getInputFromCond(" + numberC[x] + "," + x + ")>" + 'Condition' + x + "." + (numberC[x] + 1) + "</button>" +
+    l.innerHTML += "<button class='accordion' id='accordionC" + x + "" + numberC[x] + "' onclick='getInputFromCond(" + numberC[x] + "," + x + ")'>" + 'Condition' + x + "." + (numberC[x] + 1) + "</button>" +
         "<div class='panel' id='Condition" + x + numberC[x] + "'>" +
         "<button for='name' onClick='del(" + numberC[x] + ", " + x + "," + 1 + ")'> delete </button><br>" +
         "<div class='"+ x + "con" + numberC[x] + "'>" +
@@ -482,7 +491,8 @@ function addCondition(x) {
         "<button for='name' onClick='delOneCond(" + numberC[x] + ", " + x + ")'> delete Condition </button><br>" +
         "<label for='name'>-------------------------------------------------------</label><br>";
     d.appendChild(l);
-    addListener("accordionC" + x + "" + numberC[x]);
+    getInputFromCond(numberC[x], x)
+    addListener();
 }
 
 function addConditionElement(x, cond) {
@@ -514,6 +524,7 @@ function addConditionElement(x, cond) {
         "<label for='name'>-------------------------------------------------------</label><br>";
     d.appendChild(l);
     listCond[x][cond] += 1;
+    addListener();
 }
 
 function delOneCond(x, nbRule, y) {
@@ -615,7 +626,7 @@ function addAction(x) {
     }
     d = document.getElementById('Rule' + x);
     var l = document.createElement("actions" + x);
-    l.innerHTML += "<button class='accordion' id='accordionA" + x + "" + numberA[x] + "' onclick=getInputFromAct(" + numberA[x] + "," + x + ")>" + 'Action' + x + "." + (numberA[x] + 1) + "</button>" +
+    l.innerHTML += "<button class='accordion' id='accordionA" + x + "" + numberA[x] + "' onclick='getInputFromAct(" + numberA[x] + "," + x + ")'>" + 'Action' + x + "." + (numberA[x] + 1) + "</button>" +
         "<div class='panel' id='Action" + x + numberA[x] +"'>" +
         "<button for='name' onClick='del(" + numberA[x] + ", " + x + "," + 0 + ")'> delete </button><br>" +
         "<div class='" + x +"act" + numberA[x] + "'>" +
@@ -657,7 +668,8 @@ function addAction(x) {
         "<button for='name' onClick='delOneAct(" + numberA[x] + ", " + x + ")'> delete Action </button><br>" +
         "<label for='name'>-------------------------------------------------------</label><br>";
     d.appendChild(l);
-    addListener('accordionA' + x + "" + numberA[x]);
+    getInputFromAct(numberA[x], x)
+    addListener();
 }
 
 function addActionElement(x, act) {
@@ -703,6 +715,7 @@ function addActionElement(x, act) {
         "<label for='name'>-------------------------------------------------------</label><br>";
     d.appendChild(l);
     listAct[x][act] += 1;
+    addListener();
 }
 
 function delOneAct(x, nbRule, y) {
@@ -758,9 +771,7 @@ function del(x, nbRule, type) {
                 if(listAct[nbRule][x] > 0) {
                     listAct[nbRule][x] -= 1;
                 }
-                if(numberA[nbRule] > 0) {
-                    numberA[nbRule] -= 1;
-                }
+                numberA[nbRule] -= 1;
             }
         }
     } else {
@@ -802,54 +813,50 @@ function del(x, nbRule, type) {
 /**
  * Add EventListener in the list of rule for hide and show the rule element
  */
-function addListener(id) {
-    document.getElementById(id).addEventListener("click", function() {
-        this.classList.toggle("active");
-        var panel = this.nextElementSibling;
-        if (panel.style.maxHeight) {
-            panel.style.maxHeight = null;
-        } else {
-            panel.style.maxHeight = 100 + "%"
-        }
-    });
-    for (let i = 0; i < numberR; i++) {
-        console.log(numberC[i])
-        for (let j=0; j<numberC[i].length; j++){
-            document.getElementById('accordionC' + i + numberC[j]).addEventListener("click", function() {
-                this.classList.toggle("active");
-                var panel = this.nextElementSibling;
-                if (panel.style.maxHeight) {
-                    panel.style.maxHeight = null;
-                } else {
-                    panel.style.maxHeight = 100 + "%"
+function addListener() {
+    if(blockList.rules != undefined) {
+        let ruleSize = blockList.rules.length;
+        for(let id = 0; id < ruleSize; id++) {
+            if(blockList.rules[id].conditions != undefined) {
+                let size = blockList.rules[id].conditions.length;
+                for(let i = 0; i < size; i++) {
+                    if(document.getElementById("accordionC" + id + "" + i) != null) {
+                        document.getElementById("accordionC" + id + "" + i).onclick = function() {
+                            this.classList.toggle("view");
+                            var panel = this.nextElementSibling;
+                            if (panel.style.maxHeight) {
+                                panel.style.maxHeight = null;
+                            } else {
+                                panel.style.maxHeight = 100 + "%"
+                            }
+                        };
+                    }
                 }
-            });
-        }
-        
-    }
-}
-
-function addCondListener(rule) {
-    for (let i = 0; i < numberR; i++) {
-        console.log(numberC[i])
-        for (let j=0; j<numberC[i].length; j++){
-            document.getElementById(accordionC + i + numberC[j]).addEventListener("click", function() {
-                this.classList.toggle("active");
-                var panel = this.nextElementSibling;
-                if (panel.style.maxHeight) {
-                    panel.style.maxHeight = null;
-                } else {
-                    panel.style.maxHeight = 100 + "%"
+            }
+            if(blockList.rules[id].actions != undefined) {
+                let size = blockList.rules[id].actions.length;
+                for(let i = 0; i < size; i++) {
+                    if(document.getElementById("accordionA" + id + "" + i) != null) {
+                        document.getElementById("accordionA" + id + "" + i).onclick = function() {
+                            this.classList.toggle("view");
+                            var panel = this.nextElementSibling;
+                            if (panel.style.maxHeight) {
+                                panel.style.maxHeight = null;
+                            } else {
+                                panel.style.maxHeight = 100 + "%"
+                            }
+                        };
+                    }
                 }
-            });
+            }
         }
-        
     }
+    console.log('miam :eyes:')
 }
 
 function addRuleListener(id) {
     for (let i = 0; i <= numberR; i++) {
-        document.getElementById(id + i).addEventListener("click", function() {
+        document.getElementById(id + i).onclick = function() {
             this.classList.toggle("active");
             var panel = this.nextElementSibling;
             if (panel.style.maxHeight) {
@@ -857,7 +864,7 @@ function addRuleListener(id) {
             } else {
                 panel.style.maxHeight = 100 + "%"
             }
-        });
+        };
     }
 
 }
