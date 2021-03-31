@@ -115,14 +115,19 @@ function addItem(name, x, y) {
     console.log("Current item dragged is :" + name);
     var list = JSON.parse(window.localStorage.getItem("blockList"));
     var alreadyDefined = false
+    var index
     for(let i=0; i<list.elements.length; i++){
-        if(list.elements[i].itemId != undefined) alreadyDefined = true
-    }
+        if(list.elements[i].itemId == itemId) {
+            alreadyDefined = true
+            index = i
+        }
+    }console.log(alreadyDefined)
     if(alreadyDefined){
+        console.log('BON')
         if(y != undefined){
-            list.elements[i] = { name, itemId, x, y}
+            list.elements[index] = { name, itemId, x, y}
         } else {
-            list.elements[i] = { name, itemId, x:d2x, y:d2y}
+            list.elements[index] = { name, itemId, x:d2x, y:d2y}
         } 
     } else {
         if(y != undefined){
@@ -270,8 +275,9 @@ function dragEnd(e) {
 
     var list = JSON.parse(window.localStorage.getItem("blockList"))
     var index = e.target.id - 1
-    list.elements[index].x = currentX
-    list.elements[index].y = currentY
+    console.log(index)
+    list.elements[index].x += currentX
+    list.elements[index].y += currentY
     window.localStorage.setItem("blockList", JSON.stringify(list));
 }
 
