@@ -19,13 +19,12 @@ if (blockList == undefined) {
             'type': 'logical_block',
             'name': '2nd_bonus',
             'conditions': [
-                [
-                    {
+                [{
                         'name': 'condName1',
                         'input': 'conditional_block',
                         'operation': 'not_equals',
                         'value': 'condition1'
-                    }, 
+                    },
                     {
                         "name": "lane a is down",
                         "input": "variable",
@@ -33,8 +32,7 @@ if (blockList == undefined) {
                         "value": "51"
                     }
                 ],
-                [
-                    {
+                [{
                         "name": "lane b is down",
                         "input": "input",
                         "operation": "equals",
@@ -49,8 +47,7 @@ if (blockList == undefined) {
                 ]
             ],
             'actions': [
-                [
-                    {
+                [{
                         "name": "play bonus sound",
                         "action": "play",
                         "output": null,
@@ -65,20 +62,19 @@ if (blockList == undefined) {
                         "param": "test"
                     }
                 ],
-                [
-                    {
+                [{
                         "name": "play video",
                         "action": "play",
                         "output": null,
                         "value": "bonus.mp4",
-                        "param" : "test"
+                        "param": "test"
                     },
                     {
                         "name": "flash",
                         "action": "flash",
                         "output": null,
                         "value": "off",
-                        "param" : "test"
+                        "param": "test"
                     }
                 ]
             ]
@@ -95,10 +91,11 @@ function initJson() {
     console.log('initiation des rules . . . ')
     for (var i = 0; i < blockList.rules.length; i++) {
         addRule()
+        console.log("APRèS ADDRULE()")
         document.getElementById('type' + i).setAttribute('value', blockList.rules[i].type)
         document.getElementById('name' + i).setAttribute('value', blockList.rules[i].name)
         document.getElementById('accordionR' + i).innerHTML = document.getElementById('name' + i).value
-        if(blockList.rules[i].conditions != undefined) {
+        if (blockList.rules[i].conditions != undefined) {
             for (let j = 0; j < blockList.rules[i].conditions.length; j++) {
                 addCondition(i)
                 var condition = blockList.rules[i].conditions[j][0]
@@ -109,7 +106,7 @@ function initJson() {
                     document.getElementById(i + 'value' + j).setAttribute('value', condition.value)
 
                     document.getElementById('accordionC' + i + numberC[i]).innerHTML = document.getElementById(i + 'name' + j).value
-
+                    updateConditionNames(j, i)
                     for (let k = 1; k < blockList.rules[i].conditions[j].length; k++) {
                         addConditionElement(i, j)
                         condition = blockList.rules[i].conditions[j][k]
@@ -118,15 +115,17 @@ function initJson() {
                             document.getElementById(i + 'inputLoop' + j + k).options[condition.input].setAttribute('selected', true)
                             document.getElementById(i + 'operationLoop' + j + k).options[condition.operation].setAttribute('selected', true)
                             document.getElementById(i + 'value' + j + k).setAttribute('value', condition.value)
+                            updateConditionNames(j, i, k)
                         }
                     }
                 }
 
             }
         }
-        if(blockList.rules[i].actions != undefined) {
+
+        if (blockList.rules[i].actions != undefined) {
             for (let j = 0; j < blockList.rules[i].actions.length; j++) {
-                
+
                 addAction(i)
                 console.log(blockList.rules[i].actions[j][0].action)
                 console.log(document.getElementById(i + 'selectAction' + j).options[blockList.rules[i].actions[j][0].action])
@@ -196,7 +195,7 @@ function updateNameRule(rule) {
 function addRule() {
     d = document.getElementById('rule');
     var l = document.createElement("rules" + numberR);
-    d.innerHTML += "<button class='accordionR' id='accordionR" + numberR + "' onclick='addListener("+numberR+");getInput(" + numberR + ")'>" + 'Rule' + (numberR + 1) + "</button>" +
+    d.innerHTML += "<button class='accordionR' id='accordionR" + numberR + "' onclick='addListener(" + numberR + ");getInput(" + numberR + ")'>" + 'Rule' + (numberR + 1) + "</button>" +
         "<div class='panel1' id='Rule" + numberR + "'>" +
         "<button for='Delete' onClick='deleteRule(" + numberR + ")'> delete Rule</button><br>" +
         "<label for='type'> type :<br />" +
@@ -220,19 +219,20 @@ function getActionNames() {
             actionNames[cmpt] = blockList.rules[i].actions[j][0].name;
             cmpt++;
         }
+        var ret = "";
+        for (let i = 0; i < conditionNames.length; i++) {
+            ret += "<option value=" + actionNames[i] + " name=" + actionNames[i] + ">" + actionNames[i] + "</option>";
+        }
+        return ret;
     }
-    var ret = "";
-    for (let i = 0; i < conditionNames.length; i++) {
-        ret += "<option value=" + actionNames[i] + " name=" + actionNames[i] + ">" + actionNames[i] + "</option>";
-    }
-    console.log(actionNames);
     return ret;
 }
+
 
 function getConditionNames() {
     var cmpt = 0;
     for (let i = 0; i < blockList.rules.length; i++) {
-        if(blockList.rules[i].conditions != undefined) {
+        if (blockList.rules[i].conditions != undefined) {
             for (let j = 0; j < blockList.rules[i].conditions.length; j++) {
                 for (let k = 0; k < blockList.rules[i].conditions[j].length; k++) {
                     conditionNames[cmpt] = blockList.rules[i].conditions[j][k].name;
@@ -242,46 +242,57 @@ function getConditionNames() {
         } else {
             conditionNames[cmpt] = "void";
         }
+        var ret = "";
+        for (let i = 0; i < conditionNames.length; i++) {
+            console.log(conditionNames[i])
+            ret += '<option name=' + conditionNames[i] + ' value=' + conditionNames[i] + '>' + conditionNames[i] + '</option>\n';
+        }
+        console.log(ret);
+        return ret;
     }
-    var ret = "";
-    for (let i = 0; i < conditionNames.length; i++) {
-        ret += "<option value='" + conditionNames[i] + "' name='" + conditionNames[i] + "'>" + conditionNames[i] + "</option>";
-    }
-    return ret;
-
 }
 
+
 function updateConditionNames(x, nbRule, y) {
-    getConditionNames()
     if (y == undefined) {
         var select = document.getElementById(nbRule + 'conditionBlock' + x);
-        var length = select.options.length;
-        for (i = length - 1; i >= 0; i--) {
-            select.options[i] = null;
+        console.log(document.getElementById(nbRule + 'inputLoop' + x));
+        console.log(select)
+        if (select != null) {
+            var length = select.options.length;
+            for (i = length - 1; i >= 0; i--) {
+                select.options[i] = null;
+            }
         }
     } else {
         var select = document.getElementById(nbRule + 'conditionBlock' + x + y);
-        var length = select.options.length;
-        for (i = length - 1; i >= 0; i--) {
-            select.options[i] = null;
+        if (select != null) {
+            var length = select.options.length;
+            for (i = length - 1; i >= 0; i--) {
+                select.options[i] = null;
+            }
         }
     }
     for (let i = 0; i < conditionNames.length; i++) {
 
         if (y == undefined) {
             var loop = document.getElementById(nbRule + 'conditionBlock' + x);
-            var option = document.createElement("option");
-            option.text = conditionNames[i];
-            loop.add(option);
+            if (loop != null) {
+                loop.options[i] = new Option(conditionNames[i], conditionNames[i])
+                loop.options[i].setAttribute('name', conditionNames[i])
+                console.log(loop)
+            }
 
         } else {
             var loop = document.getElementById(nbRule + 'conditionBlock' + x + y);
-            var option = document.createElement("option");
-            option.text = conditionNames[i];
-            loop.add(option);
+            if (loop != null) {
+                loop.options[i] = new Option(conditionNames[i], conditionNames[i])
+                loop.options[i].setAttribute('name', conditionNames[i])
+            }
         }
     }
 }
+
 
 function updateActionNames(x, nbRule, y) {
     getActionNames()
@@ -321,18 +332,18 @@ function updateActionNames(x, nbRule, y) {
 
 function deleteRule(x) {
     if (document.getElementsByClassName("accordionR" + x) != undefined) {
-        if(blockList.rules[x].actions != undefined) {
+        if (blockList.rules[x].actions != undefined) {
             let size = blockList.rules[x].actions.length
-            for(let i = 0; i < size; i++) {
-                if(blockList.rules[x].actions[i] != undefined) {
+            for (let i = 0; i < size; i++) {
+                if (blockList.rules[x].actions[i] != undefined) {
                     del(i, x, 0)
                 }
             }
         }
-        if(blockList.rules[x].conditions != undefined) {
+        if (blockList.rules[x].conditions != undefined) {
             size = blockList.rules[x].conditions.length
-            for(let i = 0; i < size; i++) {
-                if(blockList.rules[x].conditions[i] != undefined) {
+            for (let i = 0; i < size; i++) {
+                if (blockList.rules[x].conditions[i] != undefined) {
                     del(i, x, 1)
                 }
             }
@@ -349,10 +360,12 @@ function getInputFromCond(cond, rule) {
     var operation = document.getElementById(rule + 'operationLoop' + cond)
     var value = document.getElementById(rule + 'value' + cond)
 
-    if (input.value == "other") {
+    if (input.value == "conditional_block") {
+        input = document.getElementById(rule + 'conditionBlock' + cond)
+    } else {
         input = document.getElementById(rule + 'inputText' + cond)
     }
-    if(blockList.rules[rule] == undefined) {
+    if (blockList.rules[rule] == undefined) {
         blockList.rules[rule] = []
     }
     if (blockList.rules[rule].conditions == undefined) {
@@ -476,7 +489,7 @@ function addCondition(x) {
     l.innerHTML += "<button class='accordion' id='accordionC" + x + "" + numberC[x] + "' onclick=getInputFromCond(" + numberC[x] + "," + x + ")>" + 'Condition' + x + "." + (numberC[x] + 1) + "</button>" +
         "<div class='panel' id='Condition" + x + numberC[x] + "'>" +
         "<button for='name' onClick='del(" + numberC[x] + ", " + x + "," + 1 + ")'> delete </button><br>" +
-        "<div class='"+ x + "con" + numberC[x] + "'>" +
+        "<div class='" + x + "con" + numberC[x] + "'>" +
         "<label for='name'> name :</label><br>" +
         "<input id='" + x + "name" + numberC[x] + "' type='text' name='search' placeholder='Enter the name of the condition' onchange='updateNameCond(" + x + "," + numberC[x] + ")'/><br />" +
         "<label for='action'> input :</label><br>" +
@@ -485,7 +498,7 @@ function addCondition(x) {
         "<option name=conditional_block value=conditional_block>conditional_block</option>" +
         "<option name=variable value=variable>variable</option>" +
         "<option name=formula value=formula>formula</option></select><br>" +
-        "<select id='" + x + "conditionBlock" + numberC[x] + "' onclick= updateConditionNames(" + x + "," + numberC[x] + ") name='loop1' disabled=true>" +
+        "<select id='" + x + "conditionBlock" + numberC[x] + "'name='loop1' onclick= updateConditionNames(" + x + "," + numberC[x] + ") disabled=false>" +
         getConditionNames() + "</select><br>" +
         "<input type='text' disabled=true id='" + x + "inputText" + numberC[x] + "' name='search'/><br>" +
         "<label for='name'> operation :</label><br>" +
@@ -508,7 +521,7 @@ function addCondition(x) {
 function addConditionElement(x, cond) {
     d = document.getElementById("Condition" + x + cond);
     var l = document.createElement("conditions" + x);
-    l.innerHTML += "<div id='"+ x + "con" + cond + listCond[x][cond] + "'>" +
+    l.innerHTML += "<div id='" + x + "con" + cond + listCond[x][cond] + "'>" +
         "<label for='name'> name :</label><br>" +
         "<input id='" + x + "name" + cond + listCond[x][cond] + "' type='text' name='search' placeholder='Enter the name of the condition' /><br />" +
         "<label for='name'> input :</label><br>" +
@@ -538,9 +551,9 @@ function addConditionElement(x, cond) {
 }
 
 function delOneCond(x, nbRule, y) {
-    if(y != undefined) {
+    if (y != undefined) {
         document.getElementById(nbRule + 'con' + x + y).remove();
-        if(blockList.rules[nbRule].conditions[x][y] != undefined) {
+        if (blockList.rules[nbRule].conditions[x][y] != undefined) {
             blockList.rules[nbRule].conditions[x].splice(y, y);
             listCond[nbRule][x] -= 1;
             numberC[nbRule] -= 1;
@@ -548,11 +561,11 @@ function delOneCond(x, nbRule, y) {
     } else {
         document.getElementById("Condition" + nbRule + x).remove();
         document.getElementById("accordionC" + nbRule + "" + x).remove();
-        if(blockList.rules[nbRule].conditions[x] != undefined) {
+        if (blockList.rules[nbRule].conditions[x] != undefined) {
             blockList.rules[nbRule].conditions.splice(x, 1);
-            if(blockList.rules[nbRule].conditions.length == 0) {
+            if (blockList.rules[nbRule].conditions.length == 0) {
                 delete blockList.rules[nbRule].conditions
-                
+
             }
             listCond[nbRule][x] -= 1;
             numberC[nbRule] -= 1;
@@ -574,10 +587,10 @@ function getInputFromAct(cond, rule) {
         value.value == "file_name" ||
         value.value == "variable" ||
         value.value == "formula") {
-        if(document.getElementById(rule + 'inputText' + cond) != null) {
+        if (document.getElementById(rule + 'inputText' + cond) != null) {
             value = document.getElementById(rule + 'inputText' + cond)
         }
-        
+
     }
 
     if (blockList.rules[rule].actions == undefined) {
@@ -636,9 +649,9 @@ function addAction(x) {
     d = document.getElementById('Rule' + x);
     var l = document.createElement("actions" + x);
     l.innerHTML += "<button class='accordion' id='accordionA" + x + "" + numberA[x] + "' onclick='getInputFromAct(" + numberA[x] + "," + x + ")'>" + 'Action' + x + "." + (numberA[x] + 1) + "</button>" +
-        "<div class='panel' id='Action" + x + numberA[x] +"'>" +
+        "<div class='panel' id='Action" + x + numberA[x] + "'>" +
         "<button for='name' onClick='del(" + numberA[x] + ", " + x + "," + 0 + ")'> delete </button><br>" +
-        "<div class='" + x +"act" + numberA[x] + "'>" +
+        "<div class='" + x + "act" + numberA[x] + "'>" +
         "<label for='name'> name :</label><br>" +
         "<input type='text' id='" + x + "nameText" + numberA[x] + "' name='search' onchange='updateNameAct(" + x + "," + numberA[x] + ")'/><br>" +
         "<label for='action'> action :</label><br>" +
@@ -683,7 +696,7 @@ function addAction(x) {
 function addActionElement(x, act) {
     d = document.getElementById("Action" + x + act);
     var l = document.createElement("actions" + x);
-    l.innerHTML += "<div id='"+ x + "act" + act + listAct[x][act] + "'>" +
+    l.innerHTML += "<div id='" + x + "act" + act + listAct[x][act] + "'>" +
         "<label for='name'> name :</label><br>" +
         "<input type='text' id='" + x + "nameText" + act + "" + listAct[x][act] + "' name='search'/><br>" +
         "<label for='action'> action :</label><br>" +
@@ -727,9 +740,9 @@ function addActionElement(x, act) {
 }
 
 function delOneAct(x, nbRule, y) {
-    if(y != undefined) {
+    if (y != undefined) {
         document.getElementById(nbRule + 'act' + x + y).remove();
-        if(blockList.rules[nbRule].actions[x][y] != undefined) {
+        if (blockList.rules[nbRule].actions[x][y] != undefined) {
             blockList.rules[nbRule].actions[x].splice(y, y);
             listAct[nbRule][x] -= 1;
             numberA[nbRule] -= 1;
@@ -737,9 +750,9 @@ function delOneAct(x, nbRule, y) {
     } else {
         document.getElementById("Action" + nbRule + x).remove();
         document.getElementById("accordionA" + nbRule + "" + x).remove();
-        if(blockList.rules[nbRule].actions[x] != undefined) {
+        if (blockList.rules[nbRule].actions[x] != undefined) {
             blockList.rules[nbRule].actions.splice(x, 1);
-            if(blockList.rules[nbRule].actions.length == 0) {
+            if (blockList.rules[nbRule].actions.length == 0) {
                 delete blockList.rules[nbRule].actions
             }
             listAct[nbRule][x] -= 1;
@@ -749,34 +762,34 @@ function delOneAct(x, nbRule, y) {
 }
 
 function del(x, nbRule, type) {
-    if(type == 0) {
+    if (type == 0) {
         if (document.getElementById('Action' + nbRule + x) != null) {
             document.getElementById("Action" + nbRule + x).remove();
             document.getElementById("accordionA" + nbRule + "" + x).remove();
-            if(blockList.rules[nbRule].actions[x] != undefined) {
-                for(let i = 1; i < blockList.rules[nbRule].actions.length; i++) {
+            if (blockList.rules[nbRule].actions[x] != undefined) {
+                for (let i = 1; i < blockList.rules[nbRule].actions.length; i++) {
                     // document.getElementById(nbRule + 'act' + x + i).remove();
-                    if(blockList.rules[nbRule].actions[x][i] != undefined) {
+                    if (blockList.rules[nbRule].actions[x][i] != undefined) {
                         blockList.rules[nbRule].actions[x].splice(i, 1);
-                        if(listAct[nbRule][x] > 0) {
+                        if (listAct[nbRule][x] > 0) {
                             listAct[nbRule][x] -= 1;
                         }
-                        if(numberA[nbRule] > 0) {
+                        if (numberA[nbRule] > 0) {
                             numberA[nbRule] -= 1;
                         }
                     }
                 }
                 delete blockList.rules[nbRule].actions[x]
                 let del = true;
-                for(let j = 0; j < blockList.rules[nbRule].actions.length; j++) {
-                    if(blockList.rules[nbRule].actions[j] != undefined || blockList.rules[nbRule].actions[j] != null) {
+                for (let j = 0; j < blockList.rules[nbRule].actions.length; j++) {
+                    if (blockList.rules[nbRule].actions[j] != undefined || blockList.rules[nbRule].actions[j] != null) {
                         del = false;
                     }
                 }
-                if(del) {
+                if (del) {
                     delete blockList.rules[nbRule].actions
                 }
-                if(listAct[nbRule][x] > 0) {
+                if (listAct[nbRule][x] > 0) {
                     listAct[nbRule][x] -= 1;
                 }
                 numberA[nbRule] -= 1;
@@ -786,49 +799,49 @@ function del(x, nbRule, type) {
         if (document.getElementById('Condition' + nbRule + x) != null) {
             document.getElementById("Condition" + nbRule + x).remove();
             document.getElementById("accordionC" + nbRule + "" + x).remove();
-            if(blockList.rules[nbRule].conditions[x] != undefined) {
-                for(let i = 1; i < blockList.rules[nbRule].conditions.length; i++) {
-                    if(blockList.rules[nbRule].conditions[x][i] != undefined) {
+            if (blockList.rules[nbRule].conditions[x] != undefined) {
+                for (let i = 1; i < blockList.rules[nbRule].conditions.length; i++) {
+                    if (blockList.rules[nbRule].conditions[x][i] != undefined) {
                         blockList.rules[nbRule].conditions[x].splice(i, 1);
-                        if(listCond[nbRule][x] > 0) {
+                        if (listCond[nbRule][x] > 0) {
                             listCond[nbRule][x] -= 1;
                         }
-                        if(numberC[nbRule] > 0) {
+                        if (numberC[nbRule] > 0) {
                             numberC[nbRule] -= 1;
                         }
                     }
                 }
                 delete blockList.rules[nbRule].conditions[x]
                 let del = true;
-                for(let j = 0; j < blockList.rules[nbRule].conditions.length; j++) {
-                    if(blockList.rules[nbRule].conditions[j] != undefined || blockList.rules[nbRule].conditions[j] != null) {
+                for (let j = 0; j < blockList.rules[nbRule].conditions.length; j++) {
+                    if (blockList.rules[nbRule].conditions[j] != undefined || blockList.rules[nbRule].conditions[j] != null) {
                         del = false;
                     }
                 }
-                if(del) {
+                if (del) {
                     delete blockList.rules[nbRule].conditions
                 }
-                if(listCond[nbRule][x] > 0) {
+                if (listCond[nbRule][x] > 0) {
                     listCond[nbRule][x] -= 1;
                 }
                 numberC[nbRule] -= 1;
             }
         }
     }
-    
+
 }
 
 /**
  * Add EventListener in the list of rule for hide and show the rule element
  */
 function addListener() {
-    if(blockList.rules != undefined) {
+    if (blockList.rules != undefined) {
         let ruleSize = blockList.rules.length;
-        for(let id = 0; id < ruleSize; id++) {
-            if(blockList.rules[id].conditions != undefined) {
+        for (let id = 0; id < ruleSize; id++) {
+            if (blockList.rules[id].conditions != undefined) {
                 let size = blockList.rules[id].conditions.length;
-                for(let i = 0; i < size; i++) {
-                    if(document.getElementById("accordionC" + id + "" + i) != null) {
+                for (let i = 0; i < size; i++) {
+                    if (document.getElementById("accordionC" + id + "" + i) != null) {
                         document.getElementById("accordionC" + id + "" + i).onclick = function() {
                             this.classList.toggle("view");
                             var panel = this.nextElementSibling;
@@ -837,15 +850,15 @@ function addListener() {
                             } else {
                                 panel.style.maxHeight = 100 + "%"
                             }
-                            getInputFromCond(i,id)
+                            getInputFromCond(i, id)
                         };
                     }
                 }
             }
-            if(blockList.rules[id].actions != undefined) {
+            if (blockList.rules[id].actions != undefined) {
                 let size = blockList.rules[id].actions.length;
-                for(let i = 0; i < size; i++) {
-                    if(document.getElementById("accordionA" + id + "" + i) != null) {
+                for (let i = 0; i < size; i++) {
+                    if (document.getElementById("accordionA" + id + "" + i) != null) {
                         document.getElementById("accordionA" + id + "" + i).onclick = function() {
                             this.classList.toggle("view");
                             var panel = this.nextElementSibling;
@@ -854,7 +867,7 @@ function addListener() {
                             } else {
                                 panel.style.maxHeight = 100 + "%"
                             }
-                            getInputFromAct(i,id)
+                            getInputFromAct(i, id)
                         };
                     }
                 }
