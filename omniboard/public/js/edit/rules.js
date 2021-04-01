@@ -91,6 +91,7 @@ function initJson() {
     console.log('initiation des rules . . . ')
     for (var i = 0; i < blockList.rules.length; i++) {
         addRule()
+        console.log("APRèS ADDRULE()")
         document.getElementById('type' + i).setAttribute('value', blockList.rules[i].type)
         document.getElementById('name' + i).setAttribute('value', blockList.rules[i].name)
         document.getElementById('accordionR' + i).innerHTML = document.getElementById('name' + i).value
@@ -105,7 +106,7 @@ function initJson() {
                     document.getElementById(i + 'value' + j).setAttribute('value', condition.value)
 
                     document.getElementById('accordionC' + i + numberC[i]).innerHTML = document.getElementById(i + 'name' + j).value
-
+                    updateConditionNames(j, i)
                     for (let k = 1; k < blockList.rules[i].conditions[j].length; k++) {
                         addConditionElement(i, j)
                         condition = blockList.rules[i].conditions[j][k]
@@ -114,15 +115,17 @@ function initJson() {
                             document.getElementById(i + 'inputLoop' + j + k).options[condition.input].setAttribute('selected', true)
                             document.getElementById(i + 'operationLoop' + j + k).options[condition.operation].setAttribute('selected', true)
                             document.getElementById(i + 'value' + j + k).setAttribute('value', condition.value)
+                            updateConditionNames(j, i, k)
                         }
                     }
                 }
 
             }
         }
+
         if (blockList.rules[i].actions != undefined) {
             for (let j = 0; j < blockList.rules[i].actions.length; j++) {
-                
+
                 addAction(i)
                 console.log(blockList.rules[i].actions[j][0].action)
                 console.log(document.getElementById(i + 'selectAction' + j).options[blockList.rules[i].actions[j][0].action])
@@ -219,66 +222,74 @@ function getActionNames() {
         }
         return ret;
     }
-    ret += "<option value=" + actionNames[i] + " name=" + actionNames[i] + ">" + actionNames[i] + "</option>";
-    console.log(actionNames);
     return ret;
 }
 
 
-
-var cmpt = 0;
-for (let i = 0; i < blockList.rules.length; i++) {
-    if (blockList.rules[i].conditions != undefined) {
-        for (let j = 0; j < blockList.rules[i].conditions.length; j++) {
-            for (let k = 0; k < blockList.rules[i].conditions[j].length; k++) {
-                conditionNames[cmpt] = blockList.rules[i].conditions[j][k].name;
-                cmpt++;
+function getConditionNames() {
+    var cmpt = 0;
+    for (let i = 0; i < blockList.rules.length; i++) {
+        if (blockList.rules[i].conditions != undefined) {
+            for (let j = 0; j < blockList.rules[i].conditions.length; j++) {
+                for (let k = 0; k < blockList.rules[i].conditions[j].length; k++) {
+                    conditionNames[cmpt] = blockList.rules[i].conditions[j][k].name;
+                    cmpt++;
+                }
             }
+        } else {
+            conditionNames[cmpt] = "void";
         }
-    } else {
-        conditionNames[cmpt] = "void";
+        var ret = "";
+        for (let i = 0; i < conditionNames.length; i++) {
+            console.log(conditionNames[i])
+            ret += '<option name=' + conditionNames[i] + ' value=' + conditionNames[i] + '>' + conditionNames[i] + '</option>\n';
+        }
+        console.log(ret);
+        return ret;
     }
-    var ret = "";
-    for (let i = 0; i < conditionNames.length; i++) {
-        ret += "<option value=" + conditionNames[i] + " name=" + conditionNames[i] + ">" + conditionNames[i] + "</option>";
-    }
-    console.log(conditionNames);
-    return ret;
-
 }
 
 
 function updateConditionNames(x, nbRule, y) {
-    getConditionNames()
     if (y == undefined) {
         var select = document.getElementById(nbRule + 'conditionBlock' + x);
-        var length = select.options.length;
-        for (i = length - 1; i >= 0; i--) {
-            select.options[i] = null;
+        console.log(document.getElementById(nbRule + 'inputLoop' + x));
+        console.log(select)
+        if (select != null) {
+            var length = select.options.length;
+            for (i = length - 1; i >= 0; i--) {
+                select.options[i] = null;
+            }
         }
     } else {
         var select = document.getElementById(nbRule + 'conditionBlock' + x + y);
-        var length = select.options.length;
-        for (i = length - 1; i >= 0; i--) {
-            select.options[i] = null;
+        if (select != null) {
+            var length = select.options.length;
+            for (i = length - 1; i >= 0; i--) {
+                select.options[i] = null;
+            }
         }
     }
     for (let i = 0; i < conditionNames.length; i++) {
 
         if (y == undefined) {
             var loop = document.getElementById(nbRule + 'conditionBlock' + x);
-            var option = document.createElement("option");
-            option.text = conditionNames[i];
-            loop.add(option);
+            if (loop != null) {
+                loop.options[i] = new Option(conditionNames[i], conditionNames[i])
+                loop.options[i].setAttribute('name', conditionNames[i])
+                console.log(loop)
+            }
 
         } else {
             var loop = document.getElementById(nbRule + 'conditionBlock' + x + y);
-            var option = document.createElement("option");
-            option.text = conditionNames[i];
-            loop.add(option);
+            if (loop != null) {
+                loop.options[i] = new Option(conditionNames[i], conditionNames[i])
+                loop.options[i].setAttribute('name', conditionNames[i])
+            }
         }
     }
 }
+
 
 function updateActionNames(x, nbRule, y) {
     getActionNames()
@@ -346,7 +357,9 @@ function getInputFromCond(cond, rule) {
     var operation = document.getElementById(rule + 'operationLoop' + cond)
     var value = document.getElementById(rule + 'value' + cond)
 
-    if (input.value == "other") {
+    if (input.value == "conditional_block") {
+        input = document.getElementById(rule + 'conditionBlock' + cond)
+    } else {
         input = document.getElementById(rule + 'inputText' + cond)
     }
     if (blockList.rules[rule] == undefined) {
@@ -466,6 +479,7 @@ function addCondition(x) {
     if (listCond[x][numberC[x]] == undefined) {
         listCond[x][numberC[x]] = 1;
     }
+    console.log(ret);
     console.log("x : " + x, "numberC[x] : " + numberC[x], "listCond[x][numberC[x]] : " + listCond[x][numberC[x]])
 
     d = document.getElementById('Rule' + x);
@@ -482,7 +496,7 @@ function addCondition(x) {
         "<option name=conditional_block value=conditional_block>conditional_block</option>" +
         "<option name=variable value=variable>variable</option>" +
         "<option name=formula value=formula>formula</option></select><br>" +
-        "<select id='" + x + "conditionBlock" + numberC[x] + "' onclick= updateConditionNames(" + x + "," + numberC[x] + ") name='loop1' disabled=false>" +
+        "<select id='" + x + "conditionBlock" + numberC[x] + "'name='loop1' onclick= updateConditionNames(" + x + "," + numberC[x] + ") disabled=false>" +
         getConditionNames() + "</select><br>" +
         "<input type='text' disabled=true id='" + x + "inputText" + numberC[x] + "' name='search'/><br>" +
         "<label for='name'> operation :</label><br>" +
@@ -498,8 +512,9 @@ function addCondition(x) {
         "<button for='name' onClick='delOneCond(" + numberC[x] + ", " + x + ")'> delete Condition </button><br>" +
         "<label for='name'>-------------------------------------------------------</label><br>";
     d.appendChild(l);
-    getInputFromCond(numberC[x], x)
+    //getInputFromCond(numberC[x], x)
     addListener();
+    console.log(l)
 }
 
 function addConditionElement(x, cond) {
@@ -674,7 +689,7 @@ function addAction(x) {
         "<button for='name' onClick='delOneAct(" + numberA[x] + ", " + x + ")'> delete Action </button><br>" +
         "<label for='name'>-------------------------------------------------------</label><br>";
     d.appendChild(l);
-    getInputFromAct(numberA[x], x)
+    //getInputFromAct(numberA[x], x)
     addListener();
 }
 
@@ -835,7 +850,7 @@ function addListener() {
                             } else {
                                 panel.style.maxHeight = 100 + "%"
                             }
-                            getInputFromCond(i,id)
+                            getInputFromCond(i, id)
                         };
                     }
                 }
@@ -852,7 +867,7 @@ function addListener() {
                             } else {
                                 panel.style.maxHeight = 100 + "%"
                             }
-                            getInputFromAct(i,id)
+                            getInputFromAct(i, id)
                         };
                     }
                 }
