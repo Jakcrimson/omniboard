@@ -22,7 +22,6 @@ var img; //current image in the use
  */
 function init() {
     //setting up the localStorage for the list containing the elements
-    window.localStorage.setItem("listElement", JSON.stringify(listElement));
     d2 = document.getElementById('d2');
     d1 = document.getElementById('d1');
     d3 = document.getElementById('d3');
@@ -97,24 +96,48 @@ function resize() {
  * This function was called to add an item.
  * @param {*} name item's name (resource image name)
  */
-function addItem(name) {
+function addItem(name, x, y) {
     nameImage = name;
     img = document.createElement("img");
-    d2y += 3;
-    d2x += 3;
     img.src = '/images/' + name + '.jpg';
-    img.style = "width:40px;height:40px;position:absolute;top:" + d2y + "px;left:" + d2x + "px;cursor:move;border-radius: 20px;";
+    if(y == undefined){
+        d2y += 3;
+        d2x += 3;
+        img.style = "width:40px;height:40px;position:absolute;top:" + d2y + "px;left:" + d2x + "px;cursor:move;border-radius: 20px;";
+    } else {
+        img.style = "width:40px;height:40px;position:absolute;top:" + y + "px;left:" + x + "px;cursor:move;border-radius: 20px;";
+    }
     d2.appendChild(img);
     displayInfo(name);
     itemId++;
     img.id = itemId;
     changeDragItem(img);
     console.log("Current item dragged is :" + name);
-    var list = JSON.parse(window.localStorage.getItem("listElement"));
-    list.push({ name, itemId });
-    window.localStorage.setItem("listElement", JSON.stringify(list));
+    var list = JSON.parse(window.localStorage.getItem("blockList"));
+    var alreadyDefined = false
+    var index
+    for(let i=0; i<list.elements.length; i++){
+        if(list.elements[i].itemId == itemId) {
+            alreadyDefined = true
+            index = i
+        }
+    }console.log(alreadyDefined)
+    if(alreadyDefined){
+        console.log('BON')
+        if(y != undefined){
+            list.elements[index] = { name, itemId, x, y}
+        } else {
+            list.elements[index] = { name, itemId, x:d2x, y:d2y}
+        } 
+    } else {
+        if(y != undefined){
+            list.elements.push({ name, itemId, x, y})
+        } else {
+            list.elements.push({ name, itemId, x:d2x, y:d2y})
+        } 
+    }
+    window.localStorage.setItem("blockList", JSON.stringify(list));
     img.onmousedown = currentDragged;
-    console.log(img.src)
 }
 
 /**
@@ -170,17 +193,17 @@ function displayInfo(name) {
  * It goes through the childNodes of the main div and deletes the one currently selected.
  */
 function deleteItem() {
-    var list = JSON.parse(window.localStorage.getItem("listElement"));
+    var list = JSON.parse(window.localStorage.getItem("blockList"));
     if (dragItem != null) {
         dragItem.parentNode.removeChild(dragItem);
         console.log(dragItem.id);
-        for (let i = 0; i < list.length; i++) {
+        for (let i = 0; i < list.elements.length; i++) {
             console.log(list[i]);
 
-            if (dragItem.id == list[i].itemId) {
-                list.splice(i, 1);
+            if (dragItem.id == list.elements[i].itemId) {
+                list.elements.splice(i, 1);
                 console.log(list);
-                window.localStorage.setItem("listElement", JSON.stringify(list));
+                window.localStorage.setItem("blockList", JSON.stringify(list));
             }
         }
         deleteInfo();
@@ -249,6 +272,13 @@ function dragEnd(e) {
     initialY = currentY;
 
     active = false;
+
+    var list = JSON.parse(window.localStorage.getItem("blockList"))
+    var index = e.target.id - 1
+    console.log(index)
+    list.elements[index].x += currentX
+    list.elements[index].y += currentY
+    window.localStorage.setItem("blockList", JSON.stringify(list));
 }
 
 /**
