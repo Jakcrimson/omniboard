@@ -22,12 +22,14 @@ if (blockList == undefined) {
                 [{
                         'name': 'condName1',
                         'input': 'conditional_block',
+                        'inputValue': 'lane b is down',
                         'operation': 'not_equals',
                         'value': 'condition1'
                     },
                     {
                         "name": "lane a is down",
                         "input": "variable",
+                        "input": "var",
                         "operation": "value_changed",
                         "value": "51"
                     }
@@ -35,12 +37,13 @@ if (blockList == undefined) {
                 [{
                         "name": "lane b is down",
                         "input": "input",
-                        "operation": "equals",
+                        "operation": "switch",
                         "value": "down"
                     },
                     {
                         "name": "lane c is down",
                         "input": "formula",
+                        "input_value": "",
                         "operation": "less_than",
                         "value": "down"
                     }
@@ -396,7 +399,7 @@ function getInputFromCond(cond, rule) {
         operation = document.getElementById(rule + 'operationLoop' + cond + i)
         value = document.getElementById(rule + 'value' + cond + i)
 
-        if (input.value == "other") {
+        if (input.value != "conditiona") {
             input = document.getElementById(rule + 'inputText' + cond + i)
         }
 
@@ -884,7 +887,6 @@ function addListener() {
             }
         }
     }
-    console.log('miam :eyes:')
 }
 
 function addRuleListener(id) {
@@ -899,9 +901,5 @@ function addRuleListener(id) {
             }
         };
     }
-
-}
-
-function importRules() {
 
 }
