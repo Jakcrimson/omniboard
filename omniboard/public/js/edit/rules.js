@@ -171,6 +171,7 @@ function initJson() {
 }
 
 function getInput(x) {
+    console.log('ok !')
     var type = document.getElementById('type' + x).value
     var name = document.getElementById('name' + x).value
 
@@ -178,6 +179,8 @@ function getInput(x) {
         blockList.rules.push({ 'name': name, 'type': type, 'conditions': [], 'actions': [] })
     } else if (blockList.rules[x].conditions == undefined) {
         blockList.rules[x].conditions = []
+    } else if (blockList.rules[x].actions == undefined) {
+        blockList.rules[x].actions = []
     } else {
         blockList.rules[x].name = name
         blockList.rules[x].type = type
@@ -205,7 +208,7 @@ function addRule() {
         "<input class='elem' type='button' value='new actions' onclick='addAction(" + numberR + ")' />" +
         "</label>";
     d.appendChild(l)
-    addRuleListener('accordionR');
+    addRuleListener('accordionR',numberR);
     addListener();
     numberR += 1;
 }
@@ -242,9 +245,8 @@ function getConditionNames() {
     }
     var ret = "";
     for (let i = 0; i < conditionNames.length; i++) {
-        ret += "<option value=" + conditionNames[i] + " name=" + conditionNames[i] + ">" + conditionNames[i] + "</option>";
+        ret += "<option value='" + conditionNames[i] + "' name='" + conditionNames[i] + "'>" + conditionNames[i] + "</option>";
     }
-    console.log(conditionNames);
     return ret;
 
 }
@@ -499,8 +501,8 @@ function addCondition(x) {
         "<button for='name' onClick='delOneCond(" + numberC[x] + ", " + x + ")'> delete Condition </button><br>" +
         "<label for='name'>-------------------------------------------------------</label><br>";
     d.appendChild(l);
-    getInputFromCond(numberC[x], x)
     addListener();
+    console.log(getConditionNames())
 }
 
 function addConditionElement(x, cond) {
@@ -675,7 +677,6 @@ function addAction(x) {
         "<button for='name' onClick='delOneAct(" + numberA[x] + ", " + x + ")'> delete Action </button><br>" +
         "<label for='name'>-------------------------------------------------------</label><br>";
     d.appendChild(l);
-    getInputFromAct(numberA[x], x)
     addListener();
 }
 
@@ -863,7 +864,7 @@ function addListener() {
     console.log('miam :eyes:')
 }
 
-function addRuleListener(id) {
+function addRuleListener(id, rule) {
     for (let i = 0; i <= numberR; i++) {
         document.getElementById(id + i).onclick = function() {
             this.classList.toggle("active");
@@ -873,6 +874,8 @@ function addRuleListener(id) {
             } else {
                 panel.style.maxHeight = 100 + "%"
             }
+            
+            getInput(rule)
         };
     }
 
