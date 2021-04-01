@@ -22,12 +22,14 @@ if (blockList == undefined) {
                 [{
                         'name': 'condName1',
                         'input': 'conditional_block',
+                        'inputValue': 'lane b is down',
                         'operation': 'not_equals',
                         'value': 'condition1'
                     },
                     {
                         "name": "lane a is down",
                         "input": "variable",
+                        'inputValue': 'var',
                         "operation": "value_changed",
                         "value": "51"
                     }
@@ -35,12 +37,14 @@ if (blockList == undefined) {
                 [{
                         "name": "lane b is down",
                         "input": "input",
+                        'inputValue': 'switch1',
                         "operation": "equals",
                         "value": "down"
                     },
                     {
                         "name": "lane c is down",
                         "input": "formula",
+                        'inputValue': 'f(x) = 2x',
                         "operation": "less_than",
                         "value": "down"
                     }
@@ -102,6 +106,11 @@ function initJson() {
                 if (condition != undefined) {
                     document.getElementById(i + 'name' + j).setAttribute('value', condition.name)
                     document.getElementById(i + 'inputLoop' + j).options[condition.input].setAttribute('selected', true)
+                    if(condition.input == 'conditional_block') {
+                        document.getElementById(i + 'conditionBlock' + j).options[condition.inputValue].setAttribute('selected', true)
+                    } else {
+                        document.getElementById(i + 'inputText' + j).setAttribute('value', condition.inputValue)
+                    }
                     document.getElementById(i + 'operationLoop' + j).options[condition.operation].setAttribute('selected', true)
                     document.getElementById(i + 'value' + j).setAttribute('value', condition.value)
 
@@ -113,6 +122,11 @@ function initJson() {
                         if (condition != undefined) {
                             document.getElementById(i + 'name' + j + k).setAttribute('value', condition.name)
                             document.getElementById(i + 'inputLoop' + j + k).options[condition.input].setAttribute('selected', true)
+                            if(condition.input == 'conditional_block') {
+                                document.getElementById(i + 'conditionBlock' + j + k).options[condition.inputValue].setAttribute('selected', true)
+                            } else {
+                                document.getElementById(i + 'inputText' + j + k).setAttribute('value', true)
+                            }
                             document.getElementById(i + 'operationLoop' + j + k).options[condition.operation].setAttribute('selected', true)
                             document.getElementById(i + 'value' + j + k).setAttribute('value', condition.value)
                             updateConditionNames(j, i, k)
@@ -215,17 +229,24 @@ function addRule() {
 function getActionNames() {
     var cmpt = 0;
     for (let i = 0; i < blockList.rules.length; i++) {
-        for (let j = 0; j < blockList.rules[i].actions.length; j++) {
-            actionNames[cmpt] = blockList.rules[i].actions[j][0].name;
-            cmpt++;
+        if (blockList.rules[i].actions != undefined) {
+            for (let j = 0; j < blockList.rules[i].actions.length; j++) {
+                for (let k = 0; k < blockList.rules[i].actions[j].length; k++) {
+                    actionNames[cmpt] = blockList.rules[i].actions[j][k].name;
+                    cmpt++;
+                }
+            }
+        } else {
+            actionNames[cmpt] = "void";
         }
         var ret = "";
-        for (let i = 0; i < conditionNames.length; i++) {
-            ret += "<option value=" + actionNames[i] + " name=" + actionNames[i] + ">" + actionNames[i] + "</option>";
+        for (let i = 0; i < actionNames.length; i++) {
+            console.log(actionNames[i])
+            ret += '<option name=' + actionNames[i] + ' value=' + actionNames[i] + '>' + actionNames[i] + '</option>\n';
         }
+        console.log(ret);
         return ret;
     }
-    return ret;
 }
 
 
@@ -245,7 +266,7 @@ function getConditionNames() {
         var ret = "";
         for (let i = 0; i < conditionNames.length; i++) {
             console.log(conditionNames[i])
-            ret += '<option name=' + conditionNames[i] + ' value=' + conditionNames[i] + '>' + conditionNames[i] + '</option>\n';
+            ret += '<option name="' + conditionNames[i] + '" value="' + conditionNames[i] + '">' + conditionNames[i] + '</option>\n';
         }
         console.log(ret);
         return ret;
@@ -256,8 +277,6 @@ function getConditionNames() {
 function updateConditionNames(x, nbRule, y) {
     if (y == undefined) {
         var select = document.getElementById(nbRule + 'conditionBlock' + x);
-        console.log(document.getElementById(nbRule + 'inputLoop' + x));
-        console.log(select)
         if (select != null) {
             var length = select.options.length;
             for (i = length - 1; i >= 0; i--) {
@@ -278,57 +297,62 @@ function updateConditionNames(x, nbRule, y) {
         if (y == undefined) {
             var loop = document.getElementById(nbRule + 'conditionBlock' + x);
             if (loop != null) {
-                loop.options[i] = new Option(conditionNames[i], conditionNames[i])
+                let select = blockList.rules[nbRule].conditions[x][0].inputValue==conditionNames[i]
+                loop.options[i] = new Option(conditionNames[i], conditionNames[i], select, select)
                 loop.options[i].setAttribute('name', conditionNames[i])
-                console.log(loop)
             }
-
         } else {
             var loop = document.getElementById(nbRule + 'conditionBlock' + x + y);
             if (loop != null) {
-                loop.options[i] = new Option(conditionNames[i], conditionNames[i])
+                let select = blockList.rules[nbRule].conditions[x][y].inputValue==conditionNames[i]
+                loop.options[i] = new Option(conditionNames[i], conditionNames[i], select, select)
                 loop.options[i].setAttribute('name', conditionNames[i])
             }
         }
     }
 }
+
 
 
 function updateActionNames(x, nbRule, y) {
     getActionNames()
     if (y == undefined) {
         var select = document.getElementById(x + 'actionBlock' + nbRule);
-        var length = select.options.length;
-        for (i = length - 1; i >= 0; i--) {
-            select.options[i] = null;
+        if (select != null) {
+            var length = select.options.length;
+            for (i = length - 1; i >= 0; i--) {
+                select.options[i] = null;
+            }
         }
     } else {
         var select = document.getElementById(x + 'actionBlock' + nbRule + y);
-        var length = select.options.length;
-        for (i = length - 1; i >= 0; i--) {
-            select.options[i] = null;
+        if (select != null) {
+            var length = select.options.length;
+            for (i = length - 1; i >= 0; i--) {
+                select.options[i] = null;
+            }
         }
     }
     for (let i = 0; i < actionNames.length; i++) {
 
         if (y == undefined) {
             var loop = document.getElementById(x + 'actionBlock' + nbRule);
-            var option = document.createElement("option");
-            option.text = actionNames[i];
-            loop.add(option);
+            if (loop != null) {
+                loop.options[i] = new Option(actionNames[i], actionNames[i])
+                loop.options[i].setAttribute('name', actionNames[i])
+                console.log(loop.options);
+            }
 
         } else {
             var loop = document.getElementById(x + 'actionBlock' + nbRule + y);
-            var option = document.createElement("option");
-            option.text = actionNames[i];
-            loop.add(option);
+            if (loop != null) {
+                loop.options[i] = new Option(actionNames[i], actionNames[i])
+                loop.options[i].setAttribute('name', actionNames[i])
+            }
         }
     }
 
 }
-
-
-
 
 function deleteRule(x) {
     if (document.getElementsByClassName("accordionR" + x) != undefined) {
@@ -355,15 +379,17 @@ function deleteRule(x) {
 }
 
 function getInputFromCond(cond, rule) {
+    console.log('--->  input cond tmtc')
     var name = document.getElementById(rule + 'name' + cond)
     var input = document.getElementById(rule + 'inputLoop' + cond)
+    var inputValue
     var operation = document.getElementById(rule + 'operationLoop' + cond)
     var value = document.getElementById(rule + 'value' + cond)
 
     if (input.value == "conditional_block") {
-        input = document.getElementById(rule + 'conditionBlock' + cond)
+        inputValue = document.getElementById(rule + 'conditionBlock' + cond)
     } else {
-        input = document.getElementById(rule + 'inputText' + cond)
+        inputValue = document.getElementById(rule + 'inputText' + cond)
     }
     if (blockList.rules[rule] == undefined) {
         blockList.rules[rule] = []
@@ -377,23 +403,27 @@ function getInputFromCond(cond, rule) {
     blockList.rules[rule].conditions[cond][0] = {
         'name': name.value,
         'input': input.value,
+        'inputValue': inputValue.value,
         'operation': operation.value,
         'value': value.value
     }
-
-    for (i = 1; i < listCond[rule][cond]; i++) {
+    
+    for (i = 1; i < listCond[rule][cond+1]; i++) {
         name = document.getElementById(rule + 'name' + cond + i)
         input = document.getElementById(rule + 'inputLoop' + cond + i)
         operation = document.getElementById(rule + 'operationLoop' + cond + i)
         value = document.getElementById(rule + 'value' + cond + i)
-
-        if (input.value == "other") {
-            input = document.getElementById(rule + 'inputText' + cond + i)
+        console.log(rule + 'inputLoop' + cond + i)
+        if (input.value == "conditional_block") {
+            inputValue = document.getElementById(rule + 'conditionBlock' + cond)
+        } else {
+            inputValue = document.getElementById(rule + 'inputText' + cond)
         }
-
+        console.log(inputValue)
         blockList.rules[rule].conditions[cond][i] = {
             'name': name.value,
             'input': input.value,
+            'inputValue': inputValue.value,
             'operation': operation.value,
             'value': value.value
         }
@@ -482,7 +512,6 @@ function addCondition(x) {
     if (listCond[x][numberC[x]] == undefined) {
         listCond[x][numberC[x]] = 1;
     }
-    console.log("x : " + x, "numberC[x] : " + numberC[x], "listCond[x][numberC[x]] : " + listCond[x][numberC[x]])
 
     d = document.getElementById('Rule' + x);
     var l = document.createElement("conditions" + x);
@@ -491,16 +520,16 @@ function addCondition(x) {
         "<button for='name' onClick='del(" + numberC[x] + ", " + x + "," + 1 + ")'> delete </button><br>" +
         "<div class='" + x + "con" + numberC[x] + "'>" +
         "<label for='name'> name :</label><br>" +
-        "<input id='" + x + "name" + numberC[x] + "' type='text' name='search' placeholder='Enter the name of the condition' onchange='updateNameCond(" + x + "," + numberC[x] + ")'/><br />" +
+        "<input id='" + x + "name" + numberC[x] + "' type='text' name='search' placeholder='Enter the name of the condition' onchange='getInputFromCond(" + numberC[x] + "," + x + ");updateNameCond(" + x + "," + numberC[x] + ")'/><br />" +
         "<label for='action'> input :</label><br>" +
-        "<select id='" + x + "inputLoop" + numberC[x] + "' name='loop1' onclick=updateInputCondition(" + numberC[x] + "," + x + ") > " +
+        "<select id='" + x + "inputLoop" + numberC[x] + "' name='loop1' onclick=updateInputCondition(" + numberC[x] + "," + x + ");updateConditionNames(" + x + "," + numberC[x] + ") > " +
         "<option name=input value=input>input</option>" +
         "<option name=conditional_block value=conditional_block>conditional_block</option>" +
         "<option name=variable value=variable>variable</option>" +
         "<option name=formula value=formula>formula</option></select><br>" +
-        "<select id='" + x + "conditionBlock" + numberC[x] + "'name='loop1' onclick= updateConditionNames(" + x + "," + numberC[x] + ") disabled=false>" +
+        "<select id='" + x + "conditionBlock" + numberC[x] + "'name='loop1' disabled=false>" +
         getConditionNames() + "</select><br>" +
-        "<input type='text' disabled=true id='" + x + "inputText" + numberC[x] + "' name='search'/><br>" +
+        "<input type='text' disabled=true id='" + x + "inputText" + numberC[x] + "' name='search' onchange=getInputFromCond(" + numberC[x] + "," + x + ")/><br>" +
         "<label for='name'> operation :</label><br>" +
         "<select id='" + x + "operationLoop" + numberC[x] + "' name='loop2'>" +
         "<option name=less_than value=less_than>less_than</option>" +
@@ -509,7 +538,7 @@ function addCondition(x) {
         "<option name=greater_than value=greater_than>greater_than</option>" +
         "<option name=value_changed value=value_changed>value_changed</option></select><br>" +
         "<label for='name'> value :</label><br>" +
-        "<input type='text' id='" + x + "value" + numberC[x] + "' name='search'/><br>" +
+        "<input type='text' id='" + x + "value" + numberC[x] + "' name='search' onchange=getInputFromCond(" + numberC[x] + "," + x + ")/><br>" +
         "<button for='name' onClick='addConditionElement(" + x + "," + numberC[x] + ")'> addCondition </button>" +
         "<button for='name' onClick='delOneCond(" + numberC[x] + ", " + x + ")'> delete Condition </button><br>" +
         "<label for='name'>-------------------------------------------------------</label><br>";
@@ -523,16 +552,16 @@ function addConditionElement(x, cond) {
     var l = document.createElement("conditions" + x);
     l.innerHTML += "<div id='" + x + "con" + cond + listCond[x][cond] + "'>" +
         "<label for='name'> name :</label><br>" +
-        "<input id='" + x + "name" + cond + listCond[x][cond] + "' type='text' name='search' placeholder='Enter the name of the condition' /><br />" +
+        "<input id='" + x + "name" + cond + listCond[x][cond] + "' type='text' name='search' placeholder='Enter the name of the condition' onchange=getInputFromCond(" + numberC[x] + "," + x + ")/><br />" +
         "<label for='name'> input :</label><br>" +
-        "<select id='" + x + "inputLoop" + cond + listCond[x][cond] + "' name='loop1' onclick=updateInputCondition(" + cond + "," + x + "," + listCond[x][cond] + ")>" +
+        "<select id='" + x + "inputLoop" + cond + listCond[x][cond] + "' name='loop1' onclick=updateInputCondition(" + cond + "," + x + "," + listCond[x][cond] + ");updateConditionNames(" + cond + "," + x + "," + listCond[x][cond] + ")>" +
         "<option name=input value=input>input</option>" +
         "<option name=conditional_block value=conditional_block>conditional_block</option>" +
         "<option name=variable value=variable>variable</option>" +
         "<option name=formula value=formula>formula</option></select><br>" +
-        "<select id='" + x + "conditionBlock" + cond + listCond[x][cond] + "'onclick= updateConditionNames(" + cond + "," + x + "," + listCond[x][cond] + ") name='loop1' disabled=true>" +
+        "<select id='" + x + "conditionBlock" + cond + listCond[x][cond] + "' name='loop1' disabled=true>" +
         getConditionNames() + "</select><br>" +
-        "<input type='text' disabled=true id='" + x + "inputText" + cond + listCond[x][cond] + "' name='search'/><br>" +
+        "<input type='text' disabled=true id='" + x + "inputText" + cond + listCond[x][cond] + "' name='search' onchange=getInputFromCond(" + numberC[x] + "," + x + ")/><br>" +
         "<label for='name'> operation :</label><br>" +
         "<select id='" + x + "operationLoop" + cond + listCond[x][cond] + "' name='loop2'>" +
         "<option name=less_than value=less_than>less_than</option>" +
@@ -541,7 +570,7 @@ function addConditionElement(x, cond) {
         "<option name=greater_than value=greater_than>greater_than</option>" +
         "<option name=value_changed value=value_changed>value_changed</option></select><br>" +
         "<label for='name'> value :</label><br>" +
-        "<input type='text' id='" + x + "value" + cond + listCond[x][cond] + "' name='search'/><br>" +
+        "<input type='text' id='" + x + "value" + cond + listCond[x][cond] + "' name='search' onchange=getInputFromCond(" + numberC[x] + "," + x + ")/><br>" +
         "<button for='name' onClick='addConditionElement(" + x + "," + cond + ")'> add Condition </button>" +
         "<button for='name' onClick='delOneCond(" + cond + "," + x + ", " + listCond[x][cond] + ")'> delete Condition </button><br>" +
         "<label for='name'>-------------------------------------------------------</label><br>";
@@ -653,9 +682,9 @@ function addAction(x) {
         "<button for='name' onClick='del(" + numberA[x] + ", " + x + "," + 0 + ")'> delete </button><br>" +
         "<div class='" + x + "act" + numberA[x] + "'>" +
         "<label for='name'> name :</label><br>" +
-        "<input type='text' id='" + x + "nameText" + numberA[x] + "' name='search' onchange='updateNameAct(" + x + "," + numberA[x] + ")'/><br>" +
+        "<input type='text' id='" + x + "nameText" + numberA[x] + "' name='search' onchange='updateNameAct(" + x + "," + numberA[x] + ");getInputFromAct(" + numberA[x] + "," + x + ")'/><br>" +
         "<label for='action'> action :</label><br>" +
-        "<select id='" + x + "selectAction" + numberA[x] + "' name='loop1' onclick=updateChooseAction(" + numberA[x] + "," + x + ")>" +
+        "<select id='" + x + "selectAction" + numberA[x] + "' name='loop1' onclick=updateChooseAction(" + numberA[x] + "," + x + ");updateActionNames(" + x + "," + numberA[x] + ")>" +
         "<option name=action_block_name value=action_block_name >action_block_name </option>" +
         "<option name=play value=play >play </option>" +
         "<option name=flash value=flash >flash </option>" +
@@ -667,10 +696,10 @@ function addAction(x) {
         "<option name=up value=up >up </option>" +
         "<option name=down value=down >down </option>" +
         "<option name=reset value=reset >reset </option></select><br>" +
-        "<select id='" + x + "actionBlock" + numberA[x] + "' onclick= updateActionNames(" + x + "," + numberA[x] + ") name='loop1'>" +
+        "<select id='" + x + "actionBlock" + numberA[x] + "' name='loop1'>" +
         "<option value=play>choose action block </option></select><br>" +
         "<label for='output'> output :</label><br>" +
-        "<input type='text' id='" + x + "outputText" + numberA[x] + "' name='search'/><br>" +
+        "<input type='text' id='" + x + "outputText" + numberA[x] + "' name='search' onchange=getInputFromAct(" + numberA[x] + "," + x + ")/><br>" +
         "<label for='value'> value :</label><br>" +
         "<select id='" + x + "selectValue" + numberA[x] + "' name='loop2' onclick=updateValueAction(" + numberA[x] + "," + x + ")>" +
         "<option name=value value='value'> value </option>" +
@@ -683,9 +712,9 @@ function addAction(x) {
         "<option name=off value=off >off </option>" +
         "<option name=variable value=variable> variable </option>" +
         "<option name=formula value=formula> formula </option></select><br>" +
-        "<input type='text' id='" + x + "inputValue" + numberA[x] + "' name='search'/><br>" +
+        "<input type='text' id='" + x + "inputValue" + numberA[x] + "' name='search' onchange=getInputFromAct(" + numberA[x] + "," + x + ")/><br>" +
         "<label for='param'> param :</label><br>" +
-        "<input type='text' id='" + x + "paramText" + numberA[x] + "' name='search'/><br>" +
+        "<input type='text' id='" + x + "paramText" + numberA[x] + "' name='search' onchange=getInputFromAct(" + numberA[x] + "," + x + ")/><br>" +
         "<button for='name' onClick='addActionElement(" + x + "," + numberA[x] + ")'> addAction </button>" +
         "<button for='name' onClick='delOneAct(" + numberA[x] + ", " + x + ")'> delete Action </button><br>" +
         "<label for='name'>-------------------------------------------------------</label><br>";
@@ -698,9 +727,9 @@ function addActionElement(x, act) {
     var l = document.createElement("actions" + x);
     l.innerHTML += "<div id='" + x + "act" + act + listAct[x][act] + "'>" +
         "<label for='name'> name :</label><br>" +
-        "<input type='text' id='" + x + "nameText" + act + "" + listAct[x][act] + "' name='search'/><br>" +
+        "<input type='text' id='" + x + "nameText" + act + "" + listAct[x][act] + "' name='search' onchange=getInputFromAct(" + numberA[x] + "," + x + ") /><br>" +
         "<label for='action'> action :</label><br>" +
-        "<select id='" + x + "selectAction" + act + "" + listAct[x][act] + "' name='loop1' onclick=updateChooseAction(" + act + "," + x + "," + listAct[x][act] + ")>" +
+        "<select id='" + x + "selectAction" + act + "" + listAct[x][act] + "' name='loop1' onclick=updateChooseAction(" + act + "," + x + "," + listAct[x][act] + ");updateActionNames(" + act + "," + x + "," + listAct[x][act] + ")>" +
         "<option name=action_block_name value=action_block_name >action_block_name </option>" +
         "<option name=play value=play >play </option>" +
         "<option name=flash value=flash >flash </option>" +
@@ -712,10 +741,10 @@ function addActionElement(x, act) {
         "<option name=up value=up >up </option>" +
         "<option name=down value=down >down </option>" +
         "<option name=reset value=reset >reset </option></select><br>" +
-        "<select disabled=true id='" + x + "actionBlock" + act + "" + listAct[x][act] + "' onclick= updateActionNames(" + act + "," + x + "," + listAct[x][act] + ") name='loop1'>" +
+        "<select disabled=true id='" + x + "actionBlock" + act + "" + listAct[x][act] + "' name='loop1'>" +
         "<option value=play>choose action block </option></select><br>" +
         "<label for='output'> output :</label><br>" +
-        "<input type='text' id='" + x + "outputText" + act + "" + listAct[x][act] + "' name='search'/><br>" +
+        "<input type='text' id='" + x + "outputText" + act + "" + listAct[x][act] + "' name='search' onchange=getInputFromAct(" + numberA[x] + "," + x + ")/><br>" +
         "<label for='value'> value :</label><br>" +
         "<select id='" + x + "selectValue" + act + "" + listAct[x][act] + "' name='loop2' onclick=updateValueAction(" + act + "," + x + "," + listAct[x][act] + ")>" +
         "<option name=value value='value'> value </option>" +
@@ -728,9 +757,9 @@ function addActionElement(x, act) {
         "<option name=off value=off >off </option>" +
         "<option name=variable value=variable> variable </option>" +
         "<option name=formula value=formula> formula </option></select><br>" +
-        "<input type='text' id='" + x + "inputValue" + act + "" + listAct[x][act] + "' name='search'/><br>" +
+        "<input type='text' id='" + x + "inputValue" + act + "" + listAct[x][act] + "' name='search' onchange=getInputFromAct(" + numberA[x] + "," + x + ")/><br>" +
         "<label for='param'> param :</label><br>" +
-        "<input type='text' id='" + x + "paramText" + act + "" + listAct[x][act] + "' name='search'/><br>" +
+        "<input type='text' id='" + x + "paramText" + act + "" + listAct[x][act] + "' name='search' onchange=getInputFromAct(" + numberA[x] + "," + x + ")/><br>" +
         "<button for='name' onClick='addActionElement(" + x + "," + act + ")'> add Action </button>" +
         "<button for='name' onClick='delOneAct(" + act + "," + x + ", " + listAct[x][act] + ")'> delete Action </button><br>" +
         "<label for='name'>-------------------------------------------------------</label><br>";
