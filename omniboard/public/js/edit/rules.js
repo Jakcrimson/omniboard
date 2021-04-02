@@ -88,10 +88,8 @@ if (blockList == undefined) {
 function initJson() {
     if (blockList.image != null) document.getElementById('image').src = blockList.image
 
-    console.log('initiation des rules . . . ')
     for (var i = 0; i < blockList.rules.length; i++) {
         addRule()
-        console.log("APRèS ADDRULE()")
         document.getElementById('type' + i).setAttribute('value', blockList.rules[i].type)
         document.getElementById('name' + i).setAttribute('value', blockList.rules[i].name)
         document.getElementById('accordionR' + i).innerHTML = document.getElementById('name' + i).value
@@ -127,8 +125,6 @@ function initJson() {
             for (let j = 0; j < blockList.rules[i].actions.length; j++) {
 
                 addAction(i)
-                console.log(blockList.rules[i].actions[j][0].action)
-                console.log(document.getElementById(i + 'selectAction' + j).options[blockList.rules[i].actions[j][0].action])
                 var action = blockList.rules[i].actions[j][0]
                 if (action != undefined) {
                     document.getElementById(i + 'nameText' + j).setAttribute('value', action.name)
@@ -165,7 +161,6 @@ function initJson() {
     //initialisation des éléments
     for (let i = 0; i < blockList.elements.length; i++) {
         addItem(blockList.elements[i].name, blockList.elements[i].x, blockList.elements[i].y)
-        console.log('ALLO')
     }
 }
 
@@ -177,6 +172,8 @@ function getInput(x) {
         blockList.rules.push({ 'name': name, 'type': type, 'conditions': [], 'actions': [] })
     } else if (blockList.rules[x].conditions == undefined) {
         blockList.rules[x].conditions = []
+    } else if(blockList.rules[x].actions == undefined) {
+        blockList.rules[x].actions = []
     } else {
         blockList.rules[x].name = name
         blockList.rules[x].type = type
@@ -192,7 +189,7 @@ function updateNameRule(rule) {
 function addRule() {
     d = document.getElementById('rule');
     var l = document.createElement("rules" + numberR);
-    d.innerHTML += "<button class='accordionR' id='accordionR" + numberR + "' onclick='addListener(" + numberR + ");getInput(" + numberR + ")'>" + 'Rule' + (numberR + 1) + "</button>" +
+    d.innerHTML += "<button class='accordionR' id='accordionR" + numberR + "' onclick='addListener();getInput(" + numberR + ")'>" + 'Rule' + (numberR + 1) + "</button>" +
         "<div class='panel1' id='Rule" + numberR + "'>" +
         "<button for='Delete' onClick='deleteRule(" + numberR + ")'> delete Rule</button><br>" +
         "<label for='type'> type :<br />" +
@@ -200,7 +197,7 @@ function addRule() {
         "<label for='name'> name :</label><br />" +
         "<input id='name" + numberR + "' type='text' name='search' placeholder='Enter the name of the rule' onchange='updateNameRule(" + numberR + ")'/><br />" +
         "<label for='name'> Choose Type for the loop :</label><br />" +
-        "<input class='elem' type='button' value='new conditions' onclick='addCondition(" + numberR + ")' />" +
+        "<input class='elem' type='button' value='new conditions' onclick='addCondition(" + numberR + ");' />" +
         "<input class='elem' type='button' value='new actions' onclick='addAction(" + numberR + ")' />" +
         "</label>";
     d.appendChild(l)
@@ -224,10 +221,8 @@ function getActionNames() {
         }
         var ret = "";
         for (let i = 0; i < actionNames.length; i++) {
-            console.log(actionNames[i])
             ret += '<option name=' + actionNames[i] + ' value=' + actionNames[i] + '>' + actionNames[i] + '</option>\n';
         }
-        console.log(ret);
         return ret;
     }
 }
@@ -248,10 +243,8 @@ function getConditionNames() {
         }
         var ret = "";
         for (let i = 0; i < conditionNames.length; i++) {
-            console.log(conditionNames[i])
             ret += '<option name=' + conditionNames[i] + ' value=' + conditionNames[i] + '>' + conditionNames[i] + '</option>\n';
         }
-        console.log(ret);
         return ret;
     }
 }
@@ -282,7 +275,6 @@ function updateConditionNames(x, nbRule, y) {
             if (loop != null) {
                 loop.options[i] = new Option(conditionNames[i], conditionNames[i])
                 loop.options[i].setAttribute('name', conditionNames[i])
-                console.log(loop.options);
             }
         } else {
             var loop = document.getElementById(nbRule + 'conditionBlock' + x + y);
@@ -322,7 +314,6 @@ function updateActionNames(x, nbRule, y) {
             if (loop != null) {
                 loop.options[i] = new Option(actionNames[i], actionNames[i])
                 loop.options[i].setAttribute('name', actionNames[i])
-                console.log(loop.options);
             }
 
         } else {
@@ -481,7 +472,6 @@ function updateNameCond(rule, cond) {
 }
 
 function addCondition(x) {
-    console.log("IN ADDCONDITION")
     listCond[x] = new Array()
     if (numberC[x] != undefined && numberC[x] >= 0) {
         numberC[x] += 1;
@@ -494,7 +484,7 @@ function addCondition(x) {
 
     d = document.getElementById('Rule' + x);
     var l = document.createElement("conditions" + x);
-    l.innerHTML += "<button class='accordion' id='accordionC" + x + "" + numberC[x] + "' onclick=getInputFromCond(" + numberC[x] + "," + x + ")>" + 'Condition' + x + "." + (numberC[x] + 1) + "</button>" +
+    l.innerHTML += "<button class='accordion' id='accordionC" + x + "" + numberC[x] + "' onclick='getInputFromCond(" + numberC[x] + "," + x + ");addListener()'>" + 'Condition' + x + "." + (numberC[x] + 1) + "</button>" +
         "<div class='panel' id='Condition" + x + numberC[x] + "'>" +
         "<button for='name' onClick='del(" + numberC[x] + ", " + x + "," + 1 + ")'> delete </button><br>" +
         "<div class='" + x + "con" + numberC[x] + "'>" +
@@ -522,9 +512,8 @@ function addCondition(x) {
         "<button for='name' onClick='delOneCond(" + numberC[x] + ", " + x + ")'> delete Condition </button><br>" +
         "<label for='name'>-------------------------------------------------------</label><br>";
     d.appendChild(l);
-    //getInputFromCond(numberC[x], x)
+    getInput(x)
     addListener();
-    console.log(l)
 }
 
 function addConditionElement(x, cond) {
@@ -645,7 +634,6 @@ function getInputFromAct(cond, rule) {
 }
 
 function addAction(x) {
-    console.log("IN ADDACTION")
     listAct[x] = new Array();
     if (numberA[x] != undefined && numberA[x] >= 0) {
         numberA[x] += 1;
@@ -657,7 +645,7 @@ function addAction(x) {
     }
     d = document.getElementById('Rule' + x);
     var l = document.createElement("actions" + x);
-    l.innerHTML += "<button class='accordion' id='accordionA" + x + "" + numberA[x] + "' onclick='getInputFromAct(" + numberA[x] + "," + x + ")'>" + 'Action' + x + "." + (numberA[x] + 1) + "</button>" +
+    l.innerHTML += "<button class='accordion' id='accordionA" + x + "" + numberA[x] + "' onclick='getInputFromAct(" + numberA[x] + "," + x + ");addListener()'>" + 'Action' + x + "." + (numberA[x] + 1) + "</button>" +
         "<div class='panel' id='Action" + x + numberA[x] + "'>" +
         "<button for='name' onClick='del(" + numberA[x] + ", " + x + "," + 0 + ")'> delete </button><br>" +
         "<div class='" + x + "act" + numberA[x] + "'>" +
@@ -699,7 +687,6 @@ function addAction(x) {
         "<button for='name' onClick='delOneAct(" + numberA[x] + ", " + x + ")'> delete Action </button><br>" +
         "<label for='name'>-------------------------------------------------------</label><br>";
     d.appendChild(l);
-    //getInputFromAct(numberA[x], x)
     addListener();
 }
 
@@ -845,6 +832,7 @@ function del(x, nbRule, type) {
  * Add EventListener in the list of rule for hide and show the rule element
  */
 function addListener() {
+    console.log("call")
     if (blockList.rules != undefined) {
         let ruleSize = blockList.rules.length;
         for (let id = 0; id < ruleSize; id++) {
@@ -884,7 +872,6 @@ function addListener() {
             }
         }
     }
-    console.log('miam :eyes:')
 }
 
 function addRuleListener(id) {
@@ -897,11 +884,9 @@ function addRuleListener(id) {
             } else {
                 panel.style.maxHeight = 100 + "%"
             }
+            getInput(i)
+            addListener()
         };
     }
-
-}
-
-function importRules() {
 
 }
