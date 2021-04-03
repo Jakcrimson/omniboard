@@ -100,7 +100,7 @@ function addItem(name, x, y) {
     nameImage = name;
     img = document.createElement("img");
     img.src = '/images/' + name + '.jpg';
-    if(y == undefined){
+    if (y == undefined) {
         d2y += 3;
         d2x += 3;
         img.style = "width:40px;height:40px;position:absolute;top:" + d2y + "px;left:" + d2x + "px;cursor:move;border-radius: 20px;";
@@ -116,25 +116,26 @@ function addItem(name, x, y) {
     var list = JSON.parse(window.localStorage.getItem("blockList"));
     var alreadyDefined = false
     var index
-    for(let i=0; i<list.elements.length; i++){
-        if(list.elements[i].itemId == itemId) {
+    for (let i = 0; i < list.elements.length; i++) {
+        if (list.elements[i].itemId == itemId) {
             alreadyDefined = true
             index = i
         }
-    }console.log(alreadyDefined)
-    if(alreadyDefined){
+    }
+    console.log(alreadyDefined)
+    if (alreadyDefined) {
         console.log('BON')
-        if(y != undefined){
-            list.elements[index] = { name, itemId, x, y}
+        if (y != undefined) {
+            list.elements[index] = { name, itemId, x, y }
         } else {
-            list.elements[index] = { name, itemId, x:d2x, y:d2y}
-        } 
+            list.elements[index] = { name, itemId, x: d2x, y: d2y }
+        }
     } else {
-        if(y != undefined){
-            list.elements.push({ name, itemId, x, y})
+        if (y != undefined) {
+            list.elements.push({ name, itemId, x, y })
         } else {
-            list.elements.push({ name, itemId, x:d2x, y:d2y})
-        } 
+            list.elements.push({ name, itemId, x: d2x, y: d2y })
+        }
     }
     window.localStorage.setItem("blockList", JSON.stringify(list));
     img.onmousedown = currentDragged;
@@ -145,7 +146,7 @@ function addItem(name, x, y) {
  * Download the rules file 
  */
 function downloadJson() {
-    if(document.getElementById('checkboxBg').checked){
+    if (document.getElementById('checkboxBg').checked) {
         if (confirm('You will download a save on your computer with an image')) {
             var dataStr = "data:text/json;charset=utf-8," + encodeURIComponent(window.localStorage.getItem("blockList"));
             var downloadAnchorNode = document.createElement('a');
@@ -338,8 +339,8 @@ function submitImg() {
         reader.readAsDataURL(document.getElementById('img').files[0]);
 
     }
-    
-    
+
+
 }
 
 
@@ -369,6 +370,9 @@ function hidePanels() {
     }
 }
 
+/**
+ * This function is used to import a file and upload and retrieve it's content.
+ */
 function importFile() {
     if (document.getElementById('importRules').files && document.getElementById('importRules').files[0]) {
         var reader = new FileReader();
