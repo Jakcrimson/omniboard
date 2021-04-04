@@ -9,9 +9,10 @@ var listAct = [
         []
     ] //list the number of action in the action block with the index is the
     //num of the action block
-var blockList = JSON.parse(window.localStorage.getItem("blockList"))
-var conditionNames = [];
-var actionNames = [];
+var blockList = JSON.parse(window.localStorage.getItem("blockList")) //this is the data structure that contains all the logical_blocks (conditions + actions + rules) all the elements and the image
+    //it's a collection with an array of rules which contains another collection with arrays of conditions and actions which then contain other collections.
+var conditionNames = []; //an array that stores all of the condition names
+var actionNames = []; // an array that stores all of the action names
 
 if (blockList == undefined) {
     blockList = {
@@ -89,6 +90,12 @@ if (blockList == undefined) {
     window.localStorage.setItem("blockList", JSON.stringify(blockList));
 }
 
+/**
+ * This function initializes the 'soon to be exported' JSON and the rules according to what's been stored in the localStorage.
+ * It goes through the rules contained in blockList, retrieves the name, the type and which accordion menu it belongs.
+ * It does the same for the conditions and actions by calling addAction() or addCondition().
+ * If the structure differs frorm what's in the local storage, the names of the conditions and actions are updated.
+ */
 function initJson() {
     if (blockList.image != null) document.getElementById('image').src = blockList.image
 
@@ -179,12 +186,17 @@ function initJson() {
             }
         }
     }
-    //initialisation des éléments
+    //initializing the elements
     for (let i = 0; i < blockList.elements.length; i++) {
         addItem(blockList.elements[i].name, blockList.elements[i].x, blockList.elements[i].y)
     }
 }
 
+/**
+ * this function retrieves the user's input inside the rules (to get the name and the type)
+ * It is called when the textfield has been change, the values are then replaced
+ * @param {int} x the rule's ID
+ */
 function getInput(x) {
     var type = document.getElementById('type' + x).value
     var name = document.getElementById('name' + x).value
@@ -193,7 +205,7 @@ function getInput(x) {
         blockList.rules.push({ 'name': name, 'type': type, 'conditions': [], 'actions': [] })
     } else if (blockList.rules[x].conditions == undefined) {
         blockList.rules[x].conditions = []
-    } else if(blockList.rules[x].actions == undefined) {
+    } else if (blockList.rules[x].actions == undefined) {
         blockList.rules[x].actions = []
     } else {
         blockList.rules[x].name = name
@@ -203,10 +215,20 @@ function getInput(x) {
     window.localStorage.setItem("blockList", JSON.stringify(blockList));
 }
 
+/**
+ * This functions updates the rule's name when changed.
+ * @param {int} rule 
+ */
 function updateNameRule(rule) {
     document.getElementById('accordionR' + rule).innerHTML = document.getElementById('name' + rule).value
 }
 
+/**
+ * This function adds a rule to the Rule pannel. It creates a new HTML element and adds innerHTML to create the textFields and choices the user will have.
+ * After adding the HTML, it adds the rule to the panel .
+ * Then, it calls the addRuleListener(..) function to enable the listeners for the accordion Menu when the user clicks on it.
+ * In the end, the number of rules is incremented by 1.
+ */
 function addRule() {
     d = document.getElementById('rule');
     var l = document.createElement("rules" + numberR);
@@ -227,6 +249,11 @@ function addRule() {
     numberR += 1;
 }
 
+/**
+ * This function retrieves all the names from the created actions in the rules.
+ * The return is then inserted in the addAction() to directly inject HTML.
+ * @returns an HTML string that creates options for an HTML "select" button
+ */
 function getActionNames() {
     var cmpt = 0;
     for (let i = 0; i < blockList.rules.length; i++) {
@@ -248,7 +275,11 @@ function getActionNames() {
     return ret;
 }
 
-
+/**
+ * This function retrieves all the names from the created conditions in the rules.
+ * The return is then inserted in the addCondition() to directly inject HTML.
+ * @returns an HTML string that creates options for an HTML "select" button
+ */
 function getConditionNames() {
     var cmpt = 0;
     console.log(blockList.rules.length)
@@ -273,7 +304,14 @@ function getConditionNames() {
     return ret;
 }
 
-
+/**
+ * This method updates the names of the condition once the textField has been modified by the user.
+ * First it deletes all the options from the conditions "select" button.
+ * Then it retrieves the correct updates names and add their value to new options for the "select" button.
+ * @param {int} x the condition's ID 
+ * @param {int} nbRule the rule in which the condition is
+ * @param {int} y the condition in which the condition is (can be null if the condition is a single-condition block)
+ */
 function updateConditionNames(x, nbRule, y) {
     if (y == undefined) {
         var select = document.getElementById(nbRule + 'conditionBlock' + x);
@@ -313,7 +351,14 @@ function updateConditionNames(x, nbRule, y) {
 }
 
 
-
+/**
+ * This method updates the names of the actions once the textField has been modified by the user.
+ * First it deletes all the options from the action "select" button.
+ * Then it retrieves the correct updates names and add their value to new options for the "select" button.
+ * @param {int} x the action's ID 
+ * @param {int} nbRule the rule in which the action is
+ * @param {int} y the action in which the action is (can be null if the action is a single-action block)
+ */
 function updateActionNames(x, nbRule, y) {
     getActionNames()
     if (y == undefined) {
@@ -353,6 +398,10 @@ function updateActionNames(x, nbRule, y) {
 
 }
 
+/**
+ * Method used to delete a Rule
+ * @param {int} x the rule's id to delete only this one.
+ */
 function deleteRule(x) {
     if (document.getElementsByClassName("accordionR" + x) != undefined) {
         if (blockList.rules[x].actions != undefined) {
@@ -377,6 +426,13 @@ function deleteRule(x) {
     }
 }
 
+/**
+ * THis method is used to get all the informations from the condition once the user has completed one.
+ * All the values are then inserted inside the blockList global variable and then stored it inside the localStorage.
+ * It goes through all the conditions, fetches the values of the HTML elements the user can fill in and then puts them at their correct place in BlockList
+ * @param {*} cond the condition's ID
+ * @param {*} rule the rule's ID
+ */
 function getInputFromCond(cond, rule) {
     var name = document.getElementById(rule + 'name' + cond)
     var input = document.getElementById(rule + 'inputLoop' + cond)
@@ -427,6 +483,14 @@ function getInputFromCond(cond, rule) {
     window.localStorage.setItem("blockList", JSON.stringify(blockList));
 }
 
+/**
+ * This method updates the state of inputFields when the user chooses the input of the action.
+ * If the input is "action_block_name" the "select" button is enabled but the textField is disabled.
+ * It does otherwise if the input is not "action_block_name"
+ * @param {*} x the action's ID
+ * @param {*} nbRule the rule's ID in which the action is
+ * @param {int} y the action in which the action is (can be null if the action is a single-action block)
+ */
 function updateChooseAction(x, nbRule, y) {
     if (y != undefined) {
         if (document.getElementById(nbRule + 'selectAction' + x + y).value == "action_block_name") {
@@ -443,6 +507,14 @@ function updateChooseAction(x, nbRule, y) {
     }
 }
 
+/**
+ * This method updates the state of inputFields when the user chooses the input of the action.
+ * If the input is "file_name" or "value", or "variable" or "formula" the textField beneath it is enabled and the user can insert a value.
+ * It does otherwise if the input is not part of the ones above.
+ * @param {*} x 
+ * @param {*} nbRule 
+ * @param {*} y 
+ */
 function updateValueAction(x, nbRule, y) {
     if (y != undefined) {
         if (document.getElementById(nbRule + 'selectValue' + x + y).value == "file_name" ||
@@ -470,6 +542,14 @@ function updateValueAction(x, nbRule, y) {
 
 }
 
+/**
+ * This method updates the state of inputFields when the user chooses the input of the action.
+ * If the input is "condition_block_name" the "select" button is enabled but the textField is disabled.
+ * It does otherwise if the input is not "condition_block_name"
+ * @param {*} x the condition's ID
+ * @param {*} nbRule the rule's ID in which the condition is
+ * @param {int} y the condition in which the condition is (can be null if the condition is a single-condition block)
+ */
 function updateInputCondition(x, nbRule, y) {
     if (y != undefined) {
         if (document.getElementById(nbRule + 'inputLoop' + x + y).value == "conditional_block") {
@@ -491,14 +571,30 @@ function updateInputCondition(x, nbRule, y) {
     }
 }
 
+/**
+ * This method updates the name of the action once it has been changed.
+ * @param {*} rule the rule's ID in which the action is
+ * @param {*} act the action's ID
+ */
 function updateNameAct(rule, act) {
     document.getElementById('accordionA' + rule + act).innerHTML = document.getElementById(rule + 'nameText' + act).value
 }
 
+/**
+ * This method updates the name of the condition once it has been changed.
+ * @param {*} rule the rule's ID in which the condition is
+ * @param {*} cond the condition's ID
+ */
 function updateNameCond(rule, cond) {
     document.getElementById('accordionC' + rule + cond).innerHTML = document.getElementById(rule + 'name' + cond).value
 }
 
+/**
+ * This method adds a condition beneath the rule whose id is given in parameter.
+ * First it creates an element and it edits it's innerHTML so that the user can then complete the fields and edit his conditions.
+ * After that it adds the listener and retireves the input of this condition.
+ * @param {*} x the rule's ID in which the condition is to be added
+ */
 function addCondition(x) {
     listCond[x] = new Array()
     if (numberC[x] != undefined && numberC[x] >= 0) {
@@ -544,6 +640,14 @@ function addCondition(x) {
     addListener();
 }
 
+/**
+ * This method adds a condition beneath the condition whose id is given in parameter.
+ * It allows the user to add further complexity to it's rules. This is known as a multi-conditional-block
+ * First it creates an element and it edits it's innerHTML so that the user can then complete the fields and edit his conditions.
+ * After that it adds the listener and retireves the input of this condition.
+ * @param {*} x the rule's ID
+ * @param {*} cond the condition's ID
+ */
 function addConditionElement(x, cond) {
     d = document.getElementById("Condition" + x + cond);
     var l = document.createElement("conditions" + x);
@@ -576,6 +680,13 @@ function addConditionElement(x, cond) {
     addListener();
 }
 
+/**
+ * This method allows the user to delete a single condition inside a multi-conditional-block.
+ * It deletes the condition identified by the parameters and then removes it from blockList.
+ * @param {*} x  the condition's ID
+ * @param {*} nbRule the rule's ID in which the condition is
+ * @param {*} y the condition's ID if it's in a multi-conditionnal-block
+ */
 function delOneCond(x, nbRule, y) {
     if (y != undefined) {
         document.getElementById(nbRule + 'con' + x + y).remove();
@@ -598,7 +709,13 @@ function delOneCond(x, nbRule, y) {
         }
     }
 }
-
+/**
+ * THis method is used to get all the informations from the action once the user has completed one.
+ * All the values are then inserted inside the blockList global variable and then stored it inside the localStorage.
+ * It goes through all the actions, fetches the values of the HTML elements the user can fill in and then puts them at their correct place in BlockList
+ * @param {*} cond the action's ID 
+ * @param {*} rule the rule's ID in which the action is
+ */
 function getInputFromAct(cond, rule) {
     var name = document.getElementById(rule + 'nameText' + cond)
     var action = document.getElementById(rule + 'selectAction' + cond)
@@ -661,6 +778,12 @@ function getInputFromAct(cond, rule) {
     window.localStorage.setItem("blockList", JSON.stringify(blockList));
 }
 
+/**
+ * This method adds an action beneath the rule whose id is given in parameter.
+ * First it creates an element and it edits it's innerHTML so that the user can then complete the fields and edit his actions.
+ * After that it adds the listener and retireves the input of this action.
+ * @param {*} x the rule's ID in which the action is to be added
+ */
 function addAction(x) {
     listAct[x] = new Array();
     if (numberA[x] != undefined && numberA[x] >= 0) {
@@ -718,6 +841,14 @@ function addAction(x) {
     addListener();
 }
 
+/**
+ * This method adds an action beneath the condition whose id is given in parameter.
+ * It allows the user to add further complexity to it's rules. This is known as a multi-actionnal-block
+ * First it creates an element and it edits it's innerHTML so that the user can then complete the fields and edit his actions.
+ * After that it adds the listener and retireves the input of this action.
+ * @param {*} x the rule's ID
+ * @param {*} cond the action's ID
+ */
 function addActionElement(x, act) {
     d = document.getElementById("Action" + x + act);
     var l = document.createElement("actions" + x);
@@ -764,6 +895,13 @@ function addActionElement(x, act) {
     addListener();
 }
 
+/**
+ * This method allows the user to delete a single condition inside a multi-conditional-block.
+ * It deletes the condition identified by the parameters and then removes it from blockList.
+ * @param {*} x  the condition's ID
+ * @param {*} nbRule the rule's ID in which the condition is
+ * @param {*} y the condition's ID if it's in a multi-conditionnal-block
+ */
 function delOneAct(x, nbRule, y) {
     if (y != undefined) {
         document.getElementById(nbRule + 'act' + x + y).remove();
@@ -786,6 +924,13 @@ function delOneAct(x, nbRule, y) {
     }
 }
 
+/**
+ * THis method deletes everything in the rule defined by the parameters.
+ * It goes throught the rules and blockList to remove the correct parameters.
+ * @param {*} x the rules'ID
+ * @param {*} nbRule the ruls's number in the rule array
+ * @param {*} type the rule's type
+ */
 function del(x, nbRule, type) {
     if (type == 0) {
         if (document.getElementById('Action' + nbRule + x) != null) {
@@ -857,7 +1002,7 @@ function del(x, nbRule, type) {
 }
 
 /**
- * Add EventListener in the list of rule for hide and show the rule element
+ * Add EventListener in the list of rule for hide and show the rule element.
  */
 function addListener() {
     if (blockList.rules != undefined) {
@@ -901,6 +1046,11 @@ function addListener() {
     }
 }
 
+/**
+ * This method adds a listener to the rule It allows the accordion animation to be enabled.
+ * @param {*} id the rule'ID
+ * @param {*} rule the rule's name
+ */
 function addRuleListener(id, rule) {
     for (let i = 0; i <= numberR; i++) {
         document.getElementById(id + i).onclick = function() {
