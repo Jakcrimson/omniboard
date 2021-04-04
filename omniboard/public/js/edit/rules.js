@@ -514,14 +514,16 @@ function updateChooseAction(x, nbRule, y) {
  */
 function updateValueAction(x, nbRule, y) {
     if (y != undefined) {
-        if (document.getElementById(nbRule + 'selectValue' + x + y).value == "file_name" ||
-            document.getElementById(nbRule + 'selectValue' + x + y).value == "value" ||
-            document.getElementById(nbRule + 'selectValue' + x + y).value == "variable" ||
-            document.getElementById(nbRule + 'selectValue' + x + y).value == "formula") {
+        if(document.getElementById(nbRule + 'selectValue' + x + y) != null) {
+            if (document.getElementById(nbRule + 'selectValue' + x + y).value == "file_name" ||
+                document.getElementById(nbRule + 'selectValue' + x + y).value == "value" ||
+                document.getElementById(nbRule + 'selectValue' + x + y).value == "variable" ||
+                document.getElementById(nbRule + 'selectValue' + x + y).value == "formula") {
 
-            document.getElementById(nbRule + 'inputValue' + x + y).disabled = false;
-        } else {
-            document.getElementById(nbRule + 'inputValue' + x + y).disabled = true;
+                document.getElementById(nbRule + 'inputValue' + x + y).disabled = false;
+            } else {
+                document.getElementById(nbRule + 'inputValue' + x + y).disabled = true;
+            }
         }
     } else {
         if(document.getElementById(nbRule + 'selectValue' + x) != null) {
