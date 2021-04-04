@@ -282,13 +282,10 @@ function getActionNames() {
  */
 function getConditionNames() {
     var cmpt = 0;
-    console.log(blockList.rules.length)
     for (let i = 0; i < blockList.rules.length; i++) {
-        console.log(i)
         if (blockList.rules[i].conditions != undefined) {
             for (let j = 0; j < blockList.rules[i].conditions.length; j++) {
                 for (let k = 0; k < blockList.rules[i].conditions[j].length; k++) {
-                    console.log(blockList.rules[i].conditions[j][k].name)
                     conditionNames[cmpt] = blockList.rules[i].conditions[j][k].name;
                     cmpt++;
                 }
