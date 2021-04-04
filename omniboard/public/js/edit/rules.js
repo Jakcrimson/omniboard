@@ -179,7 +179,7 @@ function initJson() {
                             document.getElementById(i + 'paramText' + j + k).setAttribute('value', action.param)
                             updateActionNames(j, i, k)
                             updateChooseAction(j, i, k)
-                            // updateValueAction(i, j, k)
+                            updateValueAction(i, j, k)
                         }
                     }
                 }
