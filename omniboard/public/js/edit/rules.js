@@ -120,6 +120,7 @@ function initJson() {
 
                     document.getElementById('accordionC' + i + numberC[i]).innerHTML = document.getElementById(i + 'name' + j).value
                     updateConditionNames(j, i)
+                    updateInputCondition(j, i)
                     for (let k = 1; k < blockList.rules[i].conditions[j].length; k++) {
                         addConditionElement(i, j)
                         condition = blockList.rules[i].conditions[j][k]
@@ -134,6 +135,7 @@ function initJson() {
                             document.getElementById(i + 'operationLoop' + j + k).options[condition.operation].setAttribute('selected', true)
                             document.getElementById(i + 'value' + j + k).setAttribute('value', condition.value)
                             updateConditionNames(j, i, k)
+                            updateInputCondition(j, i, k)
                         }
                     }
                 }
@@ -158,7 +160,9 @@ function initJson() {
                     document.getElementById(i + 'paramText' + j).setAttribute('value', action.param)
 
                     document.getElementById('accordionA' + i + numberA[i]).innerHTML = document.getElementById(i + 'nameText' + j).value
-
+                    updateActionNames(j, i)
+                    updateChooseAction(j, i)
+                    updateValueAction(i, j)
                     for (let k = 1; k < blockList.rules[i].actions[j].length; k++) {
                         addActionElement(i, j)
                         action = blockList.rules[i].actions[j][k]
@@ -172,6 +176,9 @@ function initJson() {
                                 document.getElementById(i + 'selectValue' + j + k).options[action.value].setAttribute('selected', true)
                             }
                             document.getElementById(i + 'paramText' + j + k).setAttribute('value', action.param)
+                            updateActionNames(j, i, k)
+                            updateChooseAction(j, i, k)
+                            updateValueAction(i, j, k)
                         }
                     }
                 }
@@ -190,7 +197,6 @@ function initJson() {
  * @param {int} x the rule's ID
  */
 function getInput(x) {
-    console.log('ok !')
     var type = document.getElementById('type' + x).value
     var name = document.getElementById('name' + x).value
 
@@ -260,12 +266,12 @@ function getActionNames() {
         } else {
             actionNames[cmpt] = "void";
         }
-        var ret = "";
-        for (let i = 0; i < actionNames.length; i++) {
-            ret += '<option name=' + actionNames[i] + ' value=' + actionNames[i] + '>' + actionNames[i] + '</option>\n';
-        }
-        return ret;
     }
+    var ret = "";
+    for (let i = 0; i < actionNames.length; i++) {
+        ret += '<option name=' + actionNames[i] + ' value=' + actionNames[i] + '>' + actionNames[i] + '</option>\n';
+    }
+    return ret;
 }
 
 /**
@@ -286,13 +292,12 @@ function getConditionNames() {
         } else {
             conditionNames[cmpt] = "void";
         }
-        var ret = "";
-        for (let i = 0; i < conditionNames.length; i++) {
-            console.log(conditionNames[i])
-            ret += '<option name="' + conditionNames[i] + '" value="' + conditionNames[i] + '">' + conditionNames[i] + '</option>\n';
-        }
-        return ret;
     }
+    var ret = "";
+    for (let i = 0; i < conditionNames.length; i++) {
+        ret += '<option name="' + conditionNames[i] + '" value="' + conditionNames[i] + '">' + conditionNames[i] + '</option>\n';
+    }
+    return ret;
 }
 
 /**
@@ -425,7 +430,6 @@ function deleteRule(x) {
  * @param {*} rule the rule's ID
  */
 function getInputFromCond(cond, rule) {
-    console.log('--->  input cond tmtc')
     var name = document.getElementById(rule + 'name' + cond)
     var input = document.getElementById(rule + 'inputLoop' + cond)
     var inputValue
@@ -459,13 +463,11 @@ function getInputFromCond(cond, rule) {
         input = document.getElementById(rule + 'inputLoop' + cond + i)
         operation = document.getElementById(rule + 'operationLoop' + cond + i)
         value = document.getElementById(rule + 'value' + cond + i)
-        console.log(rule + 'inputLoop' + cond + i)
         if (input.value == "conditional_block") {
             inputValue = document.getElementById(rule + 'conditionBlock' + cond)
         } else {
             inputValue = document.getElementById(rule + 'inputText' + cond)
         }
-        console.log(inputValue)
         blockList.rules[rule].conditions[cond][i] = {
             'name': name.value,
             'input': input.value,
@@ -511,24 +513,28 @@ function updateChooseAction(x, nbRule, y) {
  */
 function updateValueAction(x, nbRule, y) {
     if (y != undefined) {
-        if (document.getElementById(nbRule + 'selectValue' + x + y).value == "file_name" ||
-            document.getElementById(nbRule + 'selectValue' + x + y).value == "value" ||
-            document.getElementById(nbRule + 'selectValue' + x + y).value == "variable" ||
-            document.getElementById(nbRule + 'selectValue' + x + y).value == "formula") {
+        if(document.getElementById(nbRule + 'selectValue' + x + y) != null) {
+            if (document.getElementById(nbRule + 'selectValue' + x + y).value == "file_name" ||
+                document.getElementById(nbRule + 'selectValue' + x + y).value == "value" ||
+                document.getElementById(nbRule + 'selectValue' + x + y).value == "variable" ||
+                document.getElementById(nbRule + 'selectValue' + x + y).value == "formula") {
 
-            document.getElementById(nbRule + 'inputValue' + x + y).disabled = false;
-        } else {
-            document.getElementById(nbRule + 'inputValue' + x + y).disabled = true;
+                document.getElementById(nbRule + 'inputValue' + x + y).disabled = false;
+            } else {
+                document.getElementById(nbRule + 'inputValue' + x + y).disabled = true;
+            }
         }
     } else {
-        if (document.getElementById(nbRule + 'selectValue' + x).value == "file_name" ||
-            document.getElementById(nbRule + 'selectValue' + x).value == "value" ||
-            document.getElementById(nbRule + 'selectValue' + x).value == "variable" ||
-            document.getElementById(nbRule + 'selectValue' + x).value == "formula") {
+        if(document.getElementById(nbRule + 'selectValue' + x) != null) {
+            if (document.getElementById(nbRule + 'selectValue' + x).value == "file_name" ||
+                document.getElementById(nbRule + 'selectValue' + x).value == "value" ||
+                document.getElementById(nbRule + 'selectValue' + x).value == "variable" ||
+                document.getElementById(nbRule + 'selectValue' + x).value == "formula") {
 
-            document.getElementById(nbRule + 'inputValue' + x).disabled = false;
-        } else {
-            document.getElementById(nbRule + 'inputValue' + x).disabled = true;
+                document.getElementById(nbRule + 'inputValue' + x).disabled = false;
+            } else {
+                document.getElementById(nbRule + 'inputValue' + x).disabled = true;
+            }
         }
     }
 
@@ -808,7 +814,7 @@ function addAction(x) {
         "<option name=down value=down >down </option>" +
         "<option name=reset value=reset >reset </option></select><br>" +
         "<select id='" + x + "actionBlock" + numberA[x] + "' name='loop1'>" +
-        "<option value=play>choose action block </option></select><br>" +
+        getActionNames() + "</select><br>" +
         "<label for='output'> output :</label><br>" +
         "<input type='text' id='" + x + "outputText" + numberA[x] + "' name='search' onchange=getInputFromAct(" + numberA[x] + "," + x + ")/><br>" +
         "<label for='value'> value :</label><br>" +
@@ -861,7 +867,7 @@ function addActionElement(x, act) {
         "<option name=down value=down >down </option>" +
         "<option name=reset value=reset >reset </option></select><br>" +
         "<select disabled=true id='" + x + "actionBlock" + act + "" + listAct[x][act] + "' name='loop1'>" +
-        "<option value=play>choose action block </option></select><br>" +
+        getActionNames() + "</select><br>" +
         "<label for='output'> output :</label><br>" +
         "<input type='text' id='" + x + "outputText" + act + "" + listAct[x][act] + "' name='search' onchange=getInputFromAct(" + numberA[x] + "," + x + ")/><br>" +
         "<label for='value'> value :</label><br>" +
@@ -997,16 +1003,13 @@ function del(x, nbRule, type) {
  * Add EventListener in the list of rule for hide and show the rule element.
  */
 function addListener() {
-    console.log("call")
     if (blockList.rules != undefined) {
         let ruleSize = blockList.rules.length;
         for (let id = 0; id < ruleSize; id++) {
             if (blockList.rules[id].conditions != undefined) {
-                console.log("blocklist has conditions in the first rule")
                 let size = blockList.rules[id].conditions.length;
                 for (let i = 0; i < size; i++) {
                     if (document.getElementById("accordionC" + id + "" + i) != null) {
-                        console.log("verifying before listeneer")
                         document.getElementById("accordionC" + id + "" + i).onclick = function() {
                             this.classList.toggle("view");
                             var panel = this.nextElementSibling;
@@ -1015,18 +1018,15 @@ function addListener() {
                             } else {
                                 panel.style.maxHeight = 100 + "%"
                             }
-                            console.log("listener has applied !")
                             getInputFromCond(i, id)
                         };
                     }
                 }
             }
             if (blockList.rules[id].actions != undefined) {
-                console.log("blocklist has actions in the first rule")
                 let size = blockList.rules[id].actions.length;
                 for (let i = 0; i < size; i++) {
                     if (document.getElementById("accordionA" + id + "" + i) != null) {
-                        console.log("verifying before listeneer")
                         document.getElementById("accordionA" + id + "" + i).onclick = function() {
                             this.classList.toggle("view");
                             var panel = this.nextElementSibling;
@@ -1035,7 +1035,6 @@ function addListener() {
                             } else {
                                 panel.style.maxHeight = 100 + "%"
                             }
-                            console.log("listener has applied !")
                             getInputFromAct(i, id)
                         };
                     }
