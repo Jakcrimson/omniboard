@@ -13,7 +13,6 @@ var blockList = JSON.parse(window.localStorage.getItem("blockList")) //this is t
     //it's a collection with an array of rules which contains another collection with arrays of conditions and actions which then contain other collections.
 var conditionNames = []; //an array that stores all of the condition names
 var actionNames = []; // an array that stores all of the action names
-
 if (blockList == undefined) {
     blockList = {
         rules: [{
